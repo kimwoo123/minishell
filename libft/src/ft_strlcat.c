@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/10 17:04:33 by chajung           #+#    #+#             */
-/*   Updated: 2022/11/13 14:07:01 by chajung          ###   ########.fr       */
+/*   Created: 2022/11/09 18:20:15 by chajung           #+#    #+#             */
+/*   Updated: 2022/11/12 14:28:28 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/libft.h"
+#include "../inc/libft.h"
 
-static void	put_nbr_recursive(int n, int fd)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	if (n < 10)
-		ft_putchar_fd(n + '0', fd);
-	else
-	{
-		put_nbr_recursive(n / 10, fd);
-		put_nbr_recursive(n % 10, fd);
-	}
-}
+	size_t	i;
+	size_t	ex_dstsize;
 
-void	ft_putnbr_fd(int n, int fd)
-{
-	if (n != -2147483648)
+	ex_dstsize = ft_strlen(dst);
+	if (ex_dstsize + 1 < dstsize)
 	{
-		if (n < 0)
+		i = 0;
+		while (src[i] && ex_dstsize + i + 1 < dstsize)
 		{
-			ft_putchar_fd('-', fd);
-			n *= -1;
+			dst[ex_dstsize + i] = src[i];
+			i++;
 		}
-		put_nbr_recursive(n, fd);
+		dst[ex_dstsize + i] = '\0';
 	}
+	if (ex_dstsize < dstsize)
+		return (ft_strlen(src) + ex_dstsize);
 	else
-		ft_putstr_fd("-2147483648", fd);
+		return (ft_strlen(src) + dstsize);
 }

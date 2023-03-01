@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/10 12:56:27 by chajung           #+#    #+#             */
-/*   Updated: 2022/11/13 14:08:26 by chajung          ###   ########.fr       */
+/*   Created: 2022/11/09 19:49:36 by chajung           #+#    #+#             */
+/*   Updated: 2022/11/15 19:26:03 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/libft.h"
+#include "../inc/libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+int	ft_atoi(const char *str)
 {
-	int		i;
-	char	*addr;
+	int	sign;
+	int	value;
 
-	addr = (char *)malloc(sizeof(char) \
-		* (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (addr == NULL)
-		return (NULL);
-	i = 0;
-	while (*s1)
-		addr[i++] = *s1++;
-	while (*s2)
-		addr[i++] = *s2++;
-	addr[i] = '\0';
-	return (addr);
+	sign = 1;
+	value = 0;
+	while ((9 <= *str && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			sign = sign * (-1);
+		str++;
+	}
+	while (ft_isdigit(*str))
+	{
+		value = value * 10 + (*str - '0');
+		str++;
+	}
+	return (sign * value);
 }
