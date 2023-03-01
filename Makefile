@@ -25,8 +25,8 @@ LIB_DIR		= libft
 SRC_DIR		= src
 OBJ_DIR		= obj
 
-SRC			= main.c 
-SRC_BONUS	= main.c
+SRC			= main.c utils0.c
+SRC_BONUS	= main.c utils0.c
 
 OBJS		= $(addprefix $(OBJ_DIR)/, $(OBJ))
 
@@ -40,11 +40,11 @@ endif
 
 ifeq ($(MAKECMDGOALS), debug)
 $(NAME): $(OBJS) $(LIB)
-	@$(CC) -g $(RLFLAGS) $(LIB) $^ -o $@
+	@$(CC) -g $(LIB) $^ -o $@ $(RLFLAGS)
 	@echo "minishell make done"
 else
 $(NAME): $(OBJS) $(LIB)
-	@$(CC) $(RLFLAGS) $(LIB) $^ -o $@
+	@$(CC) $(LIB) $^ -o $@ $(RLFLAGS)
 	@echo "minishell make done"
 endif
 
