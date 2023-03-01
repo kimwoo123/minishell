@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/09 19:56:32 by chajung           #+#    #+#             */
-/*   Updated: 2022/11/13 14:08:13 by chajung          ###   ########.fr       */
+/*   Created: 2022/11/10 12:29:31 by chajung           #+#    #+#             */
+/*   Updated: 2022/11/13 18:49:47 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/libft.h"
+#include "../inc/libft.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
+	size_t	i;
 	char	*addr;
-	int		i;
+	int		size;
 
-	addr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	size = 0;
+	if (ft_strlen(s) > start + len)
+		size = len;
+	else if (ft_strlen(s) > start)
+		size = ft_strlen(s) - start;
+	addr = (char *)malloc(sizeof(char) * size + 1);
 	if (addr == NULL)
 		return (NULL);
-	i = -1;
-	while (s1[++i])
-		addr[i] = s1[i];
+	i = 0;
+	while (*s && i < len && (start + i) < ft_strlen(s))
+	{
+		addr[i] = s[start + i];
+		i++;
+	}
 	addr[i] = '\0';
 	return (addr);
 }

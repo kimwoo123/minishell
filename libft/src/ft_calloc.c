@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/12 16:41:46 by chajung           #+#    #+#             */
-/*   Updated: 2022/11/13 14:27:10 by chajung          ###   ########.fr       */
+/*   Created: 2022/11/09 20:10:09 by chajung           #+#    #+#             */
+/*   Updated: 2022/11/13 16:51:16 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/libft.h"
+#include "../inc/libft.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+void	*ft_calloc(size_t count, size_t size)
 {
-	t_list	*temp;
+	size_t	bytes;
+	void	*addr;
 
-	while (*lst)
-	{
-		temp = (*lst)->next;
-		ft_lstdelone(*lst, del);
-		*lst = temp;
-	}
-	*lst = NULL;
+	bytes = count * size;
+	if (count != 0 && bytes / count != size)
+		return (NULL);
+	addr = malloc(bytes);
+	if (addr == NULL)
+		return (NULL);
+	ft_bzero(addr, bytes);
+	return (addr);
 }
