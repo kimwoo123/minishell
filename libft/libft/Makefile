@@ -53,7 +53,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:
 	@$(RM) $(RMFLAGS) $(OBJ_DIR)
-	@echo "libft clear done"
+	@echo "libft clean done"
 
 fclean:
 	@$(RM) $(RMFLAGS) $(OBJ_DIR)

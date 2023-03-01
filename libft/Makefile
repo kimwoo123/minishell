@@ -10,6 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
+.DEFAULT_GOAL := all
+
 TOPTARGET 	= all clean fclean re
 
 NAME		= utils.a
@@ -30,9 +32,18 @@ $(TOPTARGET): $(SUB_DIR) $(NAME)
 $(SUB_DIR) :
 	@$(MAKE) -C $@ $(MAKECMDGOALS)
 
+ifeq ($(MAKECMDGOALS), all)
 $(NAME) :
 	@libtool -static -o $(NAME) $(SUB_LIB)
 	@echo "utils make done"
+else
+$(NAME) :
+	@echo "utils make done"
+endif
+
+# $(NAME) :
+# 	@libtool -static -o $(NAME) $(SUB_LIB)
+# 	@echo "utils make done"
 
 fclean :
 	@$(RM) $(NAME)
