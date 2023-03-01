@@ -12,21 +12,6 @@
 
 #include "../inc/minishell.h"
 
-char	**free_double_array(char **array)
-{
-	int	i;
-
-	i = -1;
-	while (array[++i])
-	{
-		free(array[i]);
-		array[i] = NULL;
-	}
-	free(array);
-	array = NULL;
-	return (NULL);
-}
-
 static char	*ft_strjoin_wslash(char *str1, char *str2)
 {
 	char	*temp;
@@ -38,35 +23,50 @@ static char	*ft_strjoin_wslash(char *str1, char *str2)
 	return (new_str);
 }
 
-static char	*find_command_path(char *argv, char **envp)
+static char	*find_command_path(t_data *data)
 {
 	int		i;
 	char	*cmd;
 	char	**split;
 
-	if (!argv || !envp)
+	if (!data->commands[0] || !data->envp)
 		return (NULL);
-	if (access(argv, X_OK) == 0)
-		return (argv);
-	while (ft_strncmp(*envp, "PATH=", 5) != 0)
-		envp++;
-	split = ft_split(&(*envp)[5], ':');
-	if (split == NULL)
-		// ft_perror("split error", EXIT_FAILURE);
+	if (!access(data->commands[0], X_OK))
+		return (data->commands[0]);
+	while (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
+		data->envp++;
+    if (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
         return (NULL);
+	split = ft_split(&(*data->envp)[5], ':');
+	if (split == NULL)
+		ft_perror("split error", EXIT_FAILURE);
 	i = -1;
 	while (split[++i])
 	{
-		cmd = ft_strjoin_wslash(split[i], argv);
-		if (access(cmd, X_OK) == 0)
+		cmd = ft_strjoin_wslash(split[i], data->commands[0]);
+		if (!access(cmd, X_OK))
 			break ;
 		free(cmd);
 	}
 	free_double_array(split);
-    // Seg fault occurs using below codes
 	if (access(cmd, X_OK))
         return (NULL);
 	return (cmd);
+}
+
+static char	*find_home_path(t_data *data)
+{
+	int		i;
+	char	*cmd;
+	char	**split;
+
+	if (!data->commands[0] || !data->envp)
+		return (NULL);
+	while (ft_strncmp(*data->envp, "HOME=", ft_strlen("HOME=")))
+		data->envp++;
+    if (ft_strncmp(*data->envp, "HOME=", ft_strlen("HOME=")))
+        return (NULL);
+    return (&(*data->envp)[5]);
 }
 
 // void	proc_execve(char **argv, char **envp, t_data *data)
@@ -84,138 +84,171 @@ static char	*find_command_path(char *argv, char **envp)
 // 		ft_perror("execve error", EXIT_FAILURE);
 // }
 
-static void    print_arg(int argc, char **argv, char **envp)
+int execute_command(t_data *data)
 {
-    int i;
-
-    i = -1;
-    printf("argc: %d\n", argc);
-    while (++i < argc)
-        printf("argv[%d]: %s\n", i, argv[i]);
-    printf("argv[%d]: %s\n", i, argv[i]);
-    i = -1;
-    while (envp[++i])
-        printf("envp[%d]: %s\n", i, envp[i]);
-}
-
-static void    print_cmd(char **argv)
-{
-    int i;
-
-    i = -1;
-    while (argv[++i])
-        printf("argv[%d]: %s\n", i, argv[i]);
+    char    *command_path;
     
-}
-
-int parsing_command_line(int argc, char **argv, char **envp, char **commands)
-{
-    char    *cmd_wpath;
-    
-    if (ft_strncmp(commands[0], "exit", ft_strlen("exit")) == 0)
+    if (!ft_strncmp(data->commands[0], "exit", ft_strlen("exit")))
         return (-1);
-    // cmd_wpath = find_command_path(commands[0], envp);
-    // printf("%s\n", cmd_wpath);
-    else if (cmd_wpath == find_command_path(commands[0], envp))
+    command_path = find_command_path(data);
+    if (command_path == NULL)
     {
-        if (execve(cmd_wpath, commands, envp) == -1)
-            return (1);
-		    // ft_perror("execve error", EXIT_FAILURE);
+        printf("%s: command not found\n", data->commands[0]);
     }
-    // else
-    // {
-    //     printf("%s\n", cmd_wpath);
-    // }
-    // is_command_file
-    // is_buit_in_command
+    else
+    {
+        if (execve(command_path, data->commands, data->envp) == FAILURE)
+    	    ft_perror("execve error", EXIT_FAILURE);
+    }
     return (0);
 }
 
-int	is_built_in(int argc, char **argv, char **envp, char **commands)
+int pwd_command(t_data *data)
 {
-	if (!ft_strncmp(commands[0], "echo", ft_strlen("echo")) \
-		|| !ft_strncmp(commands[0], "cd", ft_strlen("cd")) \
-		|| !ft_strncmp(commands[0], "pwd", ft_strlen("pwd")) \
-		|| !ft_strncmp(commands[0], "export", ft_strlen("export")) \
-		|| !ft_strncmp(commands[0], "unset", ft_strlen("unset")) \
-		|| !ft_strncmp(commands[0], "env", ft_strlen("env")) \
-		|| !ft_strncmp(commands[0], "exit", ft_strlen("exit")))
-	{
-		printf("%s: shell built-in command\n", commands[0]);
-		return (1);
-	}
+    char    *path;
+
+    path = getcwd(NULL, 0);
+    if (path == NULL)
+        ft_perror("pwd error", EXIT_FAILURE);
+    printf("%s\n", path);
+    free(path);
+    path = NULL;
+    return (0);
+}
+
+int cd_command(t_data *data)
+{
+    char    *path;
+
+    if (data->commands[1] == NULL || !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
+    {
+        path = find_home_path(data);
+        if (path == NULL)
+            ft_perror("cd error", EXIT_FAILURE);
+        chdir(path);
+        return (1);
+    }
+    else
+    {
+        if (!ft_strncmp(data->commands[1], ".", ft_strlen(".")))
+            return (1); // is ok?
+        // else if (!ft_strncmp(data->commands[1], "..", ft_strlen("..")))
+        //     chdir("~");
+        // else
+        //     chdir(data->commands[1]);
+    }
+    // buffer = getcwd(NULL, 0);
+    // if (buffer == NULL)
+    //     ft_perror("cd error", EXIT_FAILURE);
+    // printf("%s\n", buffer);
+    // free(buffer);
+    // buffer = NULL;
+    return (0);
+}
+
+int	is_builtin(t_data *data)
+{
+    if (!ft_strncmp(data->commands[0], "echo", ft_strlen("echo")))
+        return (1);
+    else if (!ft_strncmp(data->commands[0], "cd", ft_strlen("cd")))
+    {
+        cd_command(data);
+        return (1);
+    }
+    else if (!ft_strncmp(data->commands[0], "pwd", ft_strlen("pwd")))
+    {
+        pwd_command(data);
+        return (1);
+    }
+    else if (!ft_strncmp(data->commands[0], "export", ft_strlen("export")))
+        return (1);
+    else if (!ft_strncmp(data->commands[0], "unset", ft_strlen("unset")))
+        return (1);
+    else if (!ft_strncmp(data->commands[0], "env", ft_strlen("env")))
+        return (1);
+    else if (!ft_strncmp(data->commands[0], "exit", ft_strlen("exit")))
+        return (1);
 	return (0);
 }
 
-int waiting_commands(int argc, char **argv, char **envp, char **commands)
+// int	is_builtin(int argc, char **argv, char **envp, char **commands)
+// {
+//     if (!ft_strncmp(commands[0], "echo", ft_strlen("echo")) \
+// 		|| !ft_strncmp(commands[0], "cd", ft_strlen("cd")) \
+// 		|| !ft_strncmp(commands[0], "pwd", ft_strlen("pwd")) \
+// 		|| !ft_strncmp(commands[0], "export", ft_strlen("export")) \
+// 		|| !ft_strncmp(commands[0], "unset", ft_strlen("unset")) \
+// 		|| !ft_strncmp(commands[0], "env", ft_strlen("env")) \
+// 		|| !ft_strncmp(commands[0], "exit", ft_strlen("exit")))
+// 	{
+// 		// printf("%s: shell built-in command\n", commands[0]);
+// 		return (1);
+// 	}
+// 	return (0);
+// }
+
+int is_not_builtin(t_data *data)
 {
     pid_t   pid;
     
-    if (is_built_in(argc, argv, envp, commands))
+    pid = fork();
+    if (pid == FAILURE)
+		ft_perror("fork error", EXIT_FAILURE);
+    if (pid == CHILD_PROCESS)
+    {
+        execute_command(data);
+        exit(EXIT_SUCCESS);
+    }
+    else
+    {
+        ft_wait(NULL);
+    }
+    return (0);
+}
+
+int parsing_command_line(t_data *data)
+{
+    if (data->commands == NULL || data->commands[0] == NULL)
+        printf("commands are NULL in parsing function\n");
+        // ft_perror("commands are NULL in parsing function", EXIT_FAILURE);
+    else if (is_builtin(data))
 	{
-		if (!ft_strncmp(commands[0], "exit", ft_strlen("exit")))
+		if (!ft_strncmp(data->commands[0], "exit", ft_strlen("exit")))
         	return (-1);
 	}
     else
-    {
-        pid = fork();
-        if (pid == -1)
-        {
-            // need to fix
-            printf("fork error\n");
-            exit(1);
-        }
-        if (pid == 0)
-        {
-            parsing_command_line(argc, argv, envp, commands);
-            return (0);
-        }
-        else
-        {
-            wait(0);
-        }
-    }
+        is_not_builtin(data);
     return (0);
+}
+
+void    init_data(int argc, char **argv, char **envp, t_data *data)
+{
+    data->argc = argc;
+    data->argv = argv;
+    data->envp = envp;
 }
 
 int main(int argc, char **argv, char **envp)
 {
-    char *command_line;
-    char **splited_command_line;
+    t_data  data;
+    char    *command_line;
 
+    init_data(argc, argv, envp, &data);
     while (1)
     {
         command_line = readline("minishell> ");
-		splited_command_line = ft_split(command_line, ' ');
-        if (splited_command_line == NULL)
+        if (command_line != NULL) //need this?
         {
-            // need to fix
-            printf("split error\n");
-            exit(1);
+            data.commands = ft_split(command_line, ' ');
+            if (data.commands == NULL)
+                ft_perror("split error in main", EXIT_FAILURE);
+            if (parsing_command_line(&data) == FAILURE)
+            {
+                printf("exit\n");
+                exit(EXIT_SUCCESS);
+            }
+            add_history(command_line);
         }
-        if (waiting_commands(argc, argv, envp, splited_command_line) == -1)
-        {
-            // need to fix
-            printf("exit\n");
-            exit(0);
-        }
-			// printf("test\n");
-			// printf("\n argc: %d\n argv: %s\n cmd: %s\n\n", argc, argv, command_line);
-		// else
-		// 	printf("\n%s\n\n", command_line);
-        // splited_command_line = ft_split(command_line, ' ');
-        // if (splited_command_line == NULL)
-        // {
-        //     // need to fix
-        //     printf("split error\n");
-        //     exit(1);
-        // }
-        // if (waiting_commands(argc, argv, envp, splited_command_line) == -1)
-        // {
-        //     // need to fix
-        //     printf("exit\n");
-        //     exit(0);
-        // }
     }
     return (0);
 }
