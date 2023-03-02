@@ -12,27 +12,28 @@
 
 #include "../inc/minishell.h"
 /* TEST */
-void    print_all_arguments(int argc, char **argv, char **envp)
+void	print_all_arguments(int argc, char **argv, char **envp)
 {
-    int i;
+	int	i;
 
-    i = -1;
-    printf("argc: %d\n", argc);
-    while (++i < argc)
-        printf("argv[%d]: %s\n", i, argv[i]);
-    printf("argv[%d]: %s\n", i, argv[i]);
-    i = -1;
-    while (envp[++i])
-        printf("envp[%d]: %s\n", i, envp[i]);
+	i = -1;
+	printf("argc: %d\n", argc);
+	while (++i < argc)
+		printf("argv[%d]: %s\n", i, argv[i]);
+	printf("argv[%d]: %s\n", i, argv[i]);
+	i = -1;
+	while (envp[++i])
+		printf("envp[%d]: %s\n", i, envp[i]);
 }
-/* TEST */
-void    print_all_argument_value(char **argv)
-{
-    int i;
 
-    i = -1;
-    while (argv[++i])
-        printf("argv[%d]: %s\n", i, argv[i]);   
+/* TEST */
+void	print_all_argument_value(char **argv)
+{
+	int	i;
+
+	i = -1;
+	while (argv[++i])
+		printf("argv[%d]: %s\n", i, argv[i]);
 }
 
 char	**free_double_array(char **array)
@@ -94,10 +95,10 @@ void	ft_unlink(const char *path)
 		ft_perror("unlink error", EXIT_FAILURE);
 }
 
-void    ft_wait(int *wstatus)
+void	ft_wait(int *wstatus)
 {
-    if (wait(wstatus) == FAILURE)
-			ft_perror("wait error", EXIT_FAILURE);
+	if (wait(wstatus) == FAILURE)
+		ft_perror("wait error", EXIT_FAILURE);
 }
 
 // int	do_wait(t_data *data)
@@ -118,21 +119,20 @@ void    ft_wait(int *wstatus)
 // 	return ((data->stat >> 8) & 0x000000ff);
 // }
 
-void	ft_chdir(const char *path, const char *cmd)
-{
-	char	*error_str;
+// void	ft_chdir(const char *path, const char *cmd)
+// {
+// 	char	*error_str;
 
-	if (chdir(path) == FAILURE)
-	{
-		if (cmd == NULL)
-			return ;
-		error_str = ft_strjoin("bash: cd: ", cmd);
-		if (error_str == NULL)
-			ft_perror("strjoin error in ft_chdir function", EXIT_FAILURE);
-		perror(error_str);
-	}
-}
-
+// 	if (chdir(path) == FAILURE)
+// 	{
+// 		if (cmd == NULL)
+// 			return ;
+// 		error_str = ft_strjoin("bash: cd: ", cmd);
+// 		if (error_str == NULL)
+// 			ft_perror("strjoin error in ft_chdir function", EXIT_FAILURE);
+// 		perror(error_str);
+// 	}
+// }
 
 char	*ft_strjoin_wslash(char *str1, char *str2)
 {
@@ -157,8 +157,8 @@ char	*find_command_path(t_data *data)
 		return (data->commands[0]);
 	while (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
 		data->envp++;
-    if (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
-        return (NULL);
+	if (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
+		return (NULL);
 	split = ft_split(&(*data->envp)[5], ':');
 	if (split == NULL)
 		ft_perror("split error", EXIT_FAILURE);
@@ -172,6 +172,6 @@ char	*find_command_path(t_data *data)
 	}
 	free_double_array(split);
 	if (access(cmd, X_OK))
-        return (NULL);
+		return (NULL);
 	return (cmd);
 }
