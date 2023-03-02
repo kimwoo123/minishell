@@ -6,15 +6,13 @@
 #    By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 20:35:22 by chajung           #+#    #+#              #
-#    Updated: 2023/03/01 19:01:53 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/03/02 10:37:57 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .DEFAULT_GOAL := all
 
-TOPTARGET 	= all clean fclean re
-
-NAME		= utils.a
+NAME		= libft.a
 
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
@@ -22,30 +20,48 @@ AR			= ar
 RCS			= rcs
 RMFLAGS		= -r
 
-SUB_DIR		:= ft_printf/ get_next_line/ libft/
-SUB_LIB		:= ft_printf/libftprintf.a \
-			   get_next_line/libftgnl.a \
-			   libft/libft.a
+SRC_DIR		= src
+OBJ_DIR		= obj
 
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), '' all))
-$(TOPTARGET): $(SUB_DIR)
-	@$(MAKE) merge
-else
-$(TOPTARGET): $(SUB_DIR)
-endif
+SRC 		= ft_memset.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c \
+			  ft_isdigit.c ft_isprint.c ft_tolower.c ft_toupper.c ft_atoi.c \
+			  ft_strncmp.c ft_strlen.c ft_strlcpy.c ft_strlcat.c ft_strchr.c \
+			  ft_strrchr.c ft_substr.c ft_strnstr.c ft_calloc.c ft_strdup.c \
+			  ft_strjoin.c ft_itoa.c ft_strtrim.c ft_split.c ft_bzero.c ft_memcpy.c \
+			  ft_memmove.c ft_memchr.c ft_memcmp.c ft_strmapi.c ft_striteri.c \
+			  ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c \
+			  ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c \
+			  ft_lstlast_bonus.c ft_lstadd_back_bonus.c ft_lstdelone_bonus.c \
+			  ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c
 
-$(SUB_DIR) :
-	@$(MAKE) -C $@ $(MAKECMDGOALS)
+SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 
-ffclean :
-	@$(RM) $(NAME)
-	@echo "utils fclean done"
+OBJ 		= $(SRC:.c=.o) 
+OBJS		= $(addprefix $(OBJ_DIR)/, $(OBJ))
 
-rre :
-	$(MAKE) fclean
-	$(MAKE) all
+all: $(OBJ_DIR) $(NAME)
 
-merge :
-	@libtool -static -o $(NAME) $(SUB_LIB)
+$(NAME): $(OBJS)
+	@$(AR) $(RCS) $@ $^
+	@echo "libft make done"
 
-.PHONY: $(TOPTARGET) $(SUB_DIR)
+$(OBJ_DIR):
+	@mkdir -p $(@)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	@$(RM) $(RMFLAGS) $(OBJ_DIR)
+	@echo "libft clean done"
+
+fclean:
+	@$(RM) $(RMFLAGS) $(OBJ_DIR)
+	@$(RM) $(RMFLAGS) $(NAME)
+	@echo "libft fclean done"
+
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
+
+.PHONY: all clean fclean re

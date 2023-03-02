@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/01 17:21:47 by chajung          ###   ########.fr       */
+/*   Created: 2022/11/09 19:56:32 by chajung           #+#    #+#             */
+/*   Updated: 2022/11/13 14:08:13 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../inc/libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <readline/readline.h>
+char	*ft_strdup(const char *s1)
+{
+	char	*addr;
+	int		i;
 
-# include "../libft/inc/libft.h"
-
-#endif
+	addr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (addr == NULL)
+		return (NULL);
+	i = -1;
+	while (s1[++i])
+		addr[i] = s1[i];
+	addr[i] = '\0';
+	return (addr);
+}

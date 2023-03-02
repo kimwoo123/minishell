@@ -16,9 +16,10 @@ NAME		= minishell
 
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
+RLFLAGS		= -lreadline
 RMFLAGS		= -r
 
-LIB			= libft/utils.a
+LIB			= libft/libft.a
 LIB_DIR		= libft
 
 SRC_DIR		= src
@@ -37,11 +38,21 @@ SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJ			= $(SRC:.c=.o)
 endif
 
+ifeq ($(MAKECMDGOALS), debug)
 $(NAME): $(OBJS) $(LIB)
-	$(CC) $(LIB) $^ -o $@
+	@$(CC) -g $(RLFLAGS) $(LIB) $^ -o $@
+	@echo "minishell make done"
+else
+$(NAME): $(OBJS) $(LIB)
+	@$(CC) $(RLFLAGS) $(LIB) $^ -o $@
+	@echo "minishell make done"
+endif
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) -c $< -o $@
+	@$(CC) -c $< -o $@
+
+$(LIB):
+	@$(MAKE) -C $(LIB_DIR)
 
 # $(NAME): $(OBJS) $(LIB)
 # 	$(CC) $(CFLAGS) $(LIB) $^ -o $@
@@ -49,25 +60,28 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(LIB):
-	$(MAKE) -C $(LIB_DIR)
-
 $(OBJ_DIR):
-	mkdir $(OBJ_DIR)
+	@mkdir $(OBJ_DIR)
 
 all: $(OBJ_DIR) $(NAME)
 
 bonus: $(OBJ_DIR) $(NAME)
 
-clean:
-	$(RM) $(RMFLAGS) $(OBJ_DIR)
-	$(MAKE) fclean -C $(LIB_DIR)
+debug: $(OBJ_DIR) $(NAME)
 
-fclean: clean
-	$(RM) $(RMFLAGS) $(NAME)
+clean:
+	@$(RM) $(RMFLAGS) $(OBJ_DIR)
+	@$(MAKE) fclean -C $(LIB_DIR)
+	@echo "minishell clean done"
+
+fclean:
+	@$(RM) $(RMFLAGS) $(OBJ_DIR)
+	@$(MAKE) fclean -C $(LIB_DIR)
+	@$(RM) $(RMFLAGS) $(NAME)
+	@echo "minishell fclean done"
 
 re:
-	$(MAKE) fclean
-	$(MAKE) all
+	@$(MAKE) fclean
+	@$(MAKE) all
 
 .PHONY: all clean fclean re bonus

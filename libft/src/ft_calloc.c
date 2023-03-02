@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/01 17:21:47 by chajung          ###   ########.fr       */
+/*   Created: 2022/11/09 20:10:09 by chajung           #+#    #+#             */
+/*   Updated: 2022/11/13 16:51:16 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../inc/libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <readline/readline.h>
+void	*ft_calloc(size_t count, size_t size)
+{
+	size_t	bytes;
+	void	*addr;
 
-# include "../libft/inc/libft.h"
-
-#endif
+	bytes = count * size;
+	if (count != 0 && bytes / count != size)
+		return (NULL);
+	addr = malloc(bytes);
+	if (addr == NULL)
+		return (NULL);
+	ft_bzero(addr, bytes);
+	return (addr);
+}

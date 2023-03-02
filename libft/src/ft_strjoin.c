@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/01 17:21:47 by chajung          ###   ########.fr       */
+/*   Created: 2022/11/10 12:56:27 by chajung           #+#    #+#             */
+/*   Updated: 2022/11/13 14:08:26 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../inc/libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <readline/readline.h>
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	int		i;
+	char	*addr;
 
-# include "../libft/inc/libft.h"
-
-#endif
+	addr = (char *)malloc(sizeof(char) \
+		* (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (addr == NULL)
+		return (NULL);
+	i = 0;
+	while (*s1)
+		addr[i++] = *s1++;
+	while (*s2)
+		addr[i++] = *s2++;
+	addr[i] = '\0';
+	return (addr);
+}
