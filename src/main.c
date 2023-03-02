@@ -12,63 +12,6 @@
 
 #include "../inc/minishell.h"
 
-static char	*ft_strjoin_wslash(char *str1, char *str2)
-{
-	char	*temp;
-	char	*new_str;
-
-	temp = ft_strjoin(str1, "/");
-	new_str = ft_strjoin(temp, str2);
-	free(temp);
-	return (new_str);
-}
-
-static char	*find_command_path(t_data *data)
-{
-	int		i;
-	char	*cmd;
-	char	**split;
-
-	if (!data->commands[0] || !data->envp)
-		return (NULL);
-	if (!access(data->commands[0], X_OK))
-		return (data->commands[0]);
-	while (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
-		data->envp++;
-    if (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
-        return (NULL);
-	split = ft_split(&(*data->envp)[5], ':');
-	if (split == NULL)
-		ft_perror("split error", EXIT_FAILURE);
-	i = -1;
-	while (split[++i])
-	{
-		cmd = ft_strjoin_wslash(split[i], data->commands[0]);
-		if (!access(cmd, X_OK))
-			break ;
-		free(cmd);
-	}
-	free_double_array(split);
-	if (access(cmd, X_OK))
-        return (NULL);
-	return (cmd);
-}
-
-static char	*find_home_path(t_data *data)
-{
-	int		i;
-	char	*cmd;
-	char	**split;
-
-	if (!data->commands[0] || !data->envp)
-		return (NULL);
-	while (ft_strncmp(*data->envp, "HOME=", ft_strlen("HOME=")))
-		data->envp++;
-    if (ft_strncmp(*data->envp, "HOME=", ft_strlen("HOME=")))
-        return (NULL);
-    return (&(*data->envp)[5]);
-}
-
 // void	proc_execve(char **argv, char **envp, t_data *data)
 // {
 // 	char	**params;
@@ -94,11 +37,13 @@ int execute_command(t_data *data)
     if (command_path == NULL)
     {
         printf("%s: command not found\n", data->commands[0]);
+        return (1);
     }
     else
     {
         if (execve(command_path, data->commands, data->envp) == FAILURE)
     	    ft_perror("execve error", EXIT_FAILURE);
+        return (1);
     }
     return (0);
 }
@@ -113,50 +58,6 @@ int pwd_command(t_data *data)
     printf("%s\n", path);
     free(path);
     path = NULL;
-    return (0);
-}
-
-int cd_command(t_data *data)
-{
-    char    *path;
-    char    *pwd_path;
-
-    if (data->commands[1] == NULL || !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
-    {
-        path = find_home_path(data);
-        if (path == NULL)
-            ft_perror("path error in cd command", EXIT_FAILURE);
-        if (chdir(path) == FAILURE)
-            ft_perror("chdir error in cd command", EXIT_FAILURE);
-        free(path);
-        return (1);
-    }
-    else if (!ft_strncmp(data->commands[1], "/", ft_strlen("/")))
-    {
-        if (chdir("/") == FAILURE)
-            ft_perror("cd error", EXIT_FAILURE);
-        return (1);
-    }
-    else if (!ft_strncmp(data->commands[1], ".", ft_strlen(data->commands[1])))
-        return (1); // is ok?
-    else if (!ft_strncmp(data->commands[1], "..", ft_strlen(data->commands[1])))
-    {
-        if (chdir("..") == FAILURE)
-            ft_perror("chdir error in cd command", EXIT_FAILURE);
-        return (1);
-    }
-    else
-    {
-        pwd_path = getcwd(NULL, 0);
-        if (pwd_path == NULL)
-            ft_perror("pwd error", EXIT_FAILURE);
-        path = ft_strjoin_wslash(pwd_path, data->commands[1]);
-        free(pwd_path);
-        if (chdir(path) == FAILURE)
-            ft_perror("chdir error in cd command", EXIT_FAILURE);
-        free(path);
-        return (1);
-    }
     return (0);
 }
 

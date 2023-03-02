@@ -25,7 +25,7 @@ LIB_DIR		= libft
 SRC_DIR		= src
 OBJ_DIR		= obj
 
-SRC			= main.c utils0.c
+SRC			= main.c utils0.c cd.c
 SRC_BONUS	= main.c utils0.c
 
 OBJS		= $(addprefix $(OBJ_DIR)/, $(OBJ))
