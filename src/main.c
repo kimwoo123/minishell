@@ -119,54 +119,88 @@ int pwd_command(t_data *data)
 int cd_command(t_data *data)
 {
     char    *path;
+    char    *pwd_path;
 
     if (data->commands[1] == NULL || !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
     {
         path = find_home_path(data);
         if (path == NULL)
+            ft_perror("path error in cd command", EXIT_FAILURE);
+        if (chdir(path) == FAILURE)
+            ft_perror("chdir error in cd command", EXIT_FAILURE);
+        free(path);
+        return (1);
+    }
+    else if (!ft_strncmp(data->commands[1], "/", ft_strlen("/")))
+    {
+        if (chdir("/") == FAILURE)
             ft_perror("cd error", EXIT_FAILURE);
-        chdir(path);
+        return (1);
+    }
+    else if (!ft_strncmp(data->commands[1], ".", ft_strlen(data->commands[1])))
+        return (1); // is ok?
+    else if (!ft_strncmp(data->commands[1], "..", ft_strlen(data->commands[1])))
+    {
+        if (chdir("..") == FAILURE)
+            ft_perror("chdir error in cd command", EXIT_FAILURE);
         return (1);
     }
     else
     {
-        if (!ft_strncmp(data->commands[1], ".", ft_strlen(".")))
-            return (1); // is ok?
-        // else if (!ft_strncmp(data->commands[1], "..", ft_strlen("..")))
-        //     chdir("~");
-        // else
-        //     chdir(data->commands[1]);
+        pwd_path = getcwd(NULL, 0);
+        if (pwd_path == NULL)
+            ft_perror("pwd error", EXIT_FAILURE);
+        path = ft_strjoin_wslash(pwd_path, data->commands[1]);
+        free(pwd_path);
+        if (chdir(path) == FAILURE)
+            ft_perror("chdir error in cd command", EXIT_FAILURE);
+        free(path);
+        return (1);
     }
-    // buffer = getcwd(NULL, 0);
-    // if (buffer == NULL)
-    //     ft_perror("cd error", EXIT_FAILURE);
-    // printf("%s\n", buffer);
-    // free(buffer);
-    // buffer = NULL;
+    return (0);
+}
+
+int echo_command(t_data *data)
+{
+    if (!ft_strncmp(data->commands[1], "-n", ft_strlen("-n")))
+    {
+        printf("%s", data->commands[2]);
+        return (1);
+    }
+    else
+    {
+        if (data->commands[1] != NULL)
+            printf("%s", data->commands[1]);
+        printf("\n");
+        return (1);
+    }
     return (0);
 }
 
 int	is_builtin(t_data *data)
 {
-    if (!ft_strncmp(data->commands[0], "echo", ft_strlen("echo")))
+    if (!ft_strncmp(data->commands[0], "echo", ft_strlen(data->commands[0])))
+    {
+        echo_command(data);
         return (1);
-    else if (!ft_strncmp(data->commands[0], "cd", ft_strlen("cd")))
+    }
+    else if (!ft_strncmp(data->commands[0], "cd", ft_strlen(data->commands[0])))
     {
         cd_command(data);
         return (1);
     }
-    else if (!ft_strncmp(data->commands[0], "pwd", ft_strlen("pwd")))
+    else if (!ft_strncmp(data->commands[0], "pwd", ft_strlen(data->commands[0])))
     {
         pwd_command(data);
         return (1);
     }
-    else if (!ft_strncmp(data->commands[0], "export", ft_strlen("export")))
+    else if (!ft_strncmp(data->commands[0], "export", ft_strlen(data->commands[0])))
         return (1);
-    else if (!ft_strncmp(data->commands[0], "unset", ft_strlen("unset")))
+    else if (!ft_strncmp(data->commands[0], "unset", ft_strlen(data->commands[0])))
         return (1);
-    else if (!ft_strncmp(data->commands[0], "env", ft_strlen("env")))
+    else if (!ft_strncmp(data->commands[0], "env", ft_strlen(data->commands[0])))
         return (1);
-    else if (!ft_strncmp(data->commands[0], "exit", ft_strlen("exit")))
+    else if (!ft_strncmp(data->commands[0], "exit", ft_strlen(data->commands[0])))
         return (1);
 	return (0);
 }
@@ -209,7 +243,8 @@ int is_not_builtin(t_data *data)
 int parsing_command_line(t_data *data)
 {
     if (data->commands == NULL || data->commands[0] == NULL)
-        printf("commands are NULL in parsing function\n");
+        rl_on_new_line();
+        // printf("commands are NULL in parsing function\n");
         // ft_perror("commands are NULL in parsing function", EXIT_FAILURE);
     else if (is_builtin(data))
 	{
@@ -248,6 +283,8 @@ int main(int argc, char **argv, char **envp)
                 exit(EXIT_SUCCESS);
             }
             add_history(command_line);
+            free (command_line);
+            command_line = NULL;
         }
     }
     return (0);
