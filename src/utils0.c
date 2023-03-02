@@ -117,3 +117,61 @@ void    ft_wait(int *wstatus)
 // 	ft_wait(NULL);
 // 	return ((data->stat >> 8) & 0x000000ff);
 // }
+
+void	ft_chdir(const char *path, const char *cmd)
+{
+	char	*error_str;
+
+	if (chdir(path) == FAILURE)
+	{
+		if (cmd == NULL)
+			return ;
+		error_str = ft_strjoin("bash: cd: ", cmd);
+		if (error_str == NULL)
+			ft_perror("strjoin error in ft_chdir function", EXIT_FAILURE);
+		perror(error_str);
+	}
+}
+
+
+char	*ft_strjoin_wslash(char *str1, char *str2)
+{
+	char	*temp;
+	char	*new_str;
+
+	temp = ft_strjoin(str1, "/");
+	new_str = ft_strjoin(temp, str2);
+	free(temp);
+	return (new_str);
+}
+
+char	*find_command_path(t_data *data)
+{
+	int		i;
+	char	*cmd;
+	char	**split;
+
+	if (!data->commands[0] || !data->envp)
+		return (NULL);
+	if (!access(data->commands[0], X_OK))
+		return (data->commands[0]);
+	while (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
+		data->envp++;
+    if (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
+        return (NULL);
+	split = ft_split(&(*data->envp)[5], ':');
+	if (split == NULL)
+		ft_perror("split error", EXIT_FAILURE);
+	i = -1;
+	while (split[++i])
+	{
+		cmd = ft_strjoin_wslash(split[i], data->commands[0]);
+		if (!access(cmd, X_OK))
+			break ;
+		free(cmd);
+	}
+	free_double_array(split);
+	if (access(cmd, X_OK))
+        return (NULL);
+	return (cmd);
+}
