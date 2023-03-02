@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <sys/wait.h>
 # include <fcntl.h>
 
@@ -39,6 +40,9 @@ typedef struct s_data
     char    **commands;
 }	t_data;
 
+/* built-in */
+int     cd_command(t_data *data);
+
 /* utils0 */
 void    print_all_arguments(int argc, char **argv, char **envp);
 void    print_all_argument_value(char **argv);
@@ -52,4 +56,8 @@ void	ft_unlink(const char *path);
 void    ft_wait(int *wstatus);
 // int	do_wait(t_data *data);
 // int	do_wait_bonus(t_data *data);
+void	ft_chdir(const char *path, const char *cmd);
+char	*ft_strjoin_wslash(char *str1, char *str2);
+char	*find_command_path(t_data *data);
+
 #endif
