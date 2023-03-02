@@ -76,13 +76,13 @@ static int	make_array(char **array, char *str, char c, int size)
 		array[i] = (char *)malloc(sizeof(char) \
 			* (single_array_size(str, c) + 1));
 		if (array[i] == NULL)
-			return (FAILURE);
+			return (1);
 		while (*str && *str != c)
 			array[i][j++] = *str++;
 		array[i][j] = '\0';
 	}
 	array[i] = NULL;
-	return (SUCCESS);
+	return (0);
 }
 
 char	**ft_split(char const *s, char c)
@@ -94,7 +94,7 @@ char	**ft_split(char const *s, char c)
 	array = (char **)malloc(sizeof(char *) * (size + 1));
 	if (array == NULL)
 		return (NULL);
-	if (make_array(array, (char *)s, c, size) == FAILURE)
+	if (make_array(array, (char *)s, c, size) == 1)
 		return (free_double_array(array));
 	return (array);
 }

@@ -16,9 +16,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# define SUCCESS		1
-# define FAILURE		0
-
 typedef struct s_list
 {
 	void			*content;
