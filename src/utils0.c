@@ -33,7 +33,7 @@ void	print_all_argument_value(char **argv)
 
 	i = -1;
 	while (argv[++i])
-		printf("argv[%d]: %s\n", i, argv[i]);   
+		printf("argv[%d]: %s\n", i, argv[i]);
 }
 
 char	**free_double_array(char **array)

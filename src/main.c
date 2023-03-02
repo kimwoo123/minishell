@@ -19,6 +19,7 @@ int	execute_command(t_data *data)
 	command_path = find_command_path(data);
 	if (command_path == NULL)
 	{
+		// perror(data->commands[0]);
 		printf("%s: command not found\n", data->commands[0]);
 		return (1);
 	}
@@ -86,9 +87,7 @@ int	parsing_command_line(t_data *data)
 	if (data->commands[0] == NULL)
 		rl_on_new_line();
 	else if (is_builtin(data))
-	{
 		return (0);
-	}
 	else
 		is_not_builtin(data);
 	return (0);
