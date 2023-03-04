@@ -129,9 +129,11 @@ void	seperate_meta(const char *line, size_t size)
 	start_index = index;
 	if (is_delimiter(line[index]))
 	{
-		while (is_delimiter(line[index]))
+		while (index < size && is_delimiter(line[index]))
 			index++;
 		get_token(&line[start_index], index - start_index);
+		if (size != index)
+			get_token(&line[index], size - index);
 	}
 	else
 		get_token(&line[index], size - index);
@@ -190,6 +192,7 @@ int	parse_command(char *line)
 		if ((!quote_flag && is_delimiter(line[index])) && !repeat_meta(line, index))
 		{
 			token = parse_space(&line[start_index], index - start_index);
+			printf("str: %s\n", token);
 			start_index = index;
 		}
 	}
