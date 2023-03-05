@@ -38,7 +38,14 @@ typedef struct s_data
 	char	**argv;
 	char	**envp;
 	char	**commands;
+	int		cmd_counts;
+	int		dup_stdin;
+	int		dup_stdout;
 }	t_data;
+
+int	parsing_command_line_test(t_data *data);
+int	is_not_builtin(t_data *data);
+int	is_builtin(t_data *data);
 
 /* built-in */
 int		echo_command(t_data *data);

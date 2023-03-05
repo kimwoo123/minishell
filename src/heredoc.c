@@ -14,12 +14,12 @@
 
 int	here_doc(t_data *data)
 {
-	int		fd;
+	int		heredoc_fd;
 	char	*str;
 	char	*str_with_newline;
 	char	*delimiter;
 
-	fd = ft_open("heredoc_temp", (O_WRONLY | O_CREAT | O_TRUNC), 0644);
+	heredoc_fd = ft_open("heredoc_temp", (O_WRONLY | O_CREAT | O_TRUNC), 0644);
 	while (1)
 	{
 		str = readline("> ");
@@ -39,11 +39,11 @@ int	here_doc(t_data *data)
 			free(delimiter);
 			break ;
 		}
-		write(fd, str_with_newline, ft_strlen(str_with_newline));
+		write(heredoc_fd, str_with_newline, ft_strlen(str_with_newline));
 		free(str_with_newline);
 		free(delimiter);
 	}
-	ft_close(fd);
+	ft_close(heredoc_fd);
 	// ft_unlink("heredoc_temp");
 	return (0);
 }
