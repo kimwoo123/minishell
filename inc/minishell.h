@@ -46,6 +46,12 @@ int		cd_command(t_data *data);
 int		pwd_command(t_data *data);
 int		exit_command(t_data *data);
 
+/* heredoc */
+int	here_doc(t_data *data);
+
+/* signals */
+void	set_signals(void);
+
 /* utils0 */
 void	print_all_arguments(int argc, char **argv, char **envp);
 void	print_all_argument_value(char **argv);

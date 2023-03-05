@@ -86,6 +86,8 @@ int	parsing_command_line(t_data *data)
 {
 	if (data->commands[0] == NULL)
 		rl_on_new_line();
+	else if (!ft_strncmp(data->commands[0], "<<", ft_strlen(data->commands[0])))
+		here_doc(data);
 	else if (is_builtin(data))
 		return (0);
 	else
@@ -106,19 +108,20 @@ int	main(int argc, char **argv, char **envp)
 	char	*command_line;
 
 	init_data(argc, argv, envp, &data);
+	set_signals();
 	while (1)
 	{
 		command_line = readline("minishell> ");
-		if (command_line != NULL) //need this?
-		{
-			data.commands = ft_split(command_line, ' ');
-			if (data.commands == NULL)
-				ft_perror("split error in main", EXIT_FAILURE);
-			parsing_command_line(&data);
-			add_history(command_line);
-			free (command_line);
-			command_line = NULL;
-		}
+		if (command_line == NULL)
+			break ;
+		add_history(command_line);
+		data.commands = ft_split(command_line, ' ');
+		if (data.commands == NULL)
+			ft_perror("split error in main", EXIT_FAILURE);
+		parsing_command_line(&data);
+		// add_history(command_line);
+		free (command_line);
+		command_line = NULL; // need this?
 	}
 	return (0);
 }
