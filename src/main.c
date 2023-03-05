@@ -86,6 +86,8 @@ int	parsing_command_line(t_data *data)
 {
 	if (data->commands[0] == NULL)
 		rl_on_new_line();
+	else if (!ft_strncmp(data->commands[0], "<<", ft_strlen(data->commands[0])))
+		here_doc(data);
 	else if (is_builtin(data))
 		return (0);
 	else
@@ -98,6 +100,9 @@ void	init_data(int argc, char **argv, char **envp, t_data *data)
 	data->argc = argc;
 	data->argv = argv;
 	data->envp = envp;
+	data->cmd_counts = 1;
+	data->dup_stdin = dup(STDIN_FILENO);
+	data->dup_stdout = dup(STDOUT_FILENO);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -106,19 +111,26 @@ int	main(int argc, char **argv, char **envp)
 	char	*command_line;
 
 	init_data(argc, argv, envp, &data);
+	set_signals();
 	while (1)
 	{
 		command_line = readline("minishell> ");
-		if (command_line != NULL) //need this?
-		{
-			data.commands = ft_split(command_line, ' ');
-			if (data.commands == NULL)
-				ft_perror("split error in main", EXIT_FAILURE);
-			parsing_command_line(&data);
-			add_history(command_line);
-			free (command_line);
-			command_line = NULL;
-		}
+		if (command_line == NULL)
+			break ;
+		add_history(command_line);
+		data.commands = ft_split(command_line, ' ');
+		if (data.commands == NULL)
+			ft_perror("split error in main", EXIT_FAILURE);
+		parsing_command_line_test(&data);
+		// add_history(command_line);
+		// dprintf(2, "command: [%s]\n", command_line);
+		// dprintf(2, "STDIN: %d\n", STDIN_FILENO);
+		// dprintf(2, "STDOUT: %d\n", STDOUT_FILENO);
+		// dprintf(2, "data.std_in: %d\n", data.dup_stdin);
+		// dprintf(2, "data.std_out: %d\n", data.dup_stdout);
+		free (command_line);
 	}
+	// ft_dup2(STDIN_FILENO, data.dup_stdin);
+	// ft_dup2(STDOUT_FILENO, data.dup_stdout);
 	return (0);
 }

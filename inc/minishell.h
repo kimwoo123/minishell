@@ -38,13 +38,26 @@ typedef struct s_data
 	char	**argv;
 	char	**envp;
 	char	**commands;
+	int		cmd_counts;
+	int		dup_stdin;
+	int		dup_stdout;
 }	t_data;
+
+int	parsing_command_line_test(t_data *data);
+int	is_not_builtin(t_data *data);
+int	is_builtin(t_data *data);
 
 /* built-in */
 int		echo_command(t_data *data);
 int		cd_command(t_data *data);
 int		pwd_command(t_data *data);
 int		exit_command(t_data *data);
+
+/* heredoc */
+int	here_doc(t_data *data);
+
+/* signals */
+void	set_signals(void);
 
 /* utils0 */
 void	print_all_arguments(int argc, char **argv, char **envp);

@@ -19,14 +19,19 @@ CFLAGS		= -Wall -Wextra -Werror
 RLFLAGS		= -lreadline
 RMFLAGS		= -r
 
+__LDFLAGS	= -L ~/.brew/opt/readline/lib
+__CPPFLAGS	= -I ~/.brew/opt/readline/include
+
 LIB			= libft/libft.a
 LIB_DIR		= libft
 
 SRC_DIR		= src
 OBJ_DIR		= obj
 
-SRC			= main.c utils0.c echo.c cd.c pwd.c exit.c
-SRC_BONUS	= main.c utils0.c echo.c cd.c pwd.c exit.c
+SRC			= main.c utils0.c echo.c cd.c pwd.c exit.c signals.c heredoc.c \
+			  pipe.c
+
+SRC_BONUS	= main.c utils0.c echo.c cd.c pwd.c exit.c signals.c heredoc.c
 
 OBJS		= $(addprefix $(OBJ_DIR)/, $(OBJ))
 
@@ -40,16 +45,16 @@ endif
 
 ifeq ($(MAKECMDGOALS), debug)
 $(NAME): $(OBJS) $(LIB)
-	@$(CC) -g $(LIB) $^ -o $@ $(RLFLAGS)
+	@$(CC) -g $(LIB) $^ -o $@ $(RLFLAGS) $(__LDFLAGS) $(__CPPFLAGS)
 	@echo "minishell make done"
 else
 $(NAME): $(OBJS) $(LIB)
-	@$(CC) $(LIB) $^ -o $@ $(RLFLAGS)
+	@$(CC) $(LIB) $^ -o $@ $(RLFLAGS) $(__LDFLAGS) $(__CPPFLAGS)
 	@echo "minishell make done"
 endif
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@$(CC) -c $< -o $@
+	@$(CC) -c $< -o $@ $(__CPPFLAGS)
 
 $(LIB):
 	@$(MAKE) -C $(LIB_DIR)
