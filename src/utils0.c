@@ -158,7 +158,10 @@ char	*find_command_path(t_data *data)
 	while (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
 		data->envp++;
 	if (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
+	{
+		printf("No such file or directory\n");
 		return (NULL);
+	}
 	split = ft_split(&(*data->envp)[5], ':');
 	if (split == NULL)
 		ft_perror("split error", EXIT_FAILURE);

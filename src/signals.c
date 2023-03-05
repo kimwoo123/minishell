@@ -117,7 +117,7 @@ void	set_signals(void)
 	sigaction(SIGQUIT, &new_signal, &old_signal);
 }
 
-// void	set_signal(void)
+// void	set_signals(void)
 // {
 // 	signal(SIGINT, signal_handler);		// C
 // 	signal(SIGQUIT, signal_handler);	// Backslash

@@ -100,7 +100,7 @@ void	init_data(int argc, char **argv, char **envp, t_data *data)
 	data->argc = argc;
 	data->argv = argv;
 	data->envp = envp;
-	data->cmd_counts = 2;
+	data->cmd_counts = 1;
 	data->dup_stdin = dup(STDIN_FILENO);
 	data->dup_stdout = dup(STDOUT_FILENO);
 }
