@@ -1,26 +1,33 @@
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdio.h>
-# include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deli_parse.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
+/*   Updated: 2023/03/06 12:03:45 by wooseoki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define DELIMETER "<>|"
+#include "../inc/minishell.h"
 
 static size_t	ft_strlen(const char *s)
 {
-	size_t	i;
+	size_t	index;
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	index = 0;
+	while (s[index])
+		index++;
+	return (index);
 }
 
-int	is_space(char c)
+static int	is_space(const char c)
 {
 	return ((c >= 9 && c <= 13) || c == ' ');
 }
 
-size_t	trim_line(const char *line)
+static size_t	trim_line(const char *line)
 {
 	size_t	index;
 
@@ -30,84 +37,81 @@ size_t	trim_line(const char *line)
 	return (index);
 }
 
-static int	is_delimiter(char c)
+static int	is_delimiter(const char c)
 {
 	int	index;
 
 	index = 0;
-	while (DELIMETER[index])
+	while (DELIMITER[index])
 	{
-		if (DELIMETER[index] == c)
+		if (DELIMITER[index] == c)
 			return (1);
 		index++;
 	}
 	return (0);
 }
 
-static int	is_quote(char c)
+static int	is_quote(const char c)
 {
 	return (c == '\'' || c == '\"');
 }
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *str)
 {
-	char	*addr;
-	int		i;
+	char	*result;
+	size_t	index;
 
-	addr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
-	if (addr == NULL)
+	result = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (result == NULL)
 		return (NULL);
-	i = -1;
-	while (s1[++i])
-		addr[i] = s1[i];
-	addr[i] = '\0';
-	return (addr);
+	index = 0;
+	while (str[index])
+		result[index] = str[index++];
+	result[index] = '\0';
+	return (result);
 }
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	size_t	i;
+	size_t	index;
 
-	i = 0;
-	while ((s1[i] || s2[i]) && i < n)
+	index = 0;
+	while ((s1[index] || s2[index]) && index < n)
 	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
+		if (s1[index] != s2[index])
+			return ((unsigned char)s1[index] - (unsigned char)s2[index]);
+		index++;
 	}
 	return (0);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *str, int c)
 {
-	while (*s != (char)c)
+	while (*str != (char)c)
 	{
-		if (*s == '\0')
+		if (*str == '\0')
 			return (NULL);
-		s++;
+		str++;
 	}
-	return ((char *)s);
+	return ((char *)str);
 }
 
 char *ft_strndup(const char *begin, size_t size)
 {
-	char	*result;
 	size_t	index;
+	char	*result;
 
 	result = (char *)malloc(size + 1);
 	if (!result)
 		return (NULL);
 	index = 0;
 	while (index < size)
-	{
-		result[index] = begin[index];
-		index++;
-	}
+		result[index] = begin[index++];
 	result[index] = '\0';
 	return (result);
 }
 
-void	check_quote(char c, char *flag)
+void	check_quote(const char c, char *flag)
 {
 	if (*flag && *flag == c)
 		*flag = '\0';
@@ -139,18 +143,19 @@ void	seperate_meta(const char *line, size_t size)
 		get_token(&line[index], size - index);
 }
 
-char *parse_space(const char *line, size_t size)
+// space 기준으로 분리
+void	split_space(const char *line, size_t size)
 {
 	size_t	index;
 	size_t	start_index;
 	int		space_flag;
 	char	quote_flag;
 
+	start_index = 0;
 	space_flag = 0;
 	quote_flag = '\0';
-	index = 0;
-	start_index = 0;
-	while (index < size)
+	index = -1;
+	while (++index < size)
 	{
 		check_quote(line[index], &quote_flag);
 		if (!quote_flag && (space_flag && is_space(line[index])))
@@ -161,14 +166,12 @@ char *parse_space(const char *line, size_t size)
 		}
 		else if (!quote_flag && (!space_flag && !is_space(line[index])))
 			space_flag = 1;
-		++index;
 	}
 	if (space_flag)
 		seperate_meta(&line[start_index], index - start_index);
-	return (ft_strndup(line, size));
 }
 
-int	repeat_meta(char *line, size_t index)
+int	repeat_meta(const char *line, size_t index)
 {
 	if (index > 0)
 		if (!ft_strncmp(&line[index - 1], "<<" , 2) || !ft_strncmp(&line[index - 1], ">>", 2))
@@ -176,12 +179,13 @@ int	repeat_meta(char *line, size_t index)
 	return (0);
 }
 
-int	parse_command(char *line)
+// return (0)일 경우 따옴표가 닫히지 않은 상태
+// DELIMITER MACRO 기준으로 분리
+int	scan_command(const char *line)
 {
 	size_t	index;
 	size_t	start_index;
 	char	quote_flag;
-	char	*token;
 
 	quote_flag = '\0';
 	start_index = 0;
@@ -191,30 +195,12 @@ int	parse_command(char *line)
 		check_quote(line[index], &quote_flag);
 		if ((!quote_flag && is_delimiter(line[index])) && !repeat_meta(line, index))
 		{
-			token = parse_space(&line[start_index], index - start_index);
-			printf("str: %s\n", token);
+			split_space(&line[start_index], index - start_index);
 			start_index = index;
 		}
 	}
-	token = parse_space(&line[start_index], index - start_index);
+	split_space(&line[start_index], index - start_index);
 	if (quote_flag)
-		return (1);
-	return (0);
-}
-
-int	main(int argc, char **argv, char **envp)
-{
-	char	*command_line;
-
-	while (1)
-	{
-		command_line = readline("minishell> ");
-		if (!command_line)
-			break ;
-		parse_command(command_line);
-		add_history(command_line);
-		free(command_line);
-		command_line = NULL;
-	}
-	return (0);
+		return (0);
+	return (1);
 }
