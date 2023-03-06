@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/06 16:37:43 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/06 17:23:48 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,6 @@ void	check_quote(const char c, char *flag)
 		*flag = '\0';
 	else if (!*flag && is_quote(c))
 		*flag = c;
-}
-
-void	get_token(const char *line, size_t size)
-{
-	printf("token: %s\n", ft_strndup(line, size));
 }
 
 void	seperate_meta(const char *line, size_t size, t_node *node)
@@ -167,6 +162,18 @@ int	split_delimiter(const char *line, t_node *node)
 	if (quote_flag)
 		return (0);
 	return (1);
+}
+
+void	search_tree(t_node *node)
+{
+	t_node *temp;
+
+	temp = node;
+	while (temp)
+	{
+		printf("%s\n", temp->content);
+		temp = temp->left_child;
+	}
 }
 
 void	scan_command(const char* line)
