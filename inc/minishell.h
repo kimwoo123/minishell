@@ -44,6 +44,14 @@ typedef struct s_data
 	int		dup_stdout;
 }	t_data;
 
+typedef struct	s_node
+{
+	int				type;
+	char			*content;
+	struct s_node	*left_child;
+	struct s_node	*right_child;	
+}	t_node;
+
 int	parsing_command_line_test(t_data *data);
 int	is_not_builtin(t_data *data);
 int	is_builtin(t_data *data);
@@ -76,5 +84,19 @@ void	ft_wait(int *wstatus);
 // void	ft_chdir(const char *path, const char *cmd);
 char	*ft_strjoin_wslash(char *str1, char *str2);
 char	*find_command_path(t_data *data);
+
+/* deli_parse */
+void	check_quote(const char c, char *flag);
+void	get_token(const char *line, size_t size);
+void	seperate_meta(const char *line, size_t size, t_node *node);
+void	split_space(const char *line, size_t size, t_node *node);
+int	repeat_meta(const char *line, size_t index);
+int	split_delimiter(const char *line, t_node *node);
+void	scan_command(const char* line);
+char *ft_strndup(const char *begin, size_t size);
+
+/* tree */
+void	get_token(const char *line, size_t size, t_node *node);
+t_node	*create_node(int type, char *content);
 
 #endif
