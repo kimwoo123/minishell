@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/01 17:21:47 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/06 12:01:48 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define SUCCESS		0
 # define FAILURE		-1
 # define CHILD_PROCESS  0
+# define DELIMITER "<>|"
 
 typedef struct s_data
 {
