@@ -178,3 +178,39 @@ char	*find_command_path(t_data *data)
 		return (NULL);
 	return (cmd);
 }
+
+char	**copy_double_array(char **origin_array)
+{
+	int		i;
+	int		size;
+	char	**copied_array;
+
+	size = 0;
+	while (origin_array[size])
+		size++;
+	copied_array = (char **)malloc(sizeof(char *) * (size + 1));
+	if (!copied_array)
+		ft_perror("malloc error in copy double array", EXIT_FAILURE);
+	i = 0;
+	while (origin_array[i])
+	{
+		copied_array[i] = ft_strdup(origin_array[i]);
+		if (!copied_array)
+			ft_perror("strdup error in copy double array", EXIT_FAILURE);
+		i++;
+	}
+	copied_array[i] = NULL;
+	return (copied_array);
+}
+
+void	print_double_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		ft_putendl_fd(array[i], STDOUT_FILENO);
+		i++;
+	}
+}
