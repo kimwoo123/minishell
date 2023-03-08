@@ -50,11 +50,17 @@ int	is_builtin(t_data *data)
 		return (1);
 	}
 	else if (!ft_strncmp(data->commands[0], "export", ft_strlen(data->commands[0])))
+	{
+		export_command(data);
 		return (1);
+	}
 	else if (!ft_strncmp(data->commands[0], "unset", ft_strlen(data->commands[0])))
 		return (1);
 	else if (!ft_strncmp(data->commands[0], "env", ft_strlen(data->commands[0])))
+	{
+		env_command(data);
 		return (1);
+	}
 	else if (!ft_strncmp(data->commands[0], "exit", ft_strlen(data->commands[0])))
 	{
 		exit_command(data);
