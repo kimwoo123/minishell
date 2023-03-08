@@ -6,21 +6,11 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/06 12:03:45 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/08 14:07:50 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-static size_t	ft_strlen(const char *s)
-{
-	size_t	index;
-
-	index = 0;
-	while (s[index])
-		index++;
-	return (index);
-}
 
 static int	is_space(const char c)
 {
@@ -56,21 +46,6 @@ static int	is_quote(const char c)
 	return (c == '\'' || c == '\"');
 }
 
-char	*ft_strdup(const char *str)
-{
-	char	*result;
-	size_t	index;
-
-	result = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
-	if (result == NULL)
-		return (NULL);
-	index = 0;
-	while (str[index])
-		result[index] = str[index++];
-	result[index] = '\0';
-	return (result);
-}
-
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	index;
@@ -83,17 +58,6 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		index++;
 	}
 	return (0);
-}
-
-char	*ft_strchr(const char *str, int c)
-{
-	while (*str != (char)c)
-	{
-		if (*str == '\0')
-			return (NULL);
-		str++;
-	}
-	return ((char *)str);
 }
 
 char *ft_strndup(const char *begin, size_t size)
@@ -119,12 +83,7 @@ void	check_quote(const char c, char *flag)
 		*flag = c;
 }
 
-void	get_token(const char *line, size_t size)
-{
-	printf("token: %s\n", ft_strndup(line, size));
-}
-
-void	seperate_meta(const char *line, size_t size)
+void	seperate_meta(const char *line, size_t size, t_node *node)
 {
 	size_t	index;
 	size_t	start_index;
@@ -135,16 +94,16 @@ void	seperate_meta(const char *line, size_t size)
 	{
 		while (index < size && is_delimiter(line[index]))
 			index++;
-		get_token(&line[start_index], index - start_index);
+		get_token(&line[start_index], index - start_index, node);
 		if (size != index)
-			get_token(&line[index], size - index);
+			get_token(&line[index], size - index, node);
 	}
 	else
-		get_token(&line[index], size - index);
+		get_token(&line[index], size - index, node);
 }
 
 // space 기준으로 분리
-void	split_space(const char *line, size_t size)
+void	split_space(const char *line, size_t size, t_node *node)
 {
 	size_t	index;
 	size_t	start_index;
@@ -160,7 +119,7 @@ void	split_space(const char *line, size_t size)
 		check_quote(line[index], &quote_flag);
 		if (!quote_flag && (space_flag && is_space(line[index])))
 		{
-			seperate_meta(&line[start_index], index - start_index);
+			seperate_meta(&line[start_index], index - start_index, node);
 			start_index = index;
 			space_flag = 0;
 		}
@@ -168,7 +127,7 @@ void	split_space(const char *line, size_t size)
 			space_flag = 1;
 	}
 	if (space_flag)
-		seperate_meta(&line[start_index], index - start_index);
+		seperate_meta(&line[start_index], index - start_index, node);
 }
 
 int	repeat_meta(const char *line, size_t index)
@@ -181,7 +140,7 @@ int	repeat_meta(const char *line, size_t index)
 
 // return (0)일 경우 따옴표가 닫히지 않은 상태
 // DELIMITER MACRO 기준으로 분리
-int	scan_command(const char *line)
+int	split_delimiter(const char *line, t_node *node)
 {
 	size_t	index;
 	size_t	start_index;
@@ -195,12 +154,45 @@ int	scan_command(const char *line)
 		check_quote(line[index], &quote_flag);
 		if ((!quote_flag && is_delimiter(line[index])) && !repeat_meta(line, index))
 		{
-			split_space(&line[start_index], index - start_index);
+			split_space(&line[start_index], index - start_index, node);
 			start_index = index;
 		}
 	}
-	split_space(&line[start_index], index - start_index);
+	split_space(&line[start_index], index - start_index, node);
 	if (quote_flag)
 		return (0);
 	return (1);
+}
+
+void	search_tree(t_node *node)
+{
+	t_node *temp;
+
+	temp = node;
+	while (temp)
+	{
+		printf("%s\n", temp->content);
+		temp = temp->left_child;
+	}
+}
+
+void	search_list(t_list *list)
+{
+	t_list *temp;
+
+	temp = list;
+	while (temp)
+	{
+		printf("%s, %d\n", temp->content, temp->type);
+		temp = temp->next;
+	}
+}
+
+void	scan_command(const char* line)
+{
+	t_list *list;
+
+	list = NULL;
+	split_delimiter(line, &list);
+	search_list(list);
 }

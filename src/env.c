@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/12 16:41:46 by chajung           #+#    #+#             */
-/*   Updated: 2022/11/13 14:27:10 by chajung          ###   ########.fr       */
+/*   Created: 2023/03/08 14:15:03 by chajung           #+#    #+#             */
+/*   Updated: 2023/03/08 14:15:04 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/libft.h"
+#include "../inc/minishell.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+int	env_command(t_data *data)
 {
-	t_list	*temp;
-
-	while (*lst)
-	{
-		temp = (*lst)->next;
-		ft_lstdelone(*lst, del);
-		*lst = temp;
-	}
-	*lst = NULL;
+	if (data->envp != NULL)
+		print_double_array(data->envp);
+	return (0);
 }

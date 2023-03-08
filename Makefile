@@ -29,9 +29,9 @@ SRC_DIR		= src
 OBJ_DIR		= obj
 
 SRC			= main.c utils0.c echo.c cd.c pwd.c exit.c signals.c heredoc.c \
-			  pipe.c
+			  pipe.c env.c export.c
 
-SRC_BONUS	= main.c utils0.c echo.c cd.c pwd.c exit.c signals.c heredoc.c
+SRC_BONUS	= main.c
 
 OBJS		= $(addprefix $(OBJ_DIR)/, $(OBJ))
 

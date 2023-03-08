@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/06 12:01:48 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/08 14:15:46 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,36 @@ typedef struct s_data
 	int		dup_stdout;
 }	t_data;
 
+typedef struct	s_node
+{
+	int				type;
+	char			*content;
+	struct s_node	*left_child;
+	struct s_node	*right_child;	
+}	t_node;
+
+typedef	struct	s_stack
+{
+	int				type;
+	char			*content;
+	struct s_stack	*next;
+}	t_stack;
+
+typedef struct	s_list
+{
+	int				type;
+	char			*content;
+	struct s_list	*next;
+}	t_list;
+
+enum	e_type
+{
+	PIPE,
+	REDIRECTION,
+	WORD,
+	QUOTE,
+};
+
 int	parsing_command_line_test(t_data *data);
 int	is_not_builtin(t_data *data);
 int	is_builtin(t_data *data);
@@ -53,6 +83,8 @@ int		echo_command(t_data *data);
 int		cd_command(t_data *data);
 int		pwd_command(t_data *data);
 int		exit_command(t_data *data);
+int		env_command(t_data *data);
+int		export_command(t_data *data);
 
 /* heredoc */
 int	here_doc(t_data *data);
@@ -76,5 +108,20 @@ void	ft_wait(int *wstatus);
 // void	ft_chdir(const char *path, const char *cmd);
 char	*ft_strjoin_wslash(char *str1, char *str2);
 char	*find_command_path(t_data *data);
+char	**copy_double_array(char **origin_array);
+void	print_double_array(char **array);
+
+/* deli_parse */
+void	check_quote(const char c, char *flag);
+void	seperate_meta(const char *line, size_t size, t_node *node);
+void	split_space(const char *line, size_t size, t_node *node);
+int	repeat_meta(const char *line, size_t index);
+int	split_delimiter(const char *line, t_node *node);
+void	scan_command(const char* line);
+char *ft_strndup(const char *begin, size_t size);
+
+/* tree */
+void	get_token(const char *line, size_t size, t_list **list);
+t_node	*create_node(int type, char *content);
 
 #endif
