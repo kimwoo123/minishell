@@ -6,7 +6,7 @@
 #    By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 20:35:22 by chajung           #+#    #+#              #
-#    Updated: 2023/03/02 10:37:57 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/03/08 14:14:31 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,6 @@ SRC 		= ft_memset.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c \
 			  ft_strjoin.c ft_itoa.c ft_strtrim.c ft_split.c ft_bzero.c ft_memcpy.c \
 			  ft_memmove.c ft_memchr.c ft_memcmp.c ft_strmapi.c ft_striteri.c \
 			  ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c \
-			  ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c \
-			  ft_lstlast_bonus.c ft_lstadd_back_bonus.c ft_lstdelone_bonus.c \
-			  ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 

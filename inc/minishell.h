@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/06 12:01:48 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/08 14:15:46 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,28 @@ typedef struct	s_node
 	struct s_node	*right_child;	
 }	t_node;
 
+typedef	struct	s_stack
+{
+	int				type;
+	char			*content;
+	struct s_stack	*next;
+}	t_stack;
+
+typedef struct	s_list
+{
+	int				type;
+	char			*content;
+	struct s_list	*next;
+}	t_list;
+
+enum	e_type
+{
+	PIPE,
+	REDIRECTION,
+	WORD,
+	QUOTE,
+};
+
 int	parsing_command_line_test(t_data *data);
 int	is_not_builtin(t_data *data);
 int	is_builtin(t_data *data);
@@ -87,7 +109,6 @@ char	*find_command_path(t_data *data);
 
 /* deli_parse */
 void	check_quote(const char c, char *flag);
-void	get_token(const char *line, size_t size);
 void	seperate_meta(const char *line, size_t size, t_node *node);
 void	split_space(const char *line, size_t size, t_node *node);
 int	repeat_meta(const char *line, size_t index);
@@ -96,7 +117,7 @@ void	scan_command(const char* line);
 char *ft_strndup(const char *begin, size_t size);
 
 /* tree */
-void	get_token(const char *line, size_t size, t_node *node);
+void	get_token(const char *line, size_t size, t_list **list);
 t_node	*create_node(int type, char *content);
 
 #endif

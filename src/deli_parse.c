@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/06 17:23:48 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/08 14:07:50 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,11 +176,23 @@ void	search_tree(t_node *node)
 	}
 }
 
+void	search_list(t_list *list)
+{
+	t_list *temp;
+
+	temp = list;
+	while (temp)
+	{
+		printf("%s, %d\n", temp->content, temp->type);
+		temp = temp->next;
+	}
+}
+
 void	scan_command(const char* line)
 {
-	t_node *node;
+	t_list *list;
 
-	node = create_node(0, NULL);
-	split_delimiter(line, node);
-	search_tree(node);
+	list = NULL;
+	split_delimiter(line, &list);
+	search_list(list);
 }
