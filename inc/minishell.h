@@ -52,6 +52,8 @@ int		echo_command(t_data *data);
 int		cd_command(t_data *data);
 int		pwd_command(t_data *data);
 int		exit_command(t_data *data);
+int		env_command(t_data *data);
+int		export_command(t_data *data);
 
 /* heredoc */
 int	here_doc(t_data *data);
@@ -75,5 +77,7 @@ void	ft_wait(int *wstatus);
 // void	ft_chdir(const char *path, const char *cmd);
 char	*ft_strjoin_wslash(char *str1, char *str2);
 char	*find_command_path(t_data *data);
+char	**copy_double_array(char **origin_array);
+void	print_double_array(char **array);
 
 #endif
