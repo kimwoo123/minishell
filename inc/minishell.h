@@ -31,13 +31,23 @@
 # define SUCCESS		0
 # define FAILURE		-1
 # define CHILD_PROCESS  0
-# define DELIMITER "<>|"
+# define DELIMITER 		"<>|"
+
+# define NOT_FOUND		0
+# define ONLY_KEY		1
+# define KEY_AND_VALUE	2
+
+# define NOT_FOUND		0
+# define FOUND			1
+
+
 
 typedef struct s_data
 {
 	int		argc;
 	char	**argv;
 	char	**envp;
+	char	**copied_envp;
 	char	**commands;
 	int		cmd_counts;
 	int		dup_stdin;
@@ -86,6 +96,14 @@ int		exit_command(t_data *data);
 int		env_command(t_data *data);
 int		export_command(t_data *data);
 
+/* export */
+void	sort_double_array(char **array);
+int		check_equal_sign(char *str);
+void	print_with_double_quotation(char *str);
+int		copy_additional_arguments(t_data *data, char **array, size_t *array_index);
+int		copy_origin_arguments(t_data *data, char **array, size_t *index);
+char	**alloc_double_array(t_data *data, size_t *index);
+
 /* heredoc */
 int	here_doc(t_data *data);
 
@@ -109,7 +127,11 @@ void	ft_wait(int *wstatus);
 char	*ft_strjoin_wslash(char *str1, char *str2);
 char	*find_command_path(t_data *data);
 char	**copy_double_array(char **origin_array);
+size_t	ft_strlen_before_equal_sign(char *str);
+int		get_size_double_array(char **array);
 void	print_double_array(char **array);
+int		ft_getenv(char **array, char *str);
+
 
 /* deli_parse */
 void	check_quote(const char c, char *flag);

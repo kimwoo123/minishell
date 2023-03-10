@@ -106,6 +106,9 @@ void	init_data(int argc, char **argv, char **envp, t_data *data)
 	data->argc = argc;
 	data->argv = argv;
 	data->envp = envp;
+	data->copied_envp = copy_double_array(envp);
+	if (!data->copied_envp)
+		ft_perror("copy_double_array error in init data", EXIT_FAILURE);
 	data->cmd_counts = 1;
 	data->dup_stdin = dup(STDIN_FILENO);
 	data->dup_stdout = dup(STDOUT_FILENO);
@@ -128,15 +131,7 @@ int	main(int argc, char **argv, char **envp)
 		if (data.commands == NULL)
 			ft_perror("split error in main", EXIT_FAILURE);
 		parsing_command_line_test(&data);
-		// add_history(command_line);
-		// dprintf(2, "command: [%s]\n", command_line);
-		// dprintf(2, "STDIN: %d\n", STDIN_FILENO);
-		// dprintf(2, "STDOUT: %d\n", STDOUT_FILENO);
-		// dprintf(2, "data.std_in: %d\n", data.dup_stdin);
-		// dprintf(2, "data.std_out: %d\n", data.dup_stdout);
 		free (command_line);
 	}
-	// ft_dup2(STDIN_FILENO, data.dup_stdin);
-	// ft_dup2(STDOUT_FILENO, data.dup_stdout);
 	return (0);
 }

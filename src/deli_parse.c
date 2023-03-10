@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   deli_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
 /*   Updated: 2023/03/08 14:07:50 by wooseoki         ###   ########.fr       */
