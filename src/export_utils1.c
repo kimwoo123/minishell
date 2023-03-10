@@ -31,8 +31,8 @@ static int	change_environment_variable(char **array, char *str)
 	{
 		if (!ft_strncmp(array[index], str, ft_strlen_before_equal_sign(str)))
 		{
-			if ((array[index][ft_strlen(str)] == '=') \
-			|| (array[index][ft_strlen(str)] == '\0'))
+			if ((array[index][ft_strlen_before_equal_sign(str)] == '=') \
+			|| (array[index][ft_strlen_before_equal_sign(str)] == '\0'))
 			{
 				temp = array[index];
 				array[index] = ft_strdup(str);
@@ -61,12 +61,12 @@ int	copy_additional_arguments(t_data *data, char **array, size_t *array_index)
 				return (FAILURE);
 			(*array_index)++;
 		}
-		else if (check_equal_sign(data->commands[argument_index]) == FOUND)
+		else if (ft_getenv(array, data->commands[argument_index]) != NOT_FOUND \
+		&& check_equal_sign(data->commands[argument_index]) == FOUND)
 		{
 			if (change_environment_variable(array, \
 				data->commands[argument_index]) == FAILURE)
 				return (FAILURE);
-			(*array_index)++;
 		}
 	}
 	array[*array_index] = NULL;
@@ -82,6 +82,8 @@ int	copy_origin_arguments(t_data *data, char **array, size_t *index)
 			return (FAILURE);
 		(*index)++;
 	}
+	free_double_array(data->copied_envp);
+	array[*index] = NULL;
 	return (SUCCESS);
 }
 

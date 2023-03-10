@@ -53,7 +53,7 @@ char	**add_environment_variable(t_data *data)
 
 int	export_command(t_data *data)
 {
-	char	**new_array;
+	char	**array;
 
 	if (data->envp == NULL)
 		return (0);
@@ -61,11 +61,10 @@ int	export_command(t_data *data)
 		print_export(data->copied_envp);
 	else
 	{
-		new_array = add_environment_variable(data);
-		if (!new_array)
+		array = add_environment_variable(data);
+		if (!array)
 			ft_perror("error in add_environment_variables", EXIT_FAILURE);
-		free_double_array(data->copied_envp);
-		data->copied_envp = new_array;
+		data->copied_envp = array;
 	}
 	return (0);
 }

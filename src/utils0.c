@@ -228,7 +228,6 @@ int	get_size_double_array(char **array)
 	return (size);
 }
 
-
 void	print_double_array(char **array)
 {
 	int	i;
@@ -250,9 +249,9 @@ int	ft_getenv(char **array, char *str)
 	{
 		if (!ft_strncmp(array[index], str, ft_strlen_before_equal_sign(str)))
 		{
-			if (array[index][ft_strlen(str)] == '=')
+			if (array[index][ft_strlen_before_equal_sign(str)] == '=')
 				return (KEY_AND_VALUE);
-			if (array[index][ft_strlen(str)] == '\0')
+			if (array[index][ft_strlen_before_equal_sign(str)] == '\0')
 				return (ONLY_KEY);
 		}
 		index++;
