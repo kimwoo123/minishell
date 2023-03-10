@@ -15,6 +15,6 @@
 int	env_command(t_data *data)
 {
 	if (data->envp != NULL)
-		print_double_array(data->envp);
+		print_double_array(data->copied_envp);
 	return (0);
 }

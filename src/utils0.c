@@ -203,6 +203,32 @@ char	**copy_double_array(char **origin_array)
 	return (copied_array);
 }
 
+
+size_t	ft_strlen_before_equal_sign(char *str)
+{
+	size_t	index;
+
+	index = 0;
+	while (str[index])
+	{
+		if (str[index] == '=')
+			return (index);
+		index++;
+	}
+	return (index);
+}
+
+int	get_size_double_array(char **array)
+{
+	size_t	size;
+
+	size = 0;
+	while (array[size])
+		size++;
+	return (size);
+}
+
+
 void	print_double_array(char **array)
 {
 	int	i;
@@ -213,4 +239,23 @@ void	print_double_array(char **array)
 		ft_putendl_fd(array[i], STDOUT_FILENO);
 		i++;
 	}
+}
+
+int	ft_getenv(char **array, char *str)
+{
+	size_t	index;
+
+	index = 0;
+	while (array[index])
+	{
+		if (!ft_strncmp(array[index], str, ft_strlen_before_equal_sign(str)))
+		{
+			if (array[index][ft_strlen(str)] == '=')
+				return (KEY_AND_VALUE);
+			if (array[index][ft_strlen(str)] == '\0')
+				return (ONLY_KEY);
+		}
+		index++;
+	}
+	return (NOT_FOUND);
 }
