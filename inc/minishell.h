@@ -95,6 +95,7 @@ int		pwd_command(t_data *data);
 int		exit_command(t_data *data);
 int		env_command(t_data *data);
 int		export_command(t_data *data);
+int		unset_command(t_data *data);
 
 /* export */
 void	sort_double_array(char **array);
