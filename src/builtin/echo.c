@@ -16,14 +16,14 @@ int	echo_command(t_data *data)
 {
 	if (!ft_strncmp(data->commands[1], "-n", ft_strlen("-n")))
 	{
-		printf("%s", data->commands[2]);
+		write(STDOUT_FILENO, data->commands[2], ft_strlen(data->commands[2]));
 		return (1);
 	}
 	else
 	{
 		if (data->commands[1] != NULL)
-			printf("%s", data->commands[1]);
-		printf("\n");
+			write(STDOUT_FILENO, data->commands[1], ft_strlen(data->commands[1]));
+		write(STDOUT_FILENO, "\n", 1);
 		return (1);
 	}
 	return (0);

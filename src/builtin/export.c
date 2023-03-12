@@ -64,6 +64,7 @@ int	export_command(t_data *data)
 		array = add_environment_variable(data);
 		if (!array)
 			ft_perror("error in add_environment_variables", EXIT_FAILURE);
+		free_double_array(data->copied_envp);
 		data->copied_envp = array;
 	}
 	return (0);

@@ -17,7 +17,7 @@ static int	find_path_in_envp(char **envp)
 
 	while (*envp && ft_strncmp(*envp, "PATH=", ft_strlen("PATH=")))
 		envp++;
-	if (!*envp)
+	if (!*envp || ft_strncmp(*envp, "PATH=", ft_strlen("PATH=")))
 	{
 		// printf("No such file or directory\n");
 		return (FAILURE);

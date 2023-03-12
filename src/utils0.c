@@ -157,7 +157,7 @@ char	*find_command_path(t_data *data)
 		return (data->commands[0]);
 	while (*data->envp && ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
 		data->envp++;
-	if (!*data->envp)
+	if (!*data->envp || ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
 	{
 		printf("No such file or directory\n");
 		return (NULL);

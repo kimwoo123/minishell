@@ -23,7 +23,7 @@ static int	check_same_key(char *str, char *key)
 	return (NOT_FOUND);
 }
 
-static char	**delete_environment_variable(char **array, char *key)
+char	**delete_environment_variable(char **array, char *key)
 {
 	char	**new_array;
 	size_t	i;

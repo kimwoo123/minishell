@@ -82,7 +82,6 @@ int	copy_origin_arguments(t_data *data, char **array, size_t *index)
 			return (FAILURE);
 		(*index)++;
 	}
-	free_double_array(data->copied_envp);
 	array[*index] = NULL;
 	return (SUCCESS);
 }
@@ -90,8 +89,8 @@ int	copy_origin_arguments(t_data *data, char **array, size_t *index)
 char	**alloc_double_array(t_data *data, size_t *index)
 {
 	char	**array;
-	int		origin_size;
-	int		add_size;
+	size_t	origin_size;
+	size_t	add_size;
 
 	origin_size = get_size_double_array(data->copied_envp);
 	add_size = get_size_double_array(&data->commands[1]);
