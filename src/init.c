@@ -12,30 +12,7 @@
 
 #include "../inc/minishell.h"
 
-static char	**add_oldpwd_in_envp(char **array)
-{
-	char	**new_array;
-	size_t	size;
-	size_t	index;
 
-	size = get_size_double_array(array);
-	new_array = ft_calloc((size + 2), sizeof(char *));
-	if (!new_array)
-		return (NULL);
-	index = 0;
-	while (array[index])
-	{
-		new_array[index] = ft_strdup(array[index]);
-		if (!new_array[index])
-			return (NULL);
-		index++;
-	}
-	new_array[index] = ft_strdup("OLDPWD");
-	if (!new_array[index])
-		return (NULL);
-	array[size + 1] = NULL;
-	return (new_array);
-}
 
 static char	**set_environment_variable(char **envp)
 {
@@ -50,11 +27,10 @@ static char	**set_environment_variable(char **envp)
 		ft_perror("unset_command error in init data", EXIT_FAILURE);
 	free_double_array(temp);
 	temp = array;
-	array = add_oldpwd_in_envp(temp);
+	array = add_environment_variable(temp, "OLDPWD");
 	if (!array)
 		return (NULL);
 	free_double_array(temp);
-	temp = NULL;
 	return (array);
 }
 

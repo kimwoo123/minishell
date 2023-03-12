@@ -12,7 +12,7 @@
 
 #include "../../inc/minishell.h"
 
-void	print_export(char **array)
+static void	print_export(char **array)
 {
 	char	**new_array;
 	size_t	index;
@@ -35,7 +35,7 @@ void	print_export(char **array)
 	free_double_array(new_array);
 }
 
-char	**add_environment_variable(t_data *data)
+static char	**add_environment_variables(t_data *data)
 {
 	char	**array;
 	size_t	index;
@@ -61,7 +61,7 @@ int	export_command(t_data *data)
 		print_export(data->copied_envp);
 	else
 	{
-		array = add_environment_variable(data);
+		array = add_environment_variables(data);
 		if (!array)
 			ft_perror("error in add_environment_variables", EXIT_FAILURE);
 		free_double_array(data->copied_envp);

@@ -36,19 +36,19 @@ void	print_all_argument_value(char **argv)
 		printf("argv[%d]: %s\n", i, argv[i]);
 }
 
-char	**free_double_array(char **array)
+void	free_double_array(char **array)
 {
 	int	i;
 
-	i = -1;
-	while (array[++i])
+	i = 0;
+	while (array[i])
 	{
 		free(array[i]);
 		array[i] = NULL;
+		i++;
 	}
 	free(array);
 	array = NULL;
-	return (NULL);
 }
 
 void	ft_perror(const char *str, int exit_code)

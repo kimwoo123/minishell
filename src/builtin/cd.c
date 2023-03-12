@@ -41,6 +41,43 @@ static char	*find_home_path(t_data *data)
 	return (&(*data->envp)[5]);
 }
 
+static char	*get_working_directory(void)
+{
+	char	*temp;
+	char	*path;
+
+	temp = getcwd(NULL, 0);
+	if (!temp)
+		return (NULL);
+	path = ft_strjoin("OLDPWD=", temp);
+	if (!path)
+		return (NULL);
+	free(temp);
+	temp = NULL;
+	return (path);
+}
+
+int	backup_working_directory(t_data *data)
+{
+	char	*path;
+	char	**temp;
+	char	**new_envp;
+
+	path = get_working_directory();
+	if (!path)
+		return (FAILURE);
+	temp = delete_environment_variable(data->copied_envp, "OLDPWD");
+	if (!temp)
+		return (FAILURE);
+	free_double_array(data->copied_envp);
+	new_envp = add_environment_variable(temp, path);
+	if (!new_envp)
+		return (FAILURE);
+	free_double_array(temp);
+	data->copied_envp = new_envp;
+	return (SUCCESS);
+}
+
 // need to add OLDPWD and exit code
 int	cd_command(t_data *data)
 {
@@ -48,6 +85,8 @@ int	cd_command(t_data *data)
 	char	*temp;
 	char	*pwd_path;
 
+	if (backup_working_directory(data) == FAILURE)
+		return (FAILURE);
 	if (data->commands[1] == NULL || !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
 	{
 		temp = find_home_path(data);

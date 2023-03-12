@@ -120,7 +120,7 @@ void	set_signals(void);
 /* utils0 */
 void	print_all_arguments(int argc, char **argv, char **envp);
 void	print_all_argument_value(char **argv);
-char	**free_double_array(char **array);
+void	free_double_array(char **array);
 void	ft_perror(const char *str, int exit_code);
 int		ft_open(const char *path, int oflag, int flag);
 void	ft_close(int fd);
@@ -138,6 +138,10 @@ size_t	ft_strlen_before_equal_sign(char *str);
 int		get_size_double_array(char **array);
 void	print_double_array(char **array);
 int		ft_getenv(char **array, char *str);
+
+/* envp_utils */
+char	**add_environment_variable(char **array, char *key);
+char	**delete_environment_variable(char **array, char *key);
 
 /* deli_parse */
 void	check_quote(const char c, char *flag);
