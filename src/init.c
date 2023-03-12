@@ -12,8 +12,6 @@
 
 #include "../inc/minishell.h"
 
-
-
 static char	**set_environment_variable(char **envp)
 {
 	char	**temp;
