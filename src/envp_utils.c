@@ -73,6 +73,6 @@ char	**add_environment_variable(char **array, char *key)
 	new_array[index] = ft_strdup(key);
 	if (!new_array[index])
 		return (NULL);
-	array[size + 1] = NULL;
+	array[++index] = NULL;
 	return (new_array);
 }
