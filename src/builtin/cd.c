@@ -49,7 +49,6 @@ static char	*find_home_path(t_data *data)
 		return (NULL);
 	index = 0;
 	while (ft_strncmp(data->copied_envp[index], "HOME=", ft_strlen("HOME=")))
-		// data->copied_envp++;
 		index++;
 	if (ft_strncmp(data->copied_envp[index], "HOME=", ft_strlen("HOME=")))
 		return (NULL);
