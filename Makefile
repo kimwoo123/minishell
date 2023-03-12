@@ -25,18 +25,18 @@ __CPPFLAGS	= -I ~/.brew/opt/readline/include
 LIB			= libft/libft.a
 LIB_DIR		= libft
 
+SRC_DIR		= src
+OBJ_DIR		= obj
+B_OBJ_DIR	= builtin
+# P_OBJ_DIR	= parses
+
 BUILTIN		= builtin
 _BUILTIN	= echo.c cd.c pwd.c exit.c env.c export.c export_utils0.c export_utils1.c unset.c
 
 # PARSE		= parse
 # _PARSE		= tree.c
 
-SRC_DIR		= src
-OBJ_DIR		= obj
-_OBJ_DIR	= builtin
-# __OBJ_DIR	= parses
- 
-SRC			= main.c utils0.c  signals.c heredoc.c pipe.c \
+SRC			= main.c utils0.c  signals.c heredoc.c pipe.c init.c\
 			  $(addprefix $(BUILTIN)/, $(_BUILTIN))
 # $(addprefix $(PARSE)/, $(_PARSE))
 
@@ -77,12 +77,12 @@ $(LIB):
 # 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
-	@mkdir $(OBJ_DIR)
-$(_OBJ_DIR):
-	@mkdir $(OBJ_DIR)/$(_OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)
+$(B_OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)/$(B_OBJ_DIR)
 
-# $(__OBJ_DIR):
-# 	@mkdir $(OBJ_DIR)/$(__OBJ_DIR)
+# $(P_OBJ_DIR):
+# 	@mkdir $(OBJ_DIR)/$(P_OBJ_DIR)
 
 all: $(OBJ_DIR) $(_OBJ_DIR) $(NAME)
 
