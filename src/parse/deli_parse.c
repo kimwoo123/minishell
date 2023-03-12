@@ -6,13 +6,13 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/08 14:07:50 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/12 14:21:23 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-static int	is_space(const char c)
+int	is_space(const char c)
 {
 	return ((c >= 9 && c <= 13) || c == ' ');
 }
@@ -41,7 +41,7 @@ static int	is_delimiter(const char c)
 	return (0);
 }
 
-static int	is_quote(const char c)
+int	is_quote(const char c)
 {
 	return (c == '\'' || c == '\"');
 }
@@ -70,20 +70,24 @@ char *ft_strndup(const char *begin, size_t size)
 		return (NULL);
 	index = 0;
 	while (index < size)
-		result[index] = begin[index++];
+	{
+		result[index] = begin[index];
+		++index;
+	}
 	result[index] = '\0';
 	return (result);
 }
 
-void	check_quote(const char c, char *flag)
+char	check_quote(const char c, char flag)
 {
-	if (*flag && *flag == c)
-		*flag = '\0';
-	else if (!*flag && is_quote(c))
-		*flag = c;
+	if (flag && flag == c)
+		return ('\0');
+	else if (!flag && is_quote(c))
+		return (c);
+	return (flag);
 }
 
-void	seperate_meta(const char *line, size_t size, t_node *node)
+void	seperate_meta(const char *line, size_t size, t_list *node)
 {
 	size_t	index;
 	size_t	start_index;
@@ -103,7 +107,7 @@ void	seperate_meta(const char *line, size_t size, t_node *node)
 }
 
 // space 기준으로 분리
-void	split_space(const char *line, size_t size, t_node *node)
+void	split_space(const char *line, size_t size, t_list *node)
 {
 	size_t	index;
 	size_t	start_index;
@@ -116,7 +120,7 @@ void	split_space(const char *line, size_t size, t_node *node)
 	index = -1;
 	while (++index < size)
 	{
-		check_quote(line[index], &quote_flag);
+		quote_flag = check_quote(line[index], quote_flag);
 		if (!quote_flag && (space_flag && is_space(line[index])))
 		{
 			seperate_meta(&line[start_index], index - start_index, node);
@@ -140,7 +144,7 @@ int	repeat_meta(const char *line, size_t index)
 
 // return (0)일 경우 따옴표가 닫히지 않은 상태
 // DELIMITER MACRO 기준으로 분리
-int	split_delimiter(const char *line, t_node *node)
+int	split_delimiter(const char *line, t_list *node)
 {
 	size_t	index;
 	size_t	start_index;
@@ -151,7 +155,7 @@ int	split_delimiter(const char *line, t_node *node)
 	index = -1;
 	while (line[++index])
 	{
-		check_quote(line[index], &quote_flag);
+		quote_flag = check_quote(line[index], quote_flag);
 		if ((!quote_flag && is_delimiter(line[index])) && !repeat_meta(line, index))
 		{
 			split_space(&line[start_index], index - start_index, node);
@@ -162,6 +166,22 @@ int	split_delimiter(const char *line, t_node *node)
 	if (quote_flag)
 		return (0);
 	return (1);
+}
+
+void	scan_command(const char* line)
+{
+	t_list *list;
+	int		ret;
+
+	list = NULL;
+	ret = split_delimiter(line, list);
+	if (ret == 0)
+	{
+		free_list(list);
+		//syntax_error
+		exit(1);
+	}
+	search_list(list);
 }
 
 void	search_tree(t_node *node)
@@ -186,13 +206,4 @@ void	search_list(t_list *list)
 		printf("%s, %d\n", temp->content, temp->type);
 		temp = temp->next;
 	}
-}
-
-void	scan_command(const char* line)
-{
-	t_list *list;
-
-	list = NULL;
-	split_delimiter(line, &list);
-	search_list(list);
 }
