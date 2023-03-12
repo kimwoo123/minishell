@@ -155,13 +155,18 @@ char	*find_command_path(t_data *data)
 		return (NULL);
 	if (!access(data->commands[0], X_OK))
 		return (data->commands[0]);
-	while (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
+	while (*data->envp && ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
 		data->envp++;
-	if (ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
+	if (!*data->envp)
 	{
 		printf("No such file or directory\n");
 		return (NULL);
 	}
+	// if (*data->envp && ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
+	// {
+	// 	printf("No such file or directory\n");
+	// 	return (NULL);
+	// }
 	split = ft_split(&(*data->envp)[5], ':');
 	if (split == NULL)
 		ft_perror("split error", EXIT_FAILURE);

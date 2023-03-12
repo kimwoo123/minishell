@@ -12,19 +12,18 @@
 
 #include "../inc/minishell.h"
 
-// int	check_equal_sign(char *str)
-// {
-// 	size_t	index;
+static int	find_path_in_envp(char **envp)
+{
 
-// 	index = 0;
-// 	while (str[index])
-// 	{
-// 		if (str[index] == '=')
-// 			return (FOUND);
-// 		index++;
-// 	}
-// 	return (NOT_FOUND);
-// }
+	while (*envp && ft_strncmp(*envp, "PATH=", ft_strlen("PATH=")))
+		envp++;
+	if (!*envp)
+	{
+		// printf("No such file or directory\n");
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
 
 // bash에서 PATH 없으면 env 명령어 실행 불가
 int	env_command(t_data *data)
@@ -36,6 +35,8 @@ int	env_command(t_data *data)
 	if (data->copied_envp == NULL)
 		return (0);
 	index = 0;
+	if (find_path_in_envp(data->copied_envp) == FAILURE)
+		return (0);
 	while (data->copied_envp[index])
 	{
 		if (check_equal_sign(data->copied_envp[index]))

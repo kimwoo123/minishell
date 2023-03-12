@@ -55,7 +55,7 @@ int	export_command(t_data *data)
 {
 	char	**array;
 
-	if (data->envp == NULL)
+	if (data->copied_envp == NULL)
 		return (0);
 	else if (data->commands[1] == NULL)
 		print_export(data->copied_envp);
