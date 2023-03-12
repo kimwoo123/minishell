@@ -28,17 +28,17 @@ LIB_DIR		= libft
 BUILTIN		= builtin
 _BUILTIN	= echo.c cd.c pwd.c exit.c env.c export.c export_utils0.c export_utils1.c unset.c
 
-# PARSE		= parse
-# _PARSE		= tree.c
+PARSE		= parse
+_PARSE		= deli_parse.c dollar.c free.c tree.c
 
 SRC_DIR		= src
 OBJ_DIR		= obj
 _OBJ_DIR	= builtin
-# __OBJ_DIR	= parses
+__OBJ_DIR	= parse
  
 SRC			= main.c utils0.c  signals.c heredoc.c pipe.c init.c envp_utils.c \
-			  $(addprefix $(BUILTIN)/, $(_BUILTIN))
-# $(addprefix $(PARSE)/, $(_PARSE))
+			  $(addprefix $(BUILTIN)/, $(_BUILTIN)) \
+			  $(addprefix $(PARSE)/, $(_PARSE))
 
 SRC_BONUS	= main.c
 
@@ -49,8 +49,8 @@ SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_BONUS))
 OBJ			= $(SRC_BONUS:.c=.o)
 else
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC)) \
-			  $(addprefix $(SRC_DIR)/$(BUILTIN)/, $(_BUILTIN))
-#   $(addprefix $(SRC_DIR)/$(PARSE)/, $(_PARSE))
+			  $(addprefix $(SRC_DIR)/$(BUILTIN)/, $(_BUILTIN)) \
+			  $(addprefix $(SRC_DIR)/$(PARSE)/, $(_PARSE))
 OBJ			= $(SRC:.c=.o)
 endif
 
@@ -78,17 +78,18 @@ $(LIB):
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
+
 $(_OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/$(_OBJ_DIR)
 
-# $(__OBJ_DIR):
-# 	@mkdir $(OBJ_DIR)/$(__OBJ_DIR)
+$(__OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)/$(__OBJ_DIR)
 
-all: $(OBJ_DIR) $(_OBJ_DIR) $(NAME)
+all: $(OBJ_DIR) $(_OBJ_DIR) $(__OBJ_DIR) $(NAME)
 
-bonus: $(OBJ_DIR) $(_OBJ_DIR) $(NAME)
+bonus: $(OBJ_DIR) $(_OBJ_DIR) $(__OBJ_DIR) $(NAME)
 
-debug: $(OBJ_DIR) $(_OBJ_DIR) $(NAME)
+debug: $(OBJ_DIR) $(_OBJ_DIR) $(__OBJ_DIR) $(NAME)
 
 clean:
 	@$(RM) $(RMFLAGS) $(OBJ_DIR)

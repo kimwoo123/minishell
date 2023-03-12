@@ -30,15 +30,29 @@ static void	ft_chdir(const char *path, const char *cmd)
 	}
 }
 
+// static char	*find_home_path(t_data *data)
+// {
+// 	if (!data->envp)
+// 		return (NULL);
+// 	while (*data->copied_envp && ft_strncmp(*data->envp, "HOME=", ft_strlen("HOME=")))
+// 		data->copied_envp++;
+// 	// if (!*data->copied_envp || ft_strncmp(*data->envp, "HOME=", ft_strlen("HOME=")))
+// 	// 	return ("User/chajung");
+// 	return (&(*data->envp)[5]);
+// }
+
 static char	*find_home_path(t_data *data)
 {
-	if (!data->commands[0] || !data->envp)
+	size_t	index;
+
+	if (!data->commands[0] || !data->copied_envp)
 		return (NULL);
-	while (ft_strncmp(*data->envp, "HOME=", ft_strlen("HOME=")))
-		data->envp++;
-	if (ft_strncmp(*data->envp, "HOME=", ft_strlen("HOME=")))
+	index = 0;
+	while (ft_strncmp(data->copied_envp[0], "HOME=", ft_strlen("HOME=")))
+		data->copied_envp++;
+	if (ft_strncmp(data->copied_envp[0], "HOME=", ft_strlen("HOME=")))
 		return (NULL);
-	return (&(*data->envp)[5]);
+	return (&(data->copied_envp)[index][5]);
 }
 
 static char	*get_working_directory(void)
@@ -67,10 +81,15 @@ int	backup_working_directory(t_data *data)
 	if (!path)
 		return (FAILURE);
 	temp = delete_environment_variable(data->copied_envp, "OLDPWD");
+	printf("------------------------------------------------------------\n");
+	print_double_array(temp);
 	if (!temp)
 		return (FAILURE);
 	free_double_array(data->copied_envp);
 	new_envp = add_environment_variable(temp, path);
+	printf("------------------------------------------------------------\n");
+	print_double_array(new_envp);
+	printf("------------------------------------------------------------\n");
 	if (!new_envp)
 		return (FAILURE);
 	free_double_array(temp);
@@ -85,8 +104,8 @@ int	cd_command(t_data *data)
 	char	*temp;
 	char	*pwd_path;
 
-	if (backup_working_directory(data) == FAILURE)
-		return (FAILURE);
+	// if (backup_working_directory(data) == FAILURE)
+		// return (FAILURE);
 	if (data->commands[1] == NULL || !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
 	{
 		temp = find_home_path(data);
