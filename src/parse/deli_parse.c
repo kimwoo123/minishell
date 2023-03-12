@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/12 14:21:23 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:44:23 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	check_quote(const char c, char flag)
 	return (flag);
 }
 
-void	seperate_meta(const char *line, size_t size, t_list *node)
+void	seperate_meta(const char *line, size_t size, t_list **node)
 {
 	size_t	index;
 	size_t	start_index;
@@ -107,7 +107,7 @@ void	seperate_meta(const char *line, size_t size, t_list *node)
 }
 
 // space 기준으로 분리
-void	split_space(const char *line, size_t size, t_list *node)
+void	split_space(const char *line, size_t size, t_list **node)
 {
 	size_t	index;
 	size_t	start_index;
@@ -144,7 +144,7 @@ int	repeat_meta(const char *line, size_t index)
 
 // return (0)일 경우 따옴표가 닫히지 않은 상태
 // DELIMITER MACRO 기준으로 분리
-int	split_delimiter(const char *line, t_list *node)
+void	split_delimiter(const char *line, t_list **node)
 {
 	size_t	index;
 	size_t	start_index;
@@ -163,24 +163,36 @@ int	split_delimiter(const char *line, t_list *node)
 		}
 	}
 	split_space(&line[start_index], index - start_index, node);
-	if (quote_flag)
+}
+
+int	close_quote(const char *line)
+{
+	char	quote_flag;
+	size_t	index;
+
+	quote_flag = '\0';
+	index = 0;
+	while (line[index])
+	{
+		quote_flag = check_quote(line[index], quote_flag);
+		++index;
+	}
+	if (quote_flag != '\0')
 		return (0);
 	return (1);
 }
 
-void	scan_command(const char* line)
+void	scan_command(const char *line)
 {
 	t_list *list;
-	int		ret;
 
-	list = NULL;
-	ret = split_delimiter(line, list);
-	if (ret == 0)
+	if (close_quote(line) == 0)
 	{
-		free_list(list);
-		//syntax_error
+		printf("quote error");
 		exit(1);
 	}
+	list = NULL;
+	split_delimiter(line, &list);
 	search_list(list);
 }
 
