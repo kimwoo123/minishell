@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/12 17:01:54 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:41:05 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	seperate_meta(const char *line, size_t size, t_list **node);
 void	split_space(const char *line, size_t size, t_list **node);
 void	search_list(t_list *list);
 int	repeat_meta(const char *line, size_t index);
-int	split_delimiter(const char *line, t_list **node);
+void	split_delimiter(const char *line, t_list **node);
 void	scan_command(const char* line);
 char *ft_strndup(const char *begin, size_t size);
 int		is_space(const char c);
