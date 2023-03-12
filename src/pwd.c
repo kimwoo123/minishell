@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chajung <chajung@student.42seoul.k>        +#+  +:+       +#+        */
+/*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:19:12 by chajung           #+#    #+#             */
 /*   Updated: 2023/03/02 14:19:13 by chajung          ###   ########.fr       */
