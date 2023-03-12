@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/08 14:15:46 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/12 14:19:43 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,16 +134,31 @@ int		ft_getenv(char **array, char *str);
 
 
 /* deli_parse */
-void	check_quote(const char c, char *flag);
-void	seperate_meta(const char *line, size_t size, t_node *node);
-void	split_space(const char *line, size_t size, t_node *node);
+char	check_quote(const char c, char flag);
+void	seperate_meta(const char *line, size_t size, t_list *node);
+void	split_space(const char *line, size_t size, t_list *node);
 int	repeat_meta(const char *line, size_t index);
-int	split_delimiter(const char *line, t_node *node);
+int	split_delimiter(const char *line, t_list *node);
 void	scan_command(const char* line);
 char *ft_strndup(const char *begin, size_t size);
+int		is_space(const char c);
+int		is_quote(const char c);
 
 /* tree */
-void	get_token(const char *line, size_t size, t_list **list);
+void	get_token(const char *line, size_t size, t_list *list);
 t_node	*create_node(int type, char *content);
+
+/* dollar */
+size_t	get_dollar_len(char const *line);
+size_t	get_dollar_index(char const *line, char *quote_flag);
+size_t	double_array_size(char const *line, char *quote_flag);
+void	duplicate_str(char **result, char *line, char *quote_flag);
+char	**split_dollar(char const *line, size_t size);
+char	*remove_quote(char const *line);
+char	*convert_variable(char *str);
+char	*merge_str(char **split_str);
+void	free_double(char **str);
+char	*convert_merge(char **split_str);
+char	*convert_dollar(char const *line, size_t size);
 
 #endif
