@@ -88,6 +88,9 @@ int	parsing_command_line_test(t_data *data);
 int	is_not_builtin(t_data *data);
 int	is_builtin(t_data *data);
 
+/* init */
+void	init_data(int argc, char **argv, char **envp, t_data *data);
+
 /* built-in */
 int		echo_command(t_data *data);
 int		cd_command(t_data *data);
@@ -96,6 +99,9 @@ int		exit_command(t_data *data);
 int		env_command(t_data *data);
 int		export_command(t_data *data);
 int		unset_command(t_data *data);
+
+/* unset */
+char	**delete_environment_variable(char **array, char *key);
 
 /* export */
 void	sort_double_array(char **array);
@@ -132,7 +138,6 @@ size_t	ft_strlen_before_equal_sign(char *str);
 int		get_size_double_array(char **array);
 void	print_double_array(char **array);
 int		ft_getenv(char **array, char *str);
-
 
 /* deli_parse */
 void	check_quote(const char c, char *flag);

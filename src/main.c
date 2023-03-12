@@ -104,18 +104,6 @@ int	parsing_command_line(t_data *data)
 	return (0);
 }
 
-void	init_data(int argc, char **argv, char **envp, t_data *data)
-{
-	data->argc = argc;
-	data->argv = argv;
-	data->envp = envp;
-	data->copied_envp = copy_double_array(envp);
-	if (!data->copied_envp)
-		ft_perror("copy_double_array error in init data", EXIT_FAILURE);
-	data->cmd_counts = 1;
-	data->dup_stdin = dup(STDIN_FILENO);
-	data->dup_stdout = dup(STDOUT_FILENO);
-}
 
 int	main(int argc, char **argv, char **envp)
 {
