@@ -55,7 +55,10 @@ int	is_builtin(t_data *data)
 		return (1);
 	}
 	else if (!ft_strncmp(data->commands[0], "unset", ft_strlen(data->commands[0])))
+	{
+		unset_command(data);
 		return (1);
+	}
 	else if (!ft_strncmp(data->commands[0], "env", ft_strlen(data->commands[0])))
 	{
 		env_command(data);
