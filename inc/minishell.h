@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/12 14:19:43 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/12 16:38:23 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ char	**delete_environment_variable(char **array, char *key);
 char	check_quote(const char c, char flag);
 void	seperate_meta(const char *line, size_t size, t_list *node);
 void	split_space(const char *line, size_t size, t_list *node);
+void	search_list(t_list *list);
 int	repeat_meta(const char *line, size_t index);
 int	split_delimiter(const char *line, t_list *node);
 void	scan_command(const char* line);
@@ -170,5 +171,8 @@ char	*merge_str(char **split_str);
 void	free_double(char **str);
 char	*convert_merge(char **split_str);
 char	*convert_dollar(char const *line, size_t size);
+
+/* free */
+void	free_list(t_list *list);
 
 #endif

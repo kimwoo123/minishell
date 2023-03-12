@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 15:24:20 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/12 15:24:26 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/12 16:38:38 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	free_list(t_list *list)
 {
 	t_list	*node;
+	t_list	*temp;
 
     node = list;
 	while (node)
