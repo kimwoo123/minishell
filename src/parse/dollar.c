@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/12 13:39:44 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:26:27 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ size_t	get_dollar_len(char const *line)
 
 	index = 1;
 	if (!line[index])
-		return (++index);
+		return (index);
 	if (line[index] == '?')
 		return (++index);
 	if (line[index] == '$')
@@ -52,7 +52,7 @@ size_t	double_array_size(char const *line, char *quote_flag)
 	index = 0;
 	size = 0;
 	dollar_flag = 1;
-	if (*line == '&')
+	if (*line == '$')
 		dollar_flag = 0;
 	while (line[index])
 	{
@@ -115,7 +115,6 @@ char	**split_dollar(char const *line, size_t size)
 	temp = ft_strndup(line, size);
 	r_size = double_array_size(temp, &quote_flag);
 	result = (char **)malloc(sizeof(char *) * (r_size + 1));
-	quote_flag = '\0';
 	duplicate_str(result, temp, &quote_flag);
 	result[r_size] = NULL;
 	free(temp);

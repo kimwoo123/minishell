@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/12 16:38:23 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/12 17:01:54 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,18 +145,18 @@ char	**delete_environment_variable(char **array, char *key);
 
 /* deli_parse */
 char	check_quote(const char c, char flag);
-void	seperate_meta(const char *line, size_t size, t_list *node);
-void	split_space(const char *line, size_t size, t_list *node);
+void	seperate_meta(const char *line, size_t size, t_list **node);
+void	split_space(const char *line, size_t size, t_list **node);
 void	search_list(t_list *list);
 int	repeat_meta(const char *line, size_t index);
-int	split_delimiter(const char *line, t_list *node);
+int	split_delimiter(const char *line, t_list **node);
 void	scan_command(const char* line);
 char *ft_strndup(const char *begin, size_t size);
 int		is_space(const char c);
 int		is_quote(const char c);
 
 /* tree */
-void	get_token(const char *line, size_t size, t_list *list);
+void	get_token(const char *line, size_t size, t_list **list);
 t_node	*create_node(int type, char *content);
 
 /* dollar */
@@ -173,6 +173,6 @@ char	*convert_merge(char **split_str);
 char	*convert_dollar(char const *line, size_t size);
 
 /* free */
-void	free_list(t_list *list);
+void	free_list(t_list **list);
 
 #endif
