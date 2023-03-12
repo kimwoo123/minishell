@@ -25,11 +25,20 @@ __CPPFLAGS	= -I ~/.brew/opt/readline/include
 LIB			= libft/libft.a
 LIB_DIR		= libft
 
+BUILTIN		= builtin
+_BUILTIN	= echo.c cd.c pwd.c exit.c env.c export.c export_utils0.c export_utils1.c unset.c
+
+# PARSE		= parse
+# _PARSE		= tree.c
+
 SRC_DIR		= src
 OBJ_DIR		= obj
-
-SRC			= main.c utils0.c echo.c cd.c pwd.c exit.c signals.c heredoc.c \
-			  pipe.c env.c export.c export_utils0.c export_utils1.c unset.c
+_OBJ_DIR	= builtin
+# __OBJ_DIR	= parses
+ 
+SRC			= main.c utils0.c  signals.c heredoc.c pipe.c \
+			  $(addprefix $(BUILTIN)/, $(_BUILTIN))
+# $(addprefix $(PARSE)/, $(_PARSE))
 
 SRC_BONUS	= main.c
 
@@ -39,7 +48,9 @@ ifeq ($(MAKECMDGOALS), bonus)
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_BONUS))
 OBJ			= $(SRC_BONUS:.c=.o)
 else
-SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
+SRCS		= $(addprefix $(SRC_DIR)/, $(SRC)) \
+			  $(addprefix $(SRC_DIR)/$(BUILTIN)/, $(_BUILTIN))
+#   $(addprefix $(SRC_DIR)/$(PARSE)/, $(_PARSE))
 OBJ			= $(SRC:.c=.o)
 endif
 
@@ -67,12 +78,17 @@ $(LIB):
 
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
+$(_OBJ_DIR):
+	@mkdir $(OBJ_DIR)/$(_OBJ_DIR)
 
-all: $(OBJ_DIR) $(NAME)
+# $(__OBJ_DIR):
+# 	@mkdir $(OBJ_DIR)/$(__OBJ_DIR)
 
-bonus: $(OBJ_DIR) $(NAME)
+all: $(OBJ_DIR) $(_OBJ_DIR) $(NAME)
 
-debug: $(OBJ_DIR) $(NAME)
+bonus: $(OBJ_DIR) $(_OBJ_DIR) $(NAME)
+
+debug: $(OBJ_DIR) $(_OBJ_DIR) $(NAME)
 
 clean:
 	@$(RM) $(RMFLAGS) $(OBJ_DIR)
