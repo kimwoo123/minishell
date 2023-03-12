@@ -26,11 +26,12 @@ static int	check_same_key(char *str, char *key)
 char	**delete_environment_variable(char **array, char *key)
 {
 	char	**new_array;
+	size_t	size;
 	size_t	i;
 	size_t	j;
 
-	new_array = (char **)malloc(sizeof(char *) \
-		* get_size_double_array(array));
+	size = get_size_double_array(array);
+	new_array = (char **)ft_calloc(size + 1, sizeof(char *));
 	if (!new_array)
 		return (NULL);
 	i = 0;
@@ -48,7 +49,6 @@ char	**delete_environment_variable(char **array, char *key)
 			j++;
 		}
 	}
-	new_array[j] = NULL;
 	return (new_array);
 }
 
@@ -59,7 +59,7 @@ char	**add_environment_variable(char **array, char *key)
 	size_t	index;
 
 	size = get_size_double_array(array);
-	new_array = (char **)malloc(sizeof(char *) * (size + 2));
+	new_array = (char **)ft_calloc(size + 2, sizeof(char *));
 	if (!new_array)
 		return (NULL);
 	index = 0;
@@ -73,6 +73,5 @@ char	**add_environment_variable(char **array, char *key)
 	new_array[index] = ft_strdup(key);
 	if (!new_array[index])
 		return (NULL);
-	array[++index] = NULL;
 	return (new_array);
 }

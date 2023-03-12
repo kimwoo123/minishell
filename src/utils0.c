@@ -147,6 +147,7 @@ char	*ft_strjoin_wslash(char *str1, char *str2)
 
 char	*find_command_path(t_data *data)
 {
+	size_t	index;
 	int		i;
 	char	*cmd;
 	char	**split;
@@ -155,9 +156,10 @@ char	*find_command_path(t_data *data)
 		return (NULL);
 	if (!access(data->commands[0], X_OK))
 		return (data->commands[0]);
-	while (*data->envp && ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
+	index = 0;
+	while (data->envp[index] && ft_strncmp(data->envp[index], "PATH=", ft_strlen("PATH=")))
 		data->envp++;
-	if (!*data->envp || ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
+	if (!data->envp[index] || ft_strncmp(data->envp[index], "PATH=", ft_strlen("PATH=")))
 	{
 		printf("No such file or directory\n");
 		return (NULL);
