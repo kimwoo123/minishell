@@ -1,0 +1,33 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    variable                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/03/13 10:26:28 by wooseoki          #+#    #+#              #
+#    Updated: 2023/03/13 14:21:27 by wooseoki         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME		= minishell
+
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror
+RLFLAGS		= -lreadline
+RMFLAGS		= -r
+
+LDFLAGS		= -L ~/.brew/opt/readline/lib
+CPPFLAGS	= -I ~/.brew/opt/readline/include
+
+LIB			= libft/libft.a
+LIB_DIR		= libft
+
+ALL_SRCS	= $(COM_SRCS) $(BTI_SRCS) $(PAR_SRCS)
+ALL_OBJS	= $(COM_OBJS) $(BTI_OBJS) $(PAR_OBJS)
+
+OBJ_DIR		= obj obj/builtin obj/parse
+SRC_DIR		= src src/builtin src/parse
+
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)

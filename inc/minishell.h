@@ -156,10 +156,10 @@ char	check_quote(const char c, char flag);
 void	seperate_meta(const char *line, size_t size, t_list **node);
 void	split_space(const char *line, size_t size, t_list **node);
 void	search_list(t_list *list);
-int	repeat_meta(const char *line, size_t index);
+int		repeat_meta(const char *line, size_t index);
 void	split_delimiter(const char *line, t_list **node);
 void	scan_command(const char* line);
-char *ft_strndup(const char *begin, size_t size);
+char 	*ft_strndup(const char *begin, size_t size);
 int		is_space(const char c);
 int		is_quote(const char c);
 
