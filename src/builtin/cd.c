@@ -12,39 +12,7 @@
 
 #include "../../inc/minishell.h"
 
-static void	ft_chdir(const char *path, const char *cmd)
-{
-	char	*error_str;
-
-	if (chdir(path) == FAILURE)
-	{
-		if (cmd == NULL)
-			perror("bash: cd: "); //need to fix
-		else
-		{
-			error_str = ft_strjoin("bash: cd: ", cmd);
-			if (error_str == NULL)
-				ft_perror("strjoin error in ft_chdir function", EXIT_FAILURE);
-			perror(error_str);
-		}
-	}
-}
-
-static char	*find_home_path(char **envp)
-{
-	size_t	index;
-
-	if (!envp)
-		return (NULL);
-	index = 0;
-	while (envp[index] && ft_strncmp(envp[index], "HOME=", ft_strlen("HOME=")))
-		index++;
-	if (!envp[index] || ft_strncmp(envp[index], "HOME=", ft_strlen("HOME=")))
-			return (NULL);
-	return (&(envp)[index][5]);
-}
-
-int	change_directory_to_home(char **commands, char **envp)
+static int	change_directory_to_home(char **commands, char **envp)
 {
 	char	*home_path;
 	char	*path;
@@ -60,14 +28,14 @@ int	change_directory_to_home(char **commands, char **envp)
 	{
 		path = ft_strjoin_wslash(home_path, &commands[1][2]);
 		if (path == NULL)
-			ft_perror("strjoin_wslash error in cd command", EXIT_FAILURE);
+			return (FAILURE);
 		ft_chdir(path, commands[1]);
 		free(path);
 	}
 	return (SUCCESS);
 }
 
-int	change_directory_to_root(char **commands, char **envp)
+static int	change_directory_to_root(char **commands)
 {
 	char	*path;
 
@@ -84,11 +52,11 @@ int	change_directory_to_root(char **commands, char **envp)
 	return (SUCCESS);
 }
 
-int	change_directory(char **commands, char **envp)
+static int	change_directory(char **commands)
 {
 	char	*current_path;
 	char	*path;
-	
+
 	current_path = getcwd(NULL, 0);
 	if (current_path == NULL)
 		return (FAILURE);
@@ -101,7 +69,6 @@ int	change_directory(char **commands, char **envp)
 	return (SUCCESS);
 }
 
-// need to add OLDPWD and exit code
 int	cd_command(t_data *data)
 {
 	char	*path;
@@ -110,20 +77,21 @@ int	cd_command(t_data *data)
 
 	if (backup_working_directory(data) == FAILURE)
 		return (FAILURE);
-	if (data->commands[1] == NULL || !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
+	if (data->commands[1] == NULL \
+	|| !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
 	{
-		change_directory_to_home(data->commands, data->envp);
-
+		if (change_directory_to_home(data->commands, data->envp) == FAILURE)
+			return (FAILURE);
 	}
 	else if (!ft_strncmp(data->commands[1], "/", ft_strlen("/")))
 	{
-		change_directory_to_root(data->commands, data->envp);
-
+		if (change_directory_to_root(data->commands) == FAILURE)
+			return (FAILURE);
 	}
 	else
 	{
-		change_directory(data->commands, data->envp);
-
+		if (change_directory(data->commands) == FAILURE)
+			return (FAILURE);
 	}
 	if (change_working_directory(data) == FAILURE)
 		return (FAILURE);

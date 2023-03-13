@@ -103,6 +103,8 @@ int		unset_command(t_data *data);
 /* cd */
 int		backup_working_directory(t_data *data);
 int		change_working_directory(t_data *data);
+void	ft_chdir(const char *path, const char *cmd);
+char	*find_home_path(char **envp);
 
 /* unset */
 char	**delete_environment_variable(char **array, char *key);
