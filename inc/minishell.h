@@ -30,6 +30,7 @@
 
 # define SUCCESS		0
 # define FAILURE		-1
+
 # define CHILD_PROCESS  0
 # define DELIMITER 		"<>|"
 
@@ -40,7 +41,8 @@
 # define NOT_FOUND		0
 # define FOUND			1
 
-
+# define NOT_SAME		0
+# define SAME			1
 
 typedef struct s_data
 {
@@ -86,7 +88,6 @@ enum	e_type
 
 int	parsing_command_line_test(t_data *data);
 int	is_not_builtin(t_data *data);
-int	is_builtin(t_data *data);
 
 /* init */
 void	init_data(int argc, char **argv, char **envp, t_data *data);
@@ -124,6 +125,7 @@ int	here_doc(t_data *data);
 void	set_signals(void);
 
 /* utils0 */
+int		is_equal_to(char *str1, char *str2);
 void	print_all_arguments(int argc, char **argv, char **envp);
 void	print_all_argument_value(char **argv);
 void	free_double_array(char **array);
