@@ -12,16 +12,16 @@ static t_list	*create_element(int type, char *content)
 	return (elem);
 }
 
-void	lst_addback(t_list *list, t_list *node)
+void	lst_addback(t_list **list, t_list *node)
 {
 	t_list	*temp;
 
-	if (!(list))
+	if (!(*list))
 	{
-		list = node;
+		*list = node;
 		return ;
 	}
-	temp = list;
+	temp = *list;
 	while (temp->next)
 		temp = temp->next;
 	temp->next = node;
