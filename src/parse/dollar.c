@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/12 18:26:27 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/13 09:33:22 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ size_t	get_dollar_len(char const *line)
 		return (++index);
 	if (line[index] == '$')
 		return (++index);
-	while (line[index] && (!is_quote(line[index]) && !is_space(line[index])))
+	while ((line[index] && line[index] != '$') && (!is_quote(line[index]) && !is_space(line[index])))
 		index++;
 	return (index);
 }
