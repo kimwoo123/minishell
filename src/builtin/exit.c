@@ -14,6 +14,6 @@
 
 int	exit_command(t_data *data)
 {
-	printf("exit\n");
+	write(1, "exit\n", 5);
 	exit(EXIT_SUCCESS);
 }
