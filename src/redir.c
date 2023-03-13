@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 14:19:28 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/02 14:19:29 by chajung          ###   ########.fr       */
+/*   Created: 2023/03/13 13:14:25 by chajung           #+#    #+#             */
+/*   Updated: 2023/03/13 13:14:26 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../inc/minishell.h"
 
-int	exit_command(t_data *data)
+int	redir_std_in()
 {
-	write(1, "exit\n", 5);
-	exit(EXIT_SUCCESS);
+
 }
+
+int	redir_std_out()
+{
+	
+}
+
+int	redir_std_in()
+{
+	
+}
+

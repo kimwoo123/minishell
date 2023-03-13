@@ -32,44 +32,39 @@ int	execute_command(t_data *data)
 	return (0);
 }
 
-int	is_builtin(t_data *data)
+int	exec_builtin(t_data *data)
 {
-	if (!ft_strncmp(data->commands[0], "echo", ft_strlen(data->commands[0])))
-	{
-		echo_command(data);
-		return (1);
-	}
-	else if (!ft_strncmp(data->commands[0], "cd", ft_strlen(data->commands[0])))
-	{
-		cd_command(data);
-		return (1);
-	}
-	else if (!ft_strncmp(data->commands[0], "pwd", ft_strlen(data->commands[0])))
-	{
-		pwd_command(data);
-		return (1);
-	}
-	else if (!ft_strncmp(data->commands[0], "export", ft_strlen(data->commands[0])))
-	{
-		export_command(data);
-		return (1);
-	}
-	else if (!ft_strncmp(data->commands[0], "unset", ft_strlen(data->commands[0])))
-	{
-		unset_command(data);
-		return (1);
-	}
-	else if (!ft_strncmp(data->commands[0], "env", ft_strlen(data->commands[0])))
-	{
-		env_command(data);
-		return (1);
-	}
-	else if (!ft_strncmp(data->commands[0], "exit", ft_strlen(data->commands[0])))
-	{
-		exit_command(data);
-		return (1);
-	}
-	return (0);
+	int	result;
+	
+	result = FAILURE;
+	if (is_equal_to(data->commands[0], "echo") == SAME)
+		result = echo_command(data->commands);
+	else if (is_equal_to(data->commands[0], "cd") == SAME)
+		result = cd_command(data);
+	else if (is_equal_to(data->commands[0], "pwd") == SAME)
+		result = pwd_command(data);
+	else if (is_equal_to(data->commands[0], "export") == SAME)
+		result = export_command(data);
+	else if (is_equal_to(data->commands[0], "unset") == SAME)
+		result = unset_command(data);
+	else if (is_equal_to(data->commands[0], "env") == SAME)
+		result = env_command(data);
+	else if (is_equal_to(data->commands[0], "exit") == SAME)
+		result = exit_command(data);
+	return (result);
+}
+
+int	is_builtin(char *str)
+{
+	if (is_equal_to(str, "echo") == SAME \
+	|| is_equal_to(str, "cd") == SAME \
+	|| is_equal_to(str, "pwd") == SAME \
+	|| is_equal_to(str, "export") == SAME \
+	|| is_equal_to(str, "unset") == SAME \
+	|| is_equal_to(str, "env") == SAME \
+	|| is_equal_to(str, "exit") == SAME)
+		return (FOUND);
+	return (NOT_FOUND);
 }
 
 int	is_not_builtin(t_data *data)
@@ -95,15 +90,16 @@ int	parsing_command_line(t_data *data)
 {
 	if (data->commands[0] == NULL)
 		rl_on_new_line();
-	else if (!ft_strncmp(data->commands[0], "<<", ft_strlen(data->commands[0])))
+	else if (is_equal_to(data->commands[0], "<<") == SAME)
 		here_doc(data);
-	else if (is_builtin(data))
-		return (0);
+	else if (is_equal_to(data->commands[0], "|") == SAME)
+		return (0); // PIPE
+	else if (is_builtin(data->commands[0]) == FOUND)
+		exec_builtin(data);
 	else
 		is_not_builtin(data);
 	return (0);
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -121,8 +117,8 @@ int	main(int argc, char **argv, char **envp)
 		data.commands = ft_split(command_line, ' ');
 		if (data.commands == NULL)
 			ft_perror("split error in main", EXIT_FAILURE);
-		parsing_command_line_test(&data);
 		free (command_line);
+		parsing_command_line(&data);
 	}
 	return (0);
 }

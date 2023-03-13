@@ -11,6 +11,15 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int	is_equal_to(char *str1, char *str2)
+{
+	if (!ft_strncmp(str1, str2, ft_strlen(str2)))
+		if (ft_strlen(str1) == ft_strlen(str2))
+			return (SAME);
+	return (NOT_SAME);
+}
+
 /* TEST */
 void	print_all_arguments(int argc, char **argv, char **envp)
 {
