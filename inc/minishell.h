@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/12 18:41:05 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/13 09:26:44 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int		is_space(const char c);
 int		is_quote(const char c);
 
 /* tree */
-void	get_token(const char *line, size_t size, t_list **list);
+void	get_token(char const *line, size_t size, t_list **list);
 t_node	*create_node(int type, char *content);
 
 /* dollar */
