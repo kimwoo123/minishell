@@ -1,0 +1,49 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    parse_make                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/03/13 13:02:42 by wooseoki          #+#    #+#              #
+#    Updated: 2023/03/13 14:21:28 by wooseoki         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+PAR_DIR		= src/parse
+PAR_SRC		= deli_parse.c dollar.c free.c tree.c
+PAR_OBJ_DIR	= obj/parse
+PAR_OBJ		= $(PAR_SRC:.c=.o)
+PAR_OBJS	= $(addprefix $(PAR_OBJ_DIR)/, $(PAR_OBJ))
+PAR_SRCS	= $(addprefix $(PAR_DIR)/, $(PAR_SRC))
+
+
+BTI_DIR		= src/builtin
+BTI_SRC		= \
+			echo.c cd.c pwd.c exit.c env.c \
+			export.c export_utils0.c \
+			export_utils1.c unset.c
+BTI_OBJ_DIR = obj/builtin
+BTI_OBJS	= $(addprefix $(BTI_OBJ_DIR)/, $(BTI_OBJ))
+BTI_OBJ		= $(BTI_SRC:.c=.o)
+BTI_SRCS	= $(addprefix $(BTI_DIR)/, $(BTI_SRC))
+
+
+COM_DIR		= src
+COM_SRC		= \
+			main.c utils0.c signals.c heredoc.c \
+			pipe.c init.c envp_utils.c
+COM_OBJ_DIR = obj
+COM_OBJS	= $(addprefix $(COM_OBJ_DIR)/, $(COM_OBJ))
+COM_OBJ		= $(COM_SRC:.c=.o)
+COM_SRCS	= $(addprefix $(COM_DIR)/, $(COM_SRC))
+
+
+$(COM_OBJ_DIR)/%.o : $(COM_DIR)/%.c
+	@$(CC) -c $< -o $@ $(CPPFLAGS)
+
+$(BTI_OBJ_DIR)/%.o : $(BTI_DIR)/%.c
+	@$(CC) -c $< -o $@ $(CPPFLAGS)
+
+$(PAR_OBJ_DIR)/%.o : $(PAR_DIR)/%.c
+	@$(CC) -c $< -o $@ $(CPPFLAGS)
