@@ -30,91 +30,74 @@ static void	ft_chdir(const char *path, const char *cmd)
 	}
 }
 
-static char	*find_home_path(t_data *data)
-{	// HOMEPATH = "/User/chajung" 을 사용할 경우 free 신경쓸 것
+static char	*find_home_path(char **envp)
+{
 	size_t	index;
 
-	if (!data->copied_envp)
+	if (!envp)
 		return (NULL);
 	index = 0;
-	while (data->copied_envp[index] && ft_strncmp(data->copied_envp[index], "HOME=", ft_strlen("HOME=")))
+	while (envp[index] && ft_strncmp(envp[index], "HOME=", ft_strlen("HOME=")))
 		index++;
-	if (!data->copied_envp[index] || ft_strncmp(data->copied_envp[index], "HOME=", ft_strlen("HOME=")))
+	if (!envp[index] || ft_strncmp(envp[index], "HOME=", ft_strlen("HOME=")))
 			return (NULL);
-	return (&(data->copied_envp)[index][5]);
+	return (&(envp)[index][5]);
 }
 
-static char	*get_old_working_directory(void)
+int	change_directory_to_home(char **commands, char **envp)
 {
-	char	*temp;
+	char	*home_path;
 	char	*path;
 
-	temp = getcwd(NULL, 0);
-	if (!temp)
-		return (NULL);
-	path = ft_strjoin("OLDPWD=", temp);
-	if (!path)
-		return (NULL);
-	free(temp);
-	temp = NULL;
-	return (path);
-}
-
-static char	*get_present_working_directory(void)
-{
-	char	*temp;
-	char	*path;
-
-	temp = getcwd(NULL, 0);
-	if (!temp)
-		return (NULL);
-	path = ft_strjoin("PWD=", temp);
-	if (!path)
-		return (NULL);
-	free(temp);
-	temp = NULL;
-	return (path);
-}
-
-int	backup_working_directory(t_data *data)
-{
-	char	*path;
-	char	**temp;
-	char	**new_envp;
-
-	path = get_old_working_directory();
-	if (!path)
+	home_path = find_home_path(envp);
+	if (home_path == NULL)
 		return (FAILURE);
-	temp = delete_environment_variable(data->copied_envp, "OLDPWD");
-	if (!temp)
-		return (FAILURE);
-	free_double_array(data->copied_envp);
-	new_envp = add_environment_variable(temp, path);
-	if (!new_envp)
-		return (FAILURE);
-	free_double_array(temp);
-	data->copied_envp = new_envp;
+	if (commands[1] == NULL \
+		|| !ft_strncmp(commands[1], "~", ft_strlen(commands[1])) \
+		|| !ft_strncmp(commands[1], "~/", ft_strlen(commands[1])))
+		ft_chdir(home_path, commands[1]);
+	else
+	{
+		path = ft_strjoin_wslash(home_path, &commands[1][2]);
+		if (path == NULL)
+			ft_perror("strjoin_wslash error in cd command", EXIT_FAILURE);
+		ft_chdir(path, commands[1]);
+		free(path);
+	}
 	return (SUCCESS);
 }
 
-static int	change_working_directory(t_data *data)
+int	change_directory_to_root(char **commands, char **envp)
 {
 	char	*path;
-	char	**temp;
-	char	**new_envp;
 
-	path = get_present_working_directory();
-	if (!path)
+	if (!ft_strncmp(commands[1], "/", ft_strlen(commands[1])))
+		ft_chdir("/", commands[1]);
+	else
+	{
+		path = ft_strjoin_wslash("/", &commands[1][1]);
+		if (path == NULL)
+			return (FAILURE);
+		ft_chdir(path, commands[1]);
+		free(path);
+	}
+	return (SUCCESS);
+}
+
+int	change_directory(char **commands, char **envp)
+{
+	char	*current_path;
+	char	*path;
+	
+	current_path = getcwd(NULL, 0);
+	if (current_path == NULL)
 		return (FAILURE);
-	temp = delete_environment_variable(data->copied_envp, "PWD");
-	if (!temp)
+	path = ft_strjoin_wslash(current_path, commands[1]);
+	if (path == NULL)
 		return (FAILURE);
-	free_double_array(data->copied_envp);
-	new_envp = add_environment_variable(temp, path);
-	if (!new_envp)
-		return (FAILURE);
-	free_double_array(temp);
-	data->copied_envp = new_envp;
+	free(current_path);
+	ft_chdir(path, commands[1]);
+	free(path);
 	return (SUCCESS);
 }
 
@@ -129,47 +112,20 @@ int	cd_command(t_data *data)
 		return (FAILURE);
 	if (data->commands[1] == NULL || !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
 	{
-		temp = find_home_path(data);
-		if (temp == NULL)
-			ft_perror("path error in cd command", EXIT_FAILURE);
-		if (data->commands[1] == NULL \
-			|| !ft_strncmp(data->commands[1], "~", ft_strlen(data->commands[1])) \
-			|| !ft_strncmp(data->commands[1], "~/", ft_strlen(data->commands[1])))
-			ft_chdir(temp, data->commands[1]);
-		else
-		{
-			path = ft_strjoin_wslash(temp, &data->commands[1][2]);
-			if (path == NULL)
-				ft_perror("strjoin_wslash error in cd command", EXIT_FAILURE);
-			ft_chdir(path, data->commands[1]);
-			free(path);
-		}
+		change_directory_to_home(data->commands, data->envp);
+
 	}
 	else if (!ft_strncmp(data->commands[1], "/", ft_strlen("/")))
 	{
-		if (!ft_strncmp(data->commands[1], "/", ft_strlen(data->commands[1])))
-			ft_chdir("/", data->commands[1]);
-		else
-		{
-			path = ft_strjoin_wslash("/", &data->commands[1][1]);
-			if (path == NULL)
-				ft_perror("strjoin_wslash error in cd command", EXIT_FAILURE);
-			ft_chdir(path, data->commands[1]);
-			free(path);
-		}
+		change_directory_to_root(data->commands, data->envp);
+
 	}
 	else
 	{
-		temp = getcwd(NULL, 0);
-		if (temp == NULL)
-			ft_perror("getcwd error in cd command", EXIT_FAILURE);
-		path = ft_strjoin_wslash(temp, data->commands[1]);
-		if (path == NULL)
-			ft_perror("strjoin_wslash error in cd command", EXIT_FAILURE);
-		free(temp);
-		ft_chdir(path, data->commands[1]);
-		free(path);
+		change_directory(data->commands, data->envp);
+
 	}
-	change_working_directory(data);
-	return (0);
+	if (change_working_directory(data) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
 }

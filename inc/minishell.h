@@ -100,6 +100,10 @@ int		env_command(t_data *data);
 int		export_command(t_data *data);
 int		unset_command(t_data *data);
 
+/* cd */
+int		backup_working_directory(t_data *data);
+int		change_working_directory(t_data *data);
+
 /* unset */
 char	**delete_environment_variable(char **array, char *key);
 

@@ -26,7 +26,7 @@ LIB			= libft/libft.a
 LIB_DIR		= libft
 
 BUILTIN		= builtin
-_BUILTIN	= echo.c cd.c pwd.c exit.c env.c export.c export_utils0.c export_utils1.c unset.c
+_BUILTIN	= echo.c cd.c cd_utils.c pwd.c exit.c env.c export.c export_utils0.c export_utils1.c unset.c
 
 PARSE		= parse
 _PARSE		= deli_parse.c dollar.c free.c tree.c
