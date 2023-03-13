@@ -64,7 +64,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (addr);
 }
 
-void	get_token(char const *line, size_t size, t_list *list)
+void	get_token(char const *line, size_t size, t_list **list)
 {
 	t_list	*node;
 	char	*content;
