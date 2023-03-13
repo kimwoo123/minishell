@@ -38,7 +38,7 @@ int	exec_builtin(t_data *data)
 	
 	result = FAILURE;
 	if (is_equal_to(data->commands[0], "echo") == SAME)
-		result = echo_command(data);
+		result = echo_command(data->commands);
 	else if (is_equal_to(data->commands[0], "cd") == SAME)
 		result = cd_command(data);
 	else if (is_equal_to(data->commands[0], "pwd") == SAME)
