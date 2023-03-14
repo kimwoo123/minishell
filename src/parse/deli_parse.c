@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/12 18:44:23 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/14 09:16:55 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,21 @@ void	split_delimiter(const char *line, t_list **node)
 	split_space(&line[start_index], index - start_index, node);
 }
 
+size_t	count_meta_repeat(char const *line)
+{
+	size_t	index;
+	size_t	count;
+
+	count = 0;
+	index = 0;
+	while (line[index] == *line)
+	{
+		++index;
+		++count;
+	}
+	return (count);
+}
+
 int	close_quote(const char *line)
 {
 	char	quote_flag;
@@ -175,6 +190,8 @@ int	close_quote(const char *line)
 	while (line[index])
 	{
 		quote_flag = check_quote(line[index], quote_flag);
+		if (quote_flag != '\'' && is_delimiter(line[index]))
+			count_meta_repeat(&line[index]);
 		++index;
 	}
 	if (quote_flag != '\0')
