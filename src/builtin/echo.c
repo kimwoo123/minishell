@@ -10,21 +10,49 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "minishell.h"
 
-int	echo_command(t_data *data)
+static size_t	check_index(char **array)
 {
-	if (!ft_strncmp(data->commands[1], "-n", ft_strlen("-n")))
+	size_t	i;
+	size_t	j;
+
+	i = 1;
+	while (array[i])
 	{
-		write(STDOUT_FILENO, data->commands[2], ft_strlen(data->commands[2]));
-		return (1);
+		if (array[i][0] != '-')
+			return (i);
+		j = 1;
+		while (array[i][j])
+		{
+			if (array[i][j] != 'n')
+				return (i);
+			j++;
+		}
+		i++;
 	}
-	else
+	return (i);
+}
+
+int	echo_command(char **array)
+{
+	size_t	index;
+	int		size;
+	int		flag;
+
+	flag = 0;
+	index = check_index(array);
+	if (index == 1)
+		flag = 1;
+	size = get_size_double_array(array);
+	while (array[index])
 	{
-		if (data->commands[1] != NULL)
-			write(STDOUT_FILENO, data->commands[1], ft_strlen(data->commands[1]));
-		write(STDOUT_FILENO, "\n", 1);
-		return (1);
+		write(STDOUT_FILENO, array[index], ft_strlen(array[index]));
+		if (index < size - 1)
+			write(STDOUT_FILENO, " ", 1);
+		index++;
 	}
-	return (0);
+	if (flag)
+		write(STDIN_FILENO, "\n", 1);
+	return (SUCCESS);
 }

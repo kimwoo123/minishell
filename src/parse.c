@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
 #define DELIMETER "<>|"
 
 char *ft_strndup(char *begin, char *end)

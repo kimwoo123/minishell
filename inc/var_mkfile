@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    parse_make                                         :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+         #
+#    By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/13 13:02:42 by wooseoki          #+#    #+#              #
 #    Updated: 2023/03/13 14:21:28 by wooseoki         ###   ########.fr        #
@@ -20,7 +20,7 @@ PAR_SRCS	= $(addprefix $(PAR_DIR)/, $(PAR_SRC))
 
 BTI_DIR		= src/builtin
 BTI_SRC		= \
-			echo.c cd.c pwd.c exit.c env.c \
+			echo.c cd.c cd_utils0.c cd_utils1.c pwd.c exit.c env.c \
 			export.c export_utils0.c \
 			export_utils1.c unset.c
 BTI_OBJ_DIR = obj/builtin
