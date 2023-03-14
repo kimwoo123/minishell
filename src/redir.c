@@ -12,18 +12,45 @@
 
 #include "minishell.h"
 
-int	redir_std_in()
+int	input_redir(char **argv)
 {
+	int	fd;
 
+	if (is_equal_to("<", argv[0]) == NOT_SAME)
+		return (FAILURE);
+	fd = open(argv[1], O_RDONLY);
+	if (fd == FAILURE)
+		return (FAILURE);
+	if (dup2(fd, STDIN_FILENO) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
 }
 
-int	redir_std_out()
+int	output_redir(char **argv)
 {
-	
+	int	fd;
+
+	if (is_equal_to(">", argv[0]) == NOT_SAME)
+		return (FAILURE);
+	fd = open(argv[1], (O_WRONLY | O_CREAT | O_TRUNC), 0644);
+	if (fd == FAILURE)
+		return (FAILURE);
+	if (dup2(fd, STDOUT_FILENO) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
 }
 
-int	redir_std_in()
+int	output_append_redir(char **argv)
 {
-	
+	int	fd;
+
+	if (is_equal_to(">>", argv[0]) == NOT_SAME)
+		return (FAILURE);
+	fd = open(argv[1], (O_WRONLY | O_CREAT | O_APPEND), 0644);
+	if (fd == FAILURE)
+		return (FAILURE);
+	if (dup2(fd, STDOUT_FILENO) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
 }
 
