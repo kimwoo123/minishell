@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/13 09:26:44 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/15 13:57:34 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,17 @@ enum	e_type
 	REDIRECTION,
 	WORD,
 	QUOTE,
+};
+
+enum	e_type
+{
+	WORD,
+	REDIR_TOKEN,
+	REDIRECTION,
+	CMD_TOKEN,
+	COMMAND,
+	PIPE_CMD,
+	GROUP_CMD,
 };
 
 /* add test code */
