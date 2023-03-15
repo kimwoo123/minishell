@@ -38,14 +38,14 @@ static t_stack	*create_elem(int type, char *content)
 	return (elem);
 }
 
-char	*pop_stack(t_stack **stack)
+int	pop_stack(t_stack **stack)
 {
 	t_stack	*node;
 	int		ret;
 
 	if (*stack == NULL)
-		return (NULL);
-	ret = (*stack)->content;
+		return (0);
+	ret = (*stack)->type;
 	node = *stack;
 	*stack = (*stack)->next;
 	free(node);
@@ -63,20 +63,142 @@ void	push_stack(t_stack **stack, int	type, char *content)
 	*stack = node;
 }
 
+t_tree	*create_tree(int type, char *content, t_tree *left, t_tree *right)
+{
+	t_tree	*tree;
+
+	tree = (t_tree *)malloc(sizeof(t_tree));
+	if (tree == NULL)
+		return (NULL);
+	tree->type = type;
+	tree->content = content;
+	tree->left = left;
+	tree->right = right;
+	return (tree);
+}
+
+/*
+S' -> S
+S -> SP S
+S -> S S
+SP -> SP SP
+SP -> S P
+S -> C
+S -> R
+C -> C W
+C -> W
+R -> R R
+R -> r W
+
+reduce_rule_0 // r W
+reduce_rule_1 // R R
+reduce_rule_2 // W
+reduce_rule_3 // C W
+reduce_rule_4 // R
+reduce_rule_5 // C
+reduce_rule_6 // S P
+reduce_rule_7 // SP SP
+reduce_rule_8 // S S
+reduce_rule_9 // SP S
+reduce_rule_10 // S'
+*/
+
+// void	shift_functions(t_stack *stack_node, t_list *list_node)
+// {
+// 	shift_function[WORD] = CMD_TOKEN;
+// 	shift_function[REDIRECTION] = COMMAND;
+// 	shift_function[CMD_TOKEN] = COMMAND;
+// 	shift_function[COMMAND] = GROUP_CMD;
+// }
+
+
+void	ft_redirection(void)
+{
+	printf("REDIRECTIONS\n");
+}
+
+int	*ft_command(void)
+{
+	write(1, "here\n", 5);
+	printf("COMMAND\n");
+}
+
+void	ft_pipe_command(void)
+{
+	printf("PIPE_COMMAND\n");
+}
+
+void	kfc(void)
+{
+	printf("KFC\n");
+}
+
+int	**init_reduce_functions(void)
+{
+	int **reduce_table;
+	int	i;
+
+	reduce_table = (int **)ft_calloc(7, sizeof(int *));
+	if (reduce_table == NULL)
+		return (NULL);
+	i = 0;
+	while (i < 7)
+	{
+		reduce_table[i] = (int *)ft_calloc(7, sizeof(int *));
+		i++;
+	}
+	reduce_table[REDIR_TOKEN][WORD] = ft_redirection;
+	reduce_table[REDIRECTION][WORD] = ft_redirection;
+	reduce_table[WORD][WORD] = ft_command;
+	reduce_table[COMMAND][PIPE] = ft_pipe_command;
+	reduce_table[PIPE_CMD][PIPE_CMD] = ft_pipe_command;
+	reduce_table[COMMAND][COMMAND] = ft_command;
+	reduce_table[PIPE_CMD][COMMAND] = ft_command;
+	return (reduce_table);
+}
+
+void	print_reduce_functions(int **reduce_table, t_list *stack_node, t_list *list_node)
+{
+	printf("%d, %d\n", stack_node->type, list_node->type);
+	printf("%p\n", reduce_table[stack_node->type][list_node->type]);
+	reduce_table[stack_node->type][list_node->type];
+}
+
+int	show_top_type(t_stack *stack_node, t_list *list_node)
+{
+	if (stack_node == NULL || list_node == NULL)
+		return (-1);
+	
+	return (0);
+}
+
 int	test_code(t_list **node)
 {
 	t_stack *stack;
 	t_list	*temp;
+	t_tree	*root;
+	int		**reduce_table;
+
+	printf("origin: %p\n", ft_command);
+	reduce_table = init_reduce_functions();
+	printf("before %p\n", reduce_table[1][1]);
+	reduce_table[1][1];
+	print_reduce_functions(reduce_table, *node, (*node)->next);
 
 	stack = NULL;
-	int		i;
-	i = 0;
+	root = create_tree(0, NULL, NULL, NULL);
+	if (root == NULL)
+		return (0);
 	temp = *node;
-	while (temp)
-	{
-		push_stack(&stack, (temp)->type, (temp)->content);
-		temp = temp->next;	
-		i++;
-	}
-	print_list(&stack);
+	// print_reduce_functions(reduce_table, temp, temp->next);
+	// while (temp)
+	// {
+	// 	// push_stack(&stack, (temp)->type, (temp)->content); // check
+	// 	// show_top_type(stack, temp);
+	// 	print_reduce_functions(reduce_table, temp, temp->next);
+	// 	temp = temp->next;
+	// }
+	// print_list(&stack);
+	return (0);
 }
+

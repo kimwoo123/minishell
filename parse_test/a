@@ -1,0 +1,4 @@
+(lldb) target create "./minishell"
+Current executable set to '/Users/chajung/Desktop/workspace/minishell/parse_test/minishell' (x86_64).
+^C
+

@@ -96,6 +96,7 @@ enum	e_token
 
 enum	e_type
 {
+	A,
 	WORD,
 	REDIR_TOKEN,
 	REDIRECTION,
