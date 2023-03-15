@@ -53,4 +53,3 @@ int	output_append_redir(char **argv)
 		return (FAILURE);
 	return (SUCCESS);
 }
-
