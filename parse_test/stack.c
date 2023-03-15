@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/16 08:28:41 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/16 08:49:42 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,28 @@ int	kfc(void)
 
 typedef int (*t_fptr)(void);
 
+void	set_null_table(t_fptr **reduce_table)
+{
+	size_t	index;
+	size_t	sub_index;
+
+	index = 0;
+	while (index < 10)
+	{
+		sub_index = 0;
+		while (sub_index < 10)
+		{
+			reduce_table[index][sub_index] = NULL;
+			++sub_index;
+		}
+		++index;
+	}
+}
+
 t_fptr **init_reduce_functions(void)
 {
 	t_fptr	**reduce_table;
-	int	i;
+	size_t	i;
 
 	// PIPE enum is 9 so size is 10
 	reduce_table = (t_fptr **)malloc(sizeof(t_fptr *) * 10);
@@ -147,6 +165,7 @@ t_fptr **init_reduce_functions(void)
 		reduce_table[i] = (t_fptr *)malloc(sizeof(t_fptr) * 10);
 		++i;
 	}
+	set_null_table(reduce_table);
 	reduce_table[REDIR_TOKEN][WORD] = &ft_redirection;
 	reduce_table[REDIRECTION][WORD] = &ft_redirection;
 	reduce_table[WORD][WORD] = &ft_command;
