@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/15 19:09:33 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/16 08:28:41 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,18 +132,19 @@ int	kfc(void)
 	return (314);
 }
 
-typedef int (*funptr)(void);
+typedef int (*t_fptr)(void);
 
-funptr **init_reduce_functions(void)
+t_fptr **init_reduce_functions(void)
 {
-	funptr	**reduce_table;
+	t_fptr	**reduce_table;
 	int	i;
 
-	reduce_table = (funptr **)malloc(sizeof(funptr *) * 10);
+	// PIPE enum is 9 so size is 10
+	reduce_table = (t_fptr **)malloc(sizeof(t_fptr *) * 10);
 	i = 0;
 	while (i < 10)
 	{
-		reduce_table[i] = (funptr *)malloc(sizeof(funptr) * 10);
+		reduce_table[i] = (t_fptr *)malloc(sizeof(t_fptr) * 10);
 		++i;
 	}
 	reduce_table[REDIR_TOKEN][WORD] = &ft_redirection;
@@ -156,7 +157,7 @@ funptr **init_reduce_functions(void)
 	return (reduce_table);
 }
 
-void	print_reduce_functions(funptr **reduce_table, t_list *stack_node, t_list *list_node)
+void	print_reduce_functions(t_fptr **reduce_table, t_list *stack_node, t_list *list_node)
 {
  	printf("%d, %d\n", stack_node->type, list_node->type);
  	printf("%p\n", &reduce_table[stack_node->type][list_node->type]);
@@ -177,7 +178,7 @@ int	test_code(t_list **node)
 	t_list	*temp;
 	t_tree	*root;
 
-	funptr **reduce_table;
+	t_fptr **reduce_table;
 
 	reduce_table = init_reduce_functions();
 	print_reduce_functions(reduce_table, *node, (*node)->next);
