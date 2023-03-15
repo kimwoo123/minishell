@@ -86,6 +86,10 @@ enum	e_type
 	QUOTE,
 };
 
+/* add test code */
+int	test_code(t_list **node);
+/* add test code */
+
 int	parsing_command_line_test(t_data *data);
 int	is_not_builtin(t_data *data);
 
