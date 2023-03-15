@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/15 13:57:34 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/15 15:37:51 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,21 @@ typedef struct	s_list
 	struct s_list	*next;
 }	t_list;
 
-enum	e_type
+typedef	struct	s_tree
+{
+	int				type;
+	char			*content;
+	struct s_tree	*left;
+	struct s_tree	*right;
+}	t_tree;
+/*
+enum	e_token
 {
 	PIPE,
 	REDIRECTION,
 	WORD,
 	QUOTE,
-};
+};*/
 
 enum	e_type
 {
@@ -95,6 +103,8 @@ enum	e_type
 	COMMAND,
 	PIPE_CMD,
 	GROUP_CMD,
+	QUOTE,
+	PIPE
 };
 
 /* add test code */
