@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/16 16:55:26 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:56:47 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ int	reduce_redirection(t_stack **stack_node, t_list *list_node) // r W / R R
 	pop_stack(stack_node);
 	push_stack(stack_node, REDIRECTION, NULL);
 
-
 	return (SUCCESS);
 }
 
@@ -188,6 +187,17 @@ int	shift_word_command(t_stack **stack_node, t_list *list_node)
 	return (SUCCESS);
 }
 
+int	shift_word2_command(t_stack **stack_node, t_list *list_node)
+{
+	int	type;
+
+	type = pop_stack(stack_node);
+	pop_stack(stack_node);
+	push_stack(stack_node, CMD_TOKEN, NULL);
+	push_stack(stack_node, type, NULL);
+	return (SUCCESS);
+}
+
 int	shift_command(t_stack **stack_node, t_list *list_node)
 {
 	int	type;
@@ -227,6 +237,7 @@ void	init_reduce_functions2(t_fptr **reduce_table)
 	reduce_table[COMMAND][WORD] = shift_word_command;
 	reduce_table[PIPE_CMD][WORD] = shift_word_command;
 	reduce_table[REDIRECTION][WORD] = shift_word_command;
+	reduce_table[WORD][0] = shift_word2_command;
 
 	reduce_table[CMD_TOKEN][REDIR_TOKEN] = shift_command;
 	reduce_table[CMD_TOKEN][PIPE] = shift_command;
@@ -264,7 +275,6 @@ t_fptr **init_reduce_functions(void)
 	i = -1;
 	while (++i < PIPE + 1)
 		reduce_table[i] = (t_fptr *)ft_calloc((PIPE + 1), sizeof(t_fptr));
-
 	init_reduce_functions2(reduce_table);
 	return (reduce_table);
 }
