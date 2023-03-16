@@ -154,6 +154,11 @@ int	reduce_group_command(t_stack **stack_node, t_list *list_node) // S S / SP P
 	return (SUCCESS);
 }
 
+int	waiting(t_stack **stack_node, t_list *list_node)
+{
+	return (SUCCESS);
+}
+
 typedef int (*t_fptr)(t_stack **stack_node, t_list *list_node);
 
 static void	test_print_double_array(t_fptr **array)
@@ -174,7 +179,47 @@ static void	test_print_double_array(t_fptr **array)
 	}
 }
 
+int	shift_word_command(t_stack **stack_node, t_list *list_node)
+{
+	// if (list_node->type != WORD)
+	// 	return (FAILURE);
+	pop_stack(stack_node);
+	push_stack(stack_node, CMD_TOKEN, NULL);
+	return (SUCCESS);
+}
 
+int	shift_command(t_stack **stack_node, t_list *list_node)
+{
+	int	type;
+
+	type = pop_stack(stack_node);
+	pop_stack(stack_node);
+	push_stack(stack_node, COMMAND, NULL);
+	push_stack(stack_node, type, NULL);
+	return (SUCCESS);
+}
+
+int	shift_redir_command(t_stack **stack_node, t_list *list_node)
+{
+	int	type;
+
+	type = pop_stack(stack_node);
+	pop_stack(stack_node);
+	push_stack(stack_node, REDIRECTION, NULL);
+	push_stack(stack_node, type, NULL);
+	return (SUCCESS);
+}
+
+int	shift_gc_command(t_stack **stack_node, t_list *list_node)
+{
+	int	type;
+
+	type = pop_stack(stack_node);
+	pop_stack(stack_node);
+	push_stack(stack_node, GROUP_CMD, NULL);
+	push_stack(stack_node, type, NULL);
+	return (SUCCESS);
+}
 
 void	init_reduce_functions2(t_fptr **reduce_table)
 {
@@ -183,27 +228,32 @@ void	init_reduce_functions2(t_fptr **reduce_table)
 	// reduce_table[WORD][PIPE] = reduce_cmd_token;
 	// reduce_table[WORD][0] = reduce_cmd_token;
 
+	reduce_table[COMMAND][WORD] = shift_word_command;
+	reduce_table[PIPE_CMD][WORD] = shift_word_command;
+	reduce_table[REDIRECTION][WORD] = shift_word_command;
+
+	reduce_table[CMD_TOKEN][REDIR_TOKEN] = shift_command;
+	reduce_table[CMD_TOKEN][PIPE] = shift_command;
+	reduce_table[CMD_TOKEN][0] = shift_command;
+
+	reduce_table[REDIRECTION][PIPE] = shift_redir_command;
+	reduce_table[REDIRECTION][0] = shift_redir_command;
+
+	reduce_table[COMMAND][0] = shift_gc_command;
+
 	reduce_table[REDIR_TOKEN][WORD] = reduce_redirection;
 	reduce_table[CMD_TOKEN][WORD] = reduce_cmd_token;
-	reduce_table[CMD_TOKEN][REDIR_TOKEN] = shift_left_command;
-	reduce_table[CMD_TOKEN][PIPE] = shift_left_command;
-	reduce_table[CMD_TOKEN][0] = shift_left_command;
-	reduce_table[COMMAND][WORD] = shift_right_command;
 	reduce_table[COMMAND][PIPE] = reduce_pipe_command;
-	reduce_table[COMMAND][0] = shift_left_command;
-	reduce_table[PIPE_CMD][WORD] = shift_right_command;
 	reduce_table[PIPE_CMD][PIPE_CMD] = reduce_pipe_command;
-	reduce_table[REDIRECTION][WORD] = shift_right_command;
-	reduce_table[REDIRECTION][PIPE] = shift_left_command;
-	reduce_table[REDIRECTION][0] = shift_left_command;
 	reduce_table[REDIRECTION][REDIRECTION] = reduce_redirection;
 	reduce_table[PIPE_CMD][COMMAND] = reduce_group_command;
 	reduce_table[GROUP_CMD][GROUP_CMD] = reduce_group_command;
 	reduce_table[GROUP_CMD][0] = reduce_group_command;
 
-	// reduce_table[COMMAND][REDIR_TOKEN] = waiting;
-	// reduce_table[PIPE_CMD][REDIR_TOKEN] = waiting;
-	// reduce_table[REDIRECTION][REDIR_TOKEN] = waiting;
+	reduce_table[COMMAND][REDIR_TOKEN] = waiting;
+	reduce_table[PIPE_CMD][REDIR_TOKEN] = waiting;
+	reduce_table[REDIRECTION][REDIR_TOKEN] = waiting;
+
 	// reduce_table[REDIR_TOKEN][REDIR_TOKEN] = ERROR;
 	// reduce_table[REDIR_TOKEN][PIPE] = ERROR;
 	// reduce_table[REDIR_TOKEN][0] = ERROR;
