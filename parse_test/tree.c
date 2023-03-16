@@ -45,7 +45,7 @@ int		check_type(const char *str)
 	if (*str == '|')
 		return (PIPE);
 	if (*str == '<' || *str == '>')
-		return (REDIRECTION);
+		return (REDIR_TOKEN);
 	return (WORD);
 }
 
