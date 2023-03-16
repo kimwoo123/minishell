@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/16 08:49:42 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/16 09:25:46 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,38 +134,19 @@ int	kfc(void)
 
 typedef int (*t_fptr)(void);
 
-void	set_null_table(t_fptr **reduce_table)
-{
-	size_t	index;
-	size_t	sub_index;
-
-	index = 0;
-	while (index < 10)
-	{
-		sub_index = 0;
-		while (sub_index < 10)
-		{
-			reduce_table[index][sub_index] = NULL;
-			++sub_index;
-		}
-		++index;
-	}
-}
-
 t_fptr **init_reduce_functions(void)
 {
 	t_fptr	**reduce_table;
 	size_t	i;
 
 	// PIPE enum is 9 so size is 10
-	reduce_table = (t_fptr **)malloc(sizeof(t_fptr *) * 10);
+	reduce_table = (t_fptr **)ft_calloc(10, sizeof(t_fptr *));
 	i = 0;
 	while (i < 10)
 	{
-		reduce_table[i] = (t_fptr *)malloc(sizeof(t_fptr) * 10);
+		reduce_table[i] = (t_fptr *)ft_calloc(10, sizeof(t_fptr));
 		++i;
 	}
-	set_null_table(reduce_table);
 	reduce_table[REDIR_TOKEN][WORD] = &ft_redirection;
 	reduce_table[REDIRECTION][WORD] = &ft_redirection;
 	reduce_table[WORD][WORD] = &ft_command;
@@ -174,13 +155,6 @@ t_fptr **init_reduce_functions(void)
 	reduce_table[COMMAND][COMMAND] = &ft_command;
 	reduce_table[PIPE_CMD][COMMAND] = &ft_command;
 	return (reduce_table);
-}
-
-void	print_reduce_functions(t_fptr **reduce_table, t_list *stack_node, t_list *list_node)
-{
- 	printf("%d, %d\n", stack_node->type, list_node->type);
- 	printf("%p\n", &reduce_table[stack_node->type][list_node->type]);
-  	reduce_table[stack_node->type][list_node->type]();
 }
 
 int	show_top_type(t_stack *stack_node, t_list *list_node)
@@ -196,26 +170,21 @@ int	test_code(t_list **node)
 	t_stack *stack;
 	t_list	*temp;
 	t_tree	*root;
-
-	t_fptr **reduce_table;
+	t_fptr	**reduce_table;
 
 	reduce_table = init_reduce_functions();
-	print_reduce_functions(reduce_table, *node, (*node)->next);
-
-	// stack = NULL;
-	// root = create_tree(0, NULL, NULL, NULL);
-	// if (root == NULL)
-	// 	return (0);
-	// temp = *node;
-	// print_reduce_functions(reduce_table, temp, temp->next);
-	// while (temp)
-	// {
-	// 	// push_stack(&stack, (temp)->type, (temp)->content); // check
-	// 	// show_top_type(stack, temp);
-	// 	print_reduce_functions(reduce_table, temp, temp->next);
-	// 	temp = temp->next;
-	// }
-	// print_list(&stack);
+	stack = NULL;
+	root = create_tree(0, NULL, NULL, NULL);
+	if (root == NULL)
+		return (0);
+	temp = *node;
+	while (temp)
+	{
+	 	push_stack(&stack, (temp)->type, (temp)->content); // check
+	 	show_top_type(stack, temp);
+	 	temp = temp->next;
+	}
+	print_list(&stack);
 	return (0);
 }
 
