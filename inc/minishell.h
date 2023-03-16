@@ -94,15 +94,27 @@ enum	e_token
 	QUOTE,
 };*/
 
+// # define A				0
+// # define WORD			1
+// # define REDIR_TOKEN	2
+// # define REDIRECTION	3
+// # define CMD_TOKEN		4
+// # define COMMAND		5
+// # define PIPE_CMD		6
+// # define GROUP_CMD		7
+// # define QUOTE			8
+// # define PIPE			9
+
 enum	e_type
 {
-	A,
+	ZERO,
 	WORD,
 	REDIR_TOKEN,
 	REDIRECTION,
 	CMD_TOKEN,
 	COMMAND,
 	PIPE_CMD,
+	PARENT_REDIR,
 	GROUP_CMD,
 	QUOTE,
 	PIPE
