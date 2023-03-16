@@ -196,7 +196,8 @@ void	scan_command(const char *line)
 	search_list(list);
 
 	/* add test code */
-	test_code(&list);
+	test_tree(&list);
+	// test_code(&list);
 	/* add test code */
 }
 

@@ -120,7 +120,6 @@ int	reduce_redirection(t_stack **stack_node, t_list *list_node) // r W / R R
 	pop_stack(stack_node);
 	push_stack(stack_node, REDIRECTION, NULL);
 
-
 	return (SUCCESS);
 }
 
@@ -188,6 +187,17 @@ int	shift_word_command(t_stack **stack_node, t_list *list_node)
 	return (SUCCESS);
 }
 
+int	shift_word2_command(t_stack **stack_node, t_list *list_node)
+{
+	int	type;
+
+	type = pop_stack(stack_node);
+	pop_stack(stack_node);
+	push_stack(stack_node, CMD_TOKEN, NULL);
+	push_stack(stack_node, type, NULL);
+	return (SUCCESS);
+}
+
 int	shift_command(t_stack **stack_node, t_list *list_node)
 {
 	int	type;
@@ -231,6 +241,7 @@ void	init_reduce_functions2(t_fptr **reduce_table)
 	reduce_table[COMMAND][WORD] = shift_word_command;
 	reduce_table[PIPE_CMD][WORD] = shift_word_command;
 	reduce_table[REDIRECTION][WORD] = shift_word_command;
+	reduce_table[WORD][0] = shift_word2_command;
 
 	reduce_table[CMD_TOKEN][REDIR_TOKEN] = shift_command;
 	reduce_table[CMD_TOKEN][PIPE] = shift_command;
@@ -276,12 +287,12 @@ t_fptr **init_reduce_functions(void)
 
 	// test_print_double_array(reduce_table);
 
-	reduce_table[REDIR_TOKEN][WORD] = reduce_redirection;
-	reduce_table[REDIRECTION][REDIRECTION] = reduce_redirection;
-	reduce_table[CMD_TOKEN][WORD] = reduce_cmd_token;
-	reduce_table[PIPE_CMD][PIPE_CMD] = reduce_pipe_command;
-	reduce_table[GROUP_CMD][GROUP_CMD] = reduce_group_command;
-	reduce_table[PIPE_CMD][GROUP_CMD] = reduce_group_command;
+	// reduce_table[REDIR_TOKEN][WORD] = reduce_redirection;
+	// reduce_table[REDIRECTION][REDIRECTION] = reduce_redirection;
+	// reduce_table[CMD_TOKEN][WORD] = reduce_cmd_token;
+	// reduce_table[PIPE_CMD][PIPE_CMD] = reduce_pipe_command;
+	// reduce_table[GROUP_CMD][GROUP_CMD] = reduce_group_command;
+	// reduce_table[PIPE_CMD][GROUP_CMD] = reduce_group_command;
 	init_reduce_functions2(reduce_table);
 	return (reduce_table);
 }
@@ -363,8 +374,19 @@ int	test_code(t_list **node)
 	i = 0;
 	while (i++ < 100)
 	{
-		test_shift(&stack, temp);
-		test_reduce(reduce_table, &stack, temp);
+		// test_shift(&stack, temp);
+		// test_reduce(reduce_table, &stack, temp);
+		push_stack(&stack, temp->type, NULL);
+		if ((stack)->next)
+		{
+			if (reduce_table[(stack)->type][(stack)->next->type] == NULL)
+				break ;
+			reduce_table[(stack)->type][(stack)->next->type](&stack, temp);
+			reduce_table[(stack)->type][(stack)->next->type](&stack, temp);
+			reduce_table[(stack)->type][(stack)->next->type](&stack, temp);
+			reduce_table[(stack)->type][(stack)->next->type](&stack, temp);
+		}
+		
 		// i = 0;
 		// while (i++ < 5)
 		// 	test_shift(&stack, temp);
