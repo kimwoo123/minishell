@@ -122,7 +122,7 @@ enum	e_type
 
 /* add test code */
 int	test_code(t_list **node);
-int	test_tree(t_list **node);
+t_tree	*test_tree(t_list **node);
 /* add test code */
 
 int	parsing_command_line_test(t_data *data);
