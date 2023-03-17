@@ -156,9 +156,9 @@ void	test_search_tree(t_tree *head)
 	if (head && head->content)
 		printf("type: %d, content:%s\n", head->type, head->content);
 	if (head->left != NULL)
-		search_tree(head->left);
+		test_search_tree(head->left);
 	if (head->right != NULL)
-		search_tree(head->right);
+		test_search_tree(head->right);
 }
 
 t_tree	*test_tree(t_list **node)

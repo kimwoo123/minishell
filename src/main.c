@@ -101,6 +101,18 @@ int	parsing_command_line(t_data *data)
 	return (0);
 }
 
+void	make_nice_name(char *command_line)
+{
+	t_list	*list;
+	t_tree	*tree;
+
+	list = scan_command(command_line);
+	if (list == NULL)
+		exit(EXIT_FAILURE);
+	tree = make_tree(&list);
+	// parsing_command_line(&data);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
@@ -114,11 +126,13 @@ int	main(int argc, char **argv, char **envp)
 		if (command_line == NULL)
 			break ;
 		add_history(command_line);
-		data.commands = ft_split(command_line, ' ');
-		if (data.commands == NULL)
-			ft_perror("split error in main", EXIT_FAILURE);
+		make_nice_name(command_line);
+		// scan_command(command_line); // exec function is in scan_command
+		// data.commands = ft_split(command_line, ' ');
+		// if (data.commands == NULL)
+			// ft_perror("split error in main", EXIT_FAILURE);
 		free (command_line);
-		parsing_command_line(&data);
+		// parsing_command_line(&data);
 	}
 	return (0);
 }
