@@ -12,6 +12,60 @@
 
 #include "minishell.h"
 
+/************************************************************/
+char	*redirection_join(t_tree *tree)
+{
+	char	*temp;
+	char	*new_str;
+
+	temp = ft_strjoin(tree->left->content, " ");
+	if (temp == NULL)
+		return (NULL);
+	new_str = ft_strjoin(temp, tree->right->content);
+	if (new_str == NULL)
+		return (NULL);
+	free(temp);
+	return (new_str);
+}
+
+char	*ft_strjoin_wspace(char *str1, char *str2)
+{
+	char	*temp;
+	char	*new_str;
+
+	temp = ft_strjoin(str1, " ");
+	if (temp == NULL)
+		return (NULL);
+	new_str = ft_strjoin(temp, str2);
+	if (new_str == NULL)
+		return (NULL);
+	free(temp);
+	return (new_str);
+}
+
+char	*command_join(t_tree *tree)
+{
+	char	*str;
+	char	*new_str;
+	t_tree	*temp;
+
+	str = tree->left->content;
+	temp = tree->right;
+	while (temp != NULL)
+	{
+		if (temp->left != NULL)
+		{
+			new_str = ft_strjoin_wspace(str, temp->left->content);
+			free(str);
+			str = new_str;
+			new_str = NULL;
+		}
+		temp = temp->right;
+	}
+	return (str);
+}
+/************************************************************/
+
 int	execute_command(t_data *data)
 {
 	char	*command_path;
@@ -101,123 +155,62 @@ int	parsing_command_line(t_data *data)
 	return (0);
 }
 
-
-
-
-char	*redirection_join(t_tree *tree)
+int	execve_command_line(t_data *data, t_tree *tree)
 {
 	char	*temp;
-	char	*new_str;
 
-	temp = ft_strjoin(tree->left->content, " ");
-	if (temp == NULL)
-		return (NULL);
-	new_str = ft_strjoin(temp, tree->right->content);
-	if (new_str == NULL)
-		return (NULL);
-	free(temp);
-	return (new_str);
-}
-
-char	*ft_strjoin_wspace(char *str1, char *str2)
-{
-	char	*temp;
-	char	*new_str;
-
-	temp = ft_strjoin(str1, " ");
-	if (temp == NULL)
-		return (NULL);
-	new_str = ft_strjoin(temp, str2);
-	if (new_str == NULL)
-		return (NULL);
-	free(temp);
-	return (new_str);
-}
-
-char	*command_join(t_tree *tree)
-{
-// current location: PARENT_CMD
-	char	*str;
-	char	*new_str;
-	t_tree	*temp;
-
-	str = tree->left->content; // ls
-	temp = tree->right;
-	while (temp != NULL)
-	{
-		if (temp->left != NULL)
-		{
-			new_str = ft_strjoin_wspace(str, temp->left->content);
-			free(str);
-			str = new_str;
-			new_str = NULL;
-		}
-		temp = temp->right;
-	}
-	return (str);
-}
-
-
-int	execve_command_line(t_tree *tree)
-{
 	// printf("%d: %s\n", tree->type, tree->content);
 	if (tree->type == PIPE)
 	{
-		if (tree->right == NULL)
-			return (0); // DO NOT PIPE !
-		else if (tree->right != NULL)
-			printf("%d: %s\n", tree->type, tree->content); // DO PIPE!
+		if (tree->right == NULL) // DO NOT PIPE !
+			return (0);
+		else if (tree->right != NULL) // DO PIPE!
+			return (0);
 	}
 	else if (tree->type == REDIRECTION)
 	{
-		printf("redir: %s\n", redirection_join(tree));
-		// return (0);
-	}
-	else if (tree->type == PARENT_CMD)
-	{
-		if (tree->left != NULL)
-		{
-			// printf("command: %s\n", tree->left->content);
-			printf("command: %s\n", command_join(tree));
-		}
 		return (0);
-		// if (tree->right == NULL)
-		// 	return (0);
-		// else if (tree->right != NULL)
-		// 	return (0); // DO PIPE!
+	}
+	else if (tree->type == PARENT_CMD && tree->left != NULL)
+	{
+		// printf("command: %s\n", command_join(tree));
+		temp = command_join(tree);
+		data->commands = ft_split(temp, ' ');
+		free(temp);
+		if (is_builtin(data->commands[0]) == FOUND)
+			exec_builtin(data);
+		else
+			is_not_builtin(data);
+		// return (0);
 	}
 	return (0);
 }
 
-static void	test_search_tree(t_tree *head)
+static void	test_search_tree(t_data *data, t_tree *head)
 {
-	// printf("%d: %s\n", head->type, head->content);
-
 	if (head == NULL)
 		return ;
 	if (head->type == PIPE || head->type == REDIRECTION \
 	|| head->type == PARENT_CMD)
-		execve_command_line(head);
-		// printf("%d: %s\n", head->type, head->content);
+		execve_command_line(data, head);
 	if (head->left != NULL)
-		test_search_tree(head->left);
+		test_search_tree(data, head->left);
 	if (head->right != NULL)
-		test_search_tree(head->right);
+		test_search_tree(data, head->right);
 }
 
-void	make_nice_name(char *command_line)
+void	make_nice_name(t_data *data, char *command_line)
 {
 	t_list	*list;
 	t_tree	*tree;
 
 	list = scan_command(command_line);
 	if (list == NULL)
-		exit(EXIT_FAILURE);
+		rl_on_new_line();
 	tree = make_tree(&list);
-	test_search_tree(tree);
-	// free(list));
-	// free(tree);
-	// parsing_command_line(&data);
+	test_search_tree(data, tree);
+	free(list);
+	free(tree);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -233,13 +226,8 @@ int	main(int argc, char **argv, char **envp)
 		if (command_line == NULL)
 			break ;
 		add_history(command_line);
-		make_nice_name(command_line);
-		// scan_command(command_line); // exec function is in scan_command
-		// data.commands = ft_split(command_line, ' ');
-		// if (data.commands == NULL)
-			// ft_perror("split error in main", EXIT_FAILURE);
+		make_nice_name(&data, command_line);
 		free (command_line);
-		// parsing_command_line(&data);
 	}
 	return (0);
 }
