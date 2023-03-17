@@ -112,7 +112,7 @@ char	*redirection_join(t_tree *tree)
 	temp = ft_strjoin(tree->left->content, " ");
 	if (temp == NULL)
 		return (NULL);
-	new_str = ft_strjoin(temp,  tree->right->content);
+	new_str = ft_strjoin(temp, tree->right->content);
 	if (new_str == NULL)
 		return (NULL);
 	free(temp);
@@ -145,10 +145,9 @@ char	*command_join(t_tree *tree)
 	temp = tree->right;
 	while (temp != NULL)
 	{
-		
 		if (temp->left != NULL)
 		{
-			new_str = ft_strjoin_wspace(str, tree->left->content);
+			new_str = ft_strjoin_wspace(str, temp->left->content);
 			free(str);
 			str = new_str;
 			new_str = NULL;
@@ -165,22 +164,22 @@ int	execve_command_line(t_tree *tree)
 	if (tree->type == PIPE)
 	{
 		if (tree->right == NULL)
-			return (0);
+			return (0); // DO NOT PIPE !
 		else if (tree->right != NULL)
-			return (0); // DO PIPE!
+			printf("%d: %s\n", tree->type, tree->content); // DO PIPE!
 	}
 	else if (tree->type == REDIRECTION)
 	{
-		// printf("redir: %s\n", redir_join(tree));
-		return (0);
+		printf("redir: %s\n", redirection_join(tree));
+		// return (0);
 	}
 	else if (tree->type == PARENT_CMD)
 	{
-		// if (tree->left != NULL)
-		// {
-		// 	// printf("command: %s\n", tree->left->content);
-		// 	printf("command: %s\n", command_join(tree));
-		// }
+		if (tree->left != NULL)
+		{
+			// printf("command: %s\n", tree->left->content);
+			printf("command: %s\n", command_join(tree));
+		}
 		return (0);
 		// if (tree->right == NULL)
 		// 	return (0);
@@ -192,13 +191,13 @@ int	execve_command_line(t_tree *tree)
 
 static void	test_search_tree(t_tree *head)
 {
-	printf("%d: %s\n", head->type, head->content);
+	// printf("%d: %s\n", head->type, head->content);
 
 	if (head == NULL)
 		return ;
-	// if (head->type == PIPE || head->type == PARENT_REDIR \
-	// || head->type == PARENT_CMD)
-		// execve_command_line(head);
+	if (head->type == PIPE || head->type == REDIRECTION \
+	|| head->type == PARENT_CMD)
+		execve_command_line(head);
 		// printf("%d: %s\n", head->type, head->content);
 	if (head->left != NULL)
 		test_search_tree(head->left);
@@ -216,6 +215,8 @@ void	make_nice_name(char *command_line)
 		exit(EXIT_FAILURE);
 	tree = make_tree(&list);
 	test_search_tree(tree);
+	// free(list));
+	// free(tree);
 	// parsing_command_line(&data);
 }
 
