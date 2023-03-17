@@ -6,13 +6,16 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/16 16:56:47 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/17 19:10:11 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // make_nodes_a_stack
+char *trans[] = { "ZERO", "WORD", "REDIR_TOKEN", "REDIRECTION",
+				"CMD_TOKEN", "COMMAND", "PIPE_CMD", "PARENT_REDIR", "GROUP_CMD", "QUOTE", "PIPE" };
+
 
 static void	print_list(t_stack **node)
 {
@@ -21,12 +24,12 @@ static void	print_list(t_stack **node)
 	temp = *node;
 	while (temp)
 	{
-		printf("type: %d, content: %s\n", temp->type, temp->content);
+		printf("type: %d\n", temp->type);
 		temp = temp->next;
 	}
 }
 
-static t_stack	*create_elem(int type, char *content)
+static t_stack	*create_elem(int type)
 {
 	t_stack	*elem;
 
@@ -34,7 +37,6 @@ static t_stack	*create_elem(int type, char *content)
 	if (elem == NULL)
 		return (NULL);
 	elem->type = type;
-	elem->content = content;
 	elem->next = NULL;
 	return (elem);
 }
@@ -53,11 +55,11 @@ int	pop_stack(t_stack **stack)
 	return (ret);
 }
 
-void	push_stack(t_stack **stack, int	type, char *content)
+void	push_stack(t_stack **stack, int	type)
 {
 	t_stack *node;
 
-	node = create_elem(type, content);
+	node = create_elem(type);
 	if (node == NULL)
 		return ;
 	node->next = *stack;
@@ -113,52 +115,56 @@ reduce_rule_10 // S'
 // }
 
 
-int	reduce_redirection(t_stack **stack_node, t_list *list_node) // r W / R R
+int	reduce_redirection(t_stack **stack_node) // r W / R R
 {
 	t_stack *node;
 
 	pop_stack(stack_node);
-	push_stack(stack_node, REDIRECTION, NULL);
+	pop_stack(stack_node);
+	push_stack(stack_node, REDIRECTION);
 
 	return (SUCCESS);
 }
 
-int	reduce_cmd_token(t_stack **stack_node, t_list *list_node) // C W
+int	reduce_cmd_token(t_stack **stack_node) // C W
 {
 	t_stack *node;
 
 	pop_stack(stack_node);
-	push_stack(stack_node, CMD_TOKEN, NULL);
+	pop_stack(stack_node);
+	push_stack(stack_node, CMD_TOKEN);
 
 	return (SUCCESS);
 }
 
-int	reduce_pipe_command(t_stack **stack_node, t_list *list_node) // SP SP
+int	reduce_pipe_command(t_stack **stack_node) // SP SP
 {
 	t_stack *node;
 
 	pop_stack(stack_node);
-	push_stack(stack_node, PIPE_CMD, NULL);
+	pop_stack(stack_node);
+	push_stack(stack_node, PIPE_CMD);
 
 	return (SUCCESS);
 }
 
-int	reduce_group_command(t_stack **stack_node, t_list *list_node) // S S / SP P
+int	reduce_group_command(t_stack **stack_node) // S S / SP P
 {
 	t_stack *node;
 
 	pop_stack(stack_node);
-	push_stack(stack_node, GROUP_CMD, NULL);
+	pop_stack(stack_node);
+	push_stack(stack_node, GROUP_CMD);
 
 	return (SUCCESS);
 }
 
-int	waiting(t_stack **stack_node, t_list *list_node)
+int	waiting(t_stack **stack_node)
 {
 	return (SUCCESS);
 }
 
-typedef int (*t_fptr)(t_stack **stack_node, t_list *list_node);
+typedef int (*t_fptr)(t_stack **stack_node);
 
 static void	test_print_double_array(t_fptr **array)
 {
@@ -178,79 +184,97 @@ static void	test_print_double_array(t_fptr **array)
 	}
 }
 
-int	shift_word_command(t_stack **stack_node, t_list *list_node)
+int	shift_word_command(t_stack **stack_node)
 {
 	// if (list_node->type != WORD)
 	// 	return (FAILURE);
 	pop_stack(stack_node);
-	push_stack(stack_node, CMD_TOKEN, NULL);
+	push_stack(stack_node, CMD_TOKEN);
 	return (SUCCESS);
 }
 
-int	shift_word2_command(t_stack **stack_node, t_list *list_node)
+int	shift_word2_command(t_stack **stack_node)
 {
 	int	type;
 
 	type = pop_stack(stack_node);
 	pop_stack(stack_node);
-	push_stack(stack_node, CMD_TOKEN, NULL);
-	push_stack(stack_node, type, NULL);
+	push_stack(stack_node, CMD_TOKEN);
+	push_stack(stack_node, type);
 	return (SUCCESS);
 }
 
-int	shift_command(t_stack **stack_node, t_list *list_node)
+int	shift_command(t_stack **stack_node)
+{
+	int	type;
+
+	//printf("sc stack: %s\n", trans[(*stack_node)->type]);
+	type = pop_stack(stack_node);
+	//printf("sc next: %s\n", trans[(*stack_node)->type]);
+	pop_stack(stack_node);
+	push_stack(stack_node, COMMAND);
+	push_stack(stack_node, type);
+	return (SUCCESS);
+}
+
+int	shift_redir_command(t_stack **stack_node)
 {
 	int	type;
 
 	type = pop_stack(stack_node);
 	pop_stack(stack_node);
-	push_stack(stack_node, COMMAND, NULL);
-	push_stack(stack_node, type, NULL);
+	push_stack(stack_node, REDIRECTION);
+	push_stack(stack_node, type);
 	return (SUCCESS);
 }
 
-int	shift_redir_command(t_stack **stack_node, t_list *list_node)
+int	shift_gc_command(t_stack **stack_node)
 {
 	int	type;
 
 	type = pop_stack(stack_node);
 	pop_stack(stack_node);
-	push_stack(stack_node, REDIRECTION, NULL);
-	push_stack(stack_node, type, NULL);
+	push_stack(stack_node, GROUP_CMD);
+	push_stack(stack_node, type);
 	return (SUCCESS);
 }
 
-int	shift_gc_command(t_stack **stack_node, t_list *list_node)
+int	shift_l_command(t_stack **stack_node)
 {
-	int	type;
+	int	out_type;
+	int	in_type;
 
-	type = pop_stack(stack_node);
-	pop_stack(stack_node);
-	push_stack(stack_node, GROUP_CMD, NULL);
-	push_stack(stack_node, type, NULL);
+	out_type = pop_stack(stack_node);
+
+	if (out_type == CMD_TOKEN)
+		in_type = COMMAND;
+	else if (out_type == WORD)
+		in_type = CMD_TOKEN;
+	else if (out_type == REDIRECTION)
+		in_type = COMMAND;
+	push_stack(stack_node, in_type);
 	return (SUCCESS);
 }
 
 void	init_reduce_functions2(t_fptr **reduce_table)
 {
-	/*
+	reduce_table[CMD_TOKEN][0] = shift_l_command;
+	reduce_table[WORD][0] = shift_l_command;
+	reduce_table[REDIRECTION][0] = shift_l_command;
+	reduce_table[COMMAND][0] = shift_l_command;
+	//reduce_table[GROUP_CMD][0] = reduce_group_command;
+	
 	reduce_table[COMMAND][WORD] = shift_word_command;
 	reduce_table[PIPE_CMD][WORD] = shift_word_command;
 	reduce_table[REDIRECTION][WORD] = shift_word_command;
-	reduce_table[WORD][0] = shift_word2_command;
 
 	reduce_table[CMD_TOKEN][REDIR_TOKEN] = shift_command;
 	reduce_table[CMD_TOKEN][PIPE] = shift_command;
-	reduce_table[CMD_TOKEN][0] = shift_command;
 
 	reduce_table[REDIRECTION][PIPE] = shift_redir_command;
-	reduce_table[REDIRECTION][0] = shift_redir_command;
-	
-	reduce_table[COMMAND][0] = shift_gc_command;
 
 	reduce_table[COMMAND][REDIR_TOKEN] = waiting;
 	reduce_table[PIPE_CMD][REDIR_TOKEN] = waiting;
-*/
 	reduce_table[REDIR_TOKEN][WORD] = reduce_redirection;
 	reduce_table[WORD][WORD] = reduce_cmd_token;
 	reduce_table[CMD_TOKEN][WORD] = reduce_cmd_token;
@@ -259,8 +283,6 @@ void	init_reduce_functions2(t_fptr **reduce_table)
 	reduce_table[REDIRECTION][REDIRECTION] = reduce_redirection;
 	reduce_table[PIPE_CMD][COMMAND] = reduce_group_command;
 	reduce_table[GROUP_CMD][GROUP_CMD] = reduce_group_command;
-	reduce_table[GROUP_CMD][0] = reduce_group_command;
-
 }
 
 t_fptr **init_reduce_functions(void)
@@ -279,30 +301,61 @@ t_fptr **init_reduce_functions(void)
 	return (reduce_table);
 }
 
-void	print_reduce_functions(t_fptr **reduce_table, t_list *stack_node, t_list *list_node)
+/*
+void	print_reduce_functions(t_fptr **reduce_table, t_list *stack_node)
 {
  	printf("%d, %d\n", stack_node->type, list_node->type);
  	printf("%p\n", &reduce_table[stack_node->type][list_node->type]);
   	if (reduce_table[stack_node->type][list_node->type] == NULL)
 	  	return ;
 }
+*/
 
-void	test_reduce(t_fptr **reduce_table, t_stack **stack_node, t_list *list_node)
+int	test_shift(t_fptr **reduce_table, t_stack **stack_node)
 {
+	int	s_type;
+
 	if ((*stack_node) != NULL)
 	{
-		reduce_table[(*stack_node)->type][list_node->type](stack_node, list_node);
+		s_type = (*stack_node)->type;
+		if (reduce_table[s_type][0])
+		
 	}
-	else
-		push_stack(stack_node, list_node->type, list_node->content);
 }
 
+int	test_reduce(t_fptr **reduce_table, t_stack **stack_node)
+{
+	int	s_type;
+	int ns_type;
+
+	if ((*stack_node) != NULL)
+	{
+		s_type = (*stack_node)->type;
+		ns_type = 0;
+		if ((*stack_node)->next)
+			ns_type = (*stack_node)->next->type;
+		// printf("before: %s, %s\n", trans[s_type], trans[ns_type]);
+		if (reduce_table[s_type][ns_type])
+		{
+			// printf("after: %s, %s\n", trans[s_type], trans[ns_type]);
+			reduce_table[s_type][ns_type](stack_node);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+void	repeat_reduce(t_fptr **reduce_table, t_stack **s_node)
+{
+	
+}
 int	test_code(t_list **node)
 {
 	t_stack *stack;
 	t_list	*temp;
 	t_tree	*root;
 	t_fptr **reduce_table;
+	t_stack *s_node;
 
 	reduce_table = init_reduce_functions();
 	stack = NULL;
@@ -312,9 +365,36 @@ int	test_code(t_list **node)
 	temp = *node;
 	while (temp)
 	{
-		printf("%s\n", temp->content);
-		test_reduce(reduce_table, &stack, temp);
+		push_stack(&stack, temp->type);
+		test_reduce(reduce_table, &stack);
 		temp = temp->next;
 	}
+	repeat_reduce(reduce_table, &stack);
+	int	flag;
+	int ret;
+
+	while (1)
+	{
+		ret = 0;
+		s_node = stack;
+		while (s_node)
+		{
+			ret += test_reduce(reduce_table, &stack);
+			if (ret)
+				break ;
+			ret += test_shift(reduce_table, &stack);
+			if (ret)
+				break ;
+			s_node = s_node->next;
+		}
+		if (ret == 0)
+			break ;
+	}	
+	while (stack)
+	{
+		printf("stack %d: %s\n", stack->type, trans[stack->type]);
+		stack = stack->next;
+	}
+
 	return (0);
 }
