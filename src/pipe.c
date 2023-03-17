@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-// int	pipe(t_data *data)
+// int	do_pipe(t_data *data)
 // {
 // 	pid_t	pid;
 // 	int		pipe_fd[2];

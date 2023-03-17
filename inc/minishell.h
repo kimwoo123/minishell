@@ -51,7 +51,6 @@ typedef struct s_data
 	char	**envp;
 	char	**copied_envp;
 	char	**commands;
-	int		cmd_counts;
 	int		dup_stdin;
 	int		dup_stdout;
 }	t_data;

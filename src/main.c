@@ -155,6 +155,33 @@ int	parsing_command_line(t_data *data)
 	return (0);
 }
 
+
+static int	do_pipe(t_data *data)
+{
+	pid_t	pid;
+	int		pipe_fd[2];
+
+	if (pipe(pipe_fd) == FAILURE)
+		ft_perror("pipe error in pipe", EXIT_FAILURE);
+	pid = fork();
+	if (pid == FAILURE)
+		ft_perror("fork error in pipe", EXIT_FAILURE);
+	if (pid == CHILD_PROCESS)
+	{
+		close(pipe_fd[STDIN_FILENO]);
+		dup2(pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
+		close(pipe_fd[STDOUT_FILENO]);
+	}
+	else
+	{
+		close(pipe_fd[STDOUT_FILENO]);
+		dup2(pipe_fd[STDIN_FILENO], STDIN_FILENO);
+		close(pipe_fd[STDIN_FILENO]);
+		// waitpid(pid, NULL, WNOHANG);
+	}
+	return (SUCCESS);
+}
+
 int	execve_command_line(t_data *data, t_tree *tree)
 {
 	char	*temp;
@@ -165,7 +192,8 @@ int	execve_command_line(t_data *data, t_tree *tree)
 		if (tree->right == NULL) // DO NOT PIPE !
 			return (0);
 		else if (tree->right != NULL) // DO PIPE!
-			return (0);
+			// return (0);
+			do_pipe(data);
 	}
 	else if (tree->type == REDIRECTION)
 	{
