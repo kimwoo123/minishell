@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/18 12:17:06 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 14:28:21 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,24 +119,6 @@ int	reduce_group_command(t_stack **stack_node) // S S / SP P
 	pop_stack(&next_node);
 	(*stack_node)->type = GROUP_CMD;
 	return (SUCCESS);
-}
-
-static void	test_print_double_array(t_fptr **array)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < 10)
-	{
-		j = 0;
-		while (j < 10)
-		{
-			printf("i: %d, j: %d, array: %p\n", i, j, array[i][j]);
-			j++;
-		}
-		i++;
-	}
 }
 
 int	shift_command(t_stack **stack_node)
@@ -272,7 +254,7 @@ int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
 		if (ret == 0)
 			break ;
 	}
-	if ((*stack && (*stack)->next == NULL) && ((*stack)->type == COMMAND || (*stack)->type == GROUP_CMD))
+	if ((*stack && (*stack)->next == NULL) && (*stack)->type == COMMAND)
 	{
 		printf("syntax fine\n");
 		return (0);
