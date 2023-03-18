@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 14:46:17 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 14:58:27 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 void	get_token(char const *line, size_t size, t_list **list)
 {
 	t_list	*node;
+	char	*expansion;
 	char	*content;
 	int		type;
 
-	content = convert_dollar(line, size);
-	type = check_type(content);
-	content = remove_quote(content);
+	expansion = convert_dollar(line, size);
+	type = check_type(expansion);
+	content = remove_quote(expansion);
 	node = create_element(type, content);
 	lst_addback(list, node);
 }
