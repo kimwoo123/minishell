@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 18:17:19 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 08:18:59 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ void	free_double(char **str);
 void	free_stack_table(t_stack *stack, t_fptr **table);
 
 /* syntax */
-//int	test_code(t_list **node);
-int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack);
-int	reduce_token(t_fptr **reduce_table, t_stack **stack_node);
-int	shift_token(t_fptr **reduce_table, t_stack **stack_node);
+int	check_syntax(t_list **node);
+int	repeat_reduce_shift(const t_fptr **reduce_table, t_stack **stack);
+int	reduce_token(const t_fptr **reduce_table, t_stack **stack_node);
+int	shift_token(const t_fptr **reduce_table, t_stack **stack_node);
 
 /* stack */
 t_stack	*create_elem(int type);

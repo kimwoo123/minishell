@@ -6,31 +6,29 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/18 17:11:47 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 08:19:01 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// make_nodes_a_stack
-
-int	shift_token(t_fptr **reduce_table, t_stack **stack_node)
+int	shift_token(const t_fptr **parse_table, t_stack **stack_node)
 {
 	int	s_type;
 
 	if ((*stack_node) != NULL)
 	{
 		s_type = (*stack_node)->type;
-		if (reduce_table[s_type][0])
+		if (parse_table[s_type][0])
 		{
-			reduce_table[s_type][0](stack_node);
+			parse_table[s_type][0](stack_node);
 			return (TRUE);
 		}
 	}
 	return (FALSE);
 }
 
-int	reduce_token(t_fptr **reduce_table, t_stack **stack_node)
+int	reduce_token(const t_fptr **parse_table, t_stack **stack_node)
 {
 	int	s_type;
 	int	ns_type;
@@ -39,16 +37,16 @@ int	reduce_token(t_fptr **reduce_table, t_stack **stack_node)
 	{
 		s_type = (*stack_node)->type;
 		ns_type = (*stack_node)->next->type;
-		if (reduce_table[ns_type][s_type])
+		if (parse_table[ns_type][s_type])
 		{
-			reduce_table[ns_type][s_type](stack_node);
+			parse_table[ns_type][s_type](stack_node);
 			return (TRUE);
 		}
 	}
 	return (FALSE);
 }
 
-int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
+int	repeat_reduce_shift(const t_fptr **parse_table, t_stack **stack)
 {
 	t_stack	*s_node;
 	size_t	ret;
@@ -59,10 +57,10 @@ int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
 		s_node = *stack;
 		while (s_node)
 		{
-			ret += reduce_token(reduce_table, &s_node);
+			ret += reduce_token(parse_table, &s_node);
 			if (ret)
 				break ;
-			ret += shift_token(reduce_table, &s_node);
+			ret += shift_token(parse_table, &s_node);
 			if (ret)
 				break ;
 			s_node = s_node->next;
@@ -75,26 +73,26 @@ int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
 	return (TRUE);
 }
 
-int	test_code(t_list **node)
+int	check_syntax(t_list **node)
 {
 	t_stack	*stack;
 	t_list	*temp;
-	t_fptr	**reduce_table;
+	t_fptr	**parse_table;
 	int		syntax_error;
 
 	if (*node == NULL)
 		return (FALSE);
-	reduce_table = init_reduce_functions();
+	parse_table = init_reduce_functions();
 	stack = NULL;
 	temp = *node;
 	while (temp)
 	{
 		push_stack(&stack, temp->type);
-		reduce_token(reduce_table, &stack);
+		reduce_token(parse_table, &stack);
 		temp = temp->next;
 	}
-	syntax_error = repeat_reduce_shift(reduce_table, &stack);
-	free_stack_table(stack, reduce_table);
+	syntax_error = repeat_reduce_shift(parse_table, &stack);
+	free_stack_table(stack, parse_table);
 	if (syntax_error == 1)
 		return (FALSE);
 	return (TRUE);
