@@ -6,13 +6,13 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:38:42 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 16:23:36 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 18:15:51 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	get_dollar_len(char const *line)
+size_t	get_dollar_len(const char *line)
 {
 	size_t	index;
 
@@ -21,15 +21,15 @@ size_t	get_dollar_len(char const *line)
 		return (index);
 	if (line[index] == '?')
 		return (++index);
-	if (line[index] == '$')
+	if (line[index] == DOLLAR)
 		return (++index);
-	while ((line[index] && line[index] != '$') && \
+	while ((line[index] && line[index] != DOLLAR) && \
 		(!is_quote(line[index]) && !is_space(line[index])))
 		index++;
 	return (index);
 }
 
-size_t	get_dollar_index(char const *line, char *quote_flag)
+size_t	get_dollar_index(const char *line, char *quote_flag)
 {
 	size_t	index;
 
@@ -37,14 +37,14 @@ size_t	get_dollar_index(char const *line, char *quote_flag)
 	while (line[index])
 	{
 		*quote_flag = check_quote(line[index], *quote_flag);
-		if (*quote_flag != '\'' && line[index] == '$')
+		if (*quote_flag != '\'' && line[index] == DOLLAR)
 			return (index);
 		index++;
 	}
 	return (index);
 }
 
-size_t	double_array_size(char const *line, char *quote_flag)
+size_t	double_array_size(const char *line, char *quote_flag)
 {
 	int		dollar_flag;
 	size_t	size;
@@ -53,7 +53,7 @@ size_t	double_array_size(char const *line, char *quote_flag)
 	index = 0;
 	size = 0;
 	dollar_flag = 1;
-	if (*line == '$')
+	if (*line == DOLLAR)
 		dollar_flag = 0;
 	while (line[index])
 	{
@@ -73,7 +73,7 @@ size_t	double_array_size(char const *line, char *quote_flag)
 	return (size);
 }
 
-void	duplicate_str(char **result, char *line, char *quote_flag)
+void	duplicate_str(char **result, const char *line, char *quote_flag)
 {
 	size_t	s_index;
 	size_t	index;
@@ -81,11 +81,11 @@ void	duplicate_str(char **result, char *line, char *quote_flag)
 
 	index = 0;
 	dollar_flag = 1;
-	if (*line == '$')
+	if (*line == DOLLAR)
 		dollar_flag = 0;
 	while (line[index])
 	{
-		if (!dollar_flag && (*quote_flag != '\'' && line[index] == '$'))
+		if (!dollar_flag && (*quote_flag != '\'' && line[index] == DOLLAR))
 		{
 			dollar_flag = 1;
 			s_index = index;
@@ -102,7 +102,7 @@ void	duplicate_str(char **result, char *line, char *quote_flag)
 	}
 }
 
-char	**split_dollar(char const *line, size_t size)
+char	**split_dollar(const char *line, size_t size)
 {
 	char	*temp;
 	char	**result;

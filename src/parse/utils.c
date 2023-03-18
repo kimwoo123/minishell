@@ -6,34 +6,20 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:44:33 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 16:02:35 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 18:13:53 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_space(const char c)
+int	is_space(char c)
 {
 	return ((c >= 9 && c <= 13) || c == ' ');
 }
 
-int	is_quote(const char c)
+int	is_quote(char c)
 {
 	return (c == '\'' || c == '\"');
-}
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	index;
-
-	index = 0;
-	while ((s1[index] || s2[index]) && index < n)
-	{
-		if (s1[index] != s2[index])
-			return ((unsigned char)s1[index] - (unsigned char)s2[index]);
-		index++;
-	}
-	return (0);
 }
 
 char	*ft_strndup(const char *begin, size_t size)

@@ -6,13 +6,13 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 15:57:50 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 18:16:20 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*convert_variable(char *str)
+char	*convert_variable(const char *str)
 {
 	size_t	index;
 	char	*env;
@@ -56,7 +56,7 @@ char	*convert_dollar(char **str)
 	index = 0;
 	while (str[index])
 	{
-		if (*str[index] == '$')
+		if (*str[index] == DOLLAR)
 			str[index] = convert_variable(str[index]);
 		++index;
 	}
@@ -65,7 +65,7 @@ char	*convert_dollar(char **str)
 	return (result);
 }
 
-char	*expand_str(char const *line, size_t size)
+char	*expand_str(const char *line, size_t size)
 {
 	char	**temp;
 	char	*result;

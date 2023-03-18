@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:42:50 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 15:53:39 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 18:13:40 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t	trim_line(const char *line)
 	return (index);
 }
 
-int	is_delimiter(const char c)
+int	is_delimiter(char c)
 {
 	int	index;
 
@@ -30,13 +30,13 @@ int	is_delimiter(const char c)
 	while (DELIMITER[index])
 	{
 		if (DELIMITER[index] == c)
-			return (1);
+			return (TRUE);
 		index++;
 	}
-	return (0);
+	return (FALSE);
 }
 
-char	check_quote(const char c, char flag)
+char	check_quote(char c, char flag)
 {
 	if (flag && flag == c)
 		return ('\0');
@@ -58,6 +58,6 @@ int	close_quote(const char *line)
 		++index;
 	}
 	if (quote_flag != '\0')
-		return (0);
-	return (1);
+		return (FALSE);
+	return (TRUE);
 }

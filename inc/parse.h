@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 17:00:13 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 18:17:19 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PARSE_H
 
 # define DELIMITER	"<>|"
-# define DOLLAR		"$"
+# define DOLLAR		'$'
 
 typedef	struct	s_stack
 {
@@ -30,37 +30,37 @@ void	seperate_meta(const char *line, size_t size, t_list **node);
 void	split_space(const char *line, size_t size, t_list **node);
 int		repeat_meta(const char *line, size_t index);
 void	split_delimiter(const char *line, t_list **node);
-t_list	*scan_command(const char* line);
-
+t_list	*scan_command(const char *line);
+ 
 /* parse_utils */
-char	check_quote(const char c, char flag);
-int	is_delimiter(const char c);
+char	check_quote(char c, char flag);
+int		is_delimiter(char c);
 size_t	trim_line(const char *line);
-int	close_quote(const char *line);
+int		close_quote(const char *line);
 
 /* utils */
 char 	*ft_strndup(const char *begin, size_t size);
-int		is_space(const char c);
-int		is_quote(const char c);
+int		is_space(char c);
+int		is_quote(char c);
 
 /* token */
-t_list	*create_element(int type, char *content);
-void	get_token(char const *line, size_t size, t_list **list);
-int		check_type(const char *str);
+t_list	*create_element(int type, const char *content);
+void	get_token(const char *line, size_t size, t_list **list);
+int		check_type(const char *str, t_list **list);
 void	lst_addback(t_list **list, t_list *node);
-char	*remove_quote(char const *line);
+char	*remove_quote(const char *line);
 
 /* split_dollar */
-size_t	get_dollar_len(char const *line);
-size_t	get_dollar_index(char const *line, char *quote_flag);
-size_t	double_array_size(char const *line, char *quote_flag);
-void	duplicate_str(char **result, char *line, char *quote_flag);
-char	**split_dollar(char const *line, size_t size);
+size_t	get_dollar_len(const char *line);
+size_t	get_dollar_index(const char *line, char *quote_flag);
+size_t	double_array_size(const char *line, char *quote_flag);
+void	duplicate_str(char **result, const char *line, char *quote_flag);
+char	**split_dollar(const char *line, size_t size);
 
 /* expand_str */
-char	*convert_variable(char *str);
+char	*convert_variable(const char *str);
 char	*merge_str(char **split_str);
-char	*expand_str(char const *line, size_t size);
+char	*expand_str(const char *line, size_t size);
 char	*convert_dollar(char **str);
 
 /* free */

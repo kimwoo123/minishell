@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/18 16:01:19 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:11:47 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	shift_token(t_fptr **reduce_table, t_stack **stack_node)
 		if (reduce_table[s_type][0])
 		{
 			reduce_table[s_type][0](stack_node);
-			return (1);
+			return (TRUE);
 		}
 	}
-	return (0);
+	return (FALSE);
 }
 
 int	reduce_token(t_fptr **reduce_table, t_stack **stack_node)
@@ -42,10 +42,10 @@ int	reduce_token(t_fptr **reduce_table, t_stack **stack_node)
 		if (reduce_table[ns_type][s_type])
 		{
 			reduce_table[ns_type][s_type](stack_node);
-			return (1);
+			return (TRUE);
 		}
 	}
-	return (0);
+	return (FALSE);
 }
 
 int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
@@ -71,8 +71,8 @@ int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
 			break ;
 	}
 	if ((*stack && (*stack)->next == NULL) && (*stack)->type == COMMAND)
-		return (0);
-	return (1);
+		return (FALSE);
+	return (TRUE);
 }
 
 int	test_code(t_list **node)
@@ -83,7 +83,7 @@ int	test_code(t_list **node)
 	int		syntax_error;
 
 	if (*node == NULL)
-		return (1);
+		return (FALSE);
 	reduce_table = init_reduce_functions();
 	stack = NULL;
 	temp = *node;
@@ -96,6 +96,6 @@ int	test_code(t_list **node)
 	syntax_error = repeat_reduce_shift(reduce_table, &stack);
 	free_stack_table(stack, reduce_table);
 	if (syntax_error == 1)
-		return (0);
-	return (1);
+		return (FALSE);
+	return (TRUE);
 }

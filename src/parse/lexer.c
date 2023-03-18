@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 16:02:12 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 18:13:18 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ int	repeat_meta(const char *line, size_t index)
 	if (index > 0)
 		if (!ft_strncmp(&line[index - 1], "<<", 2) || \
 				!ft_strncmp(&line[index - 1], ">>", 2))
-			return (1);
-	return (0);
+			return (TRUE);
+	return (FALSE);
 }
 
-void	split_delimiter(const char *line, t_list **node)
+void	split_delimiter(const char  *line, t_list **node)
 {
 	size_t	index;
 	size_t	start_index;
@@ -93,7 +93,7 @@ t_list	*scan_command(const char *line)
 {
 	t_list	*list;
 
-	if (close_quote(line) == 0)
+	if (close_quote(line) == FALSE)
 	{
 		printf("quote error");
 		exit(1);

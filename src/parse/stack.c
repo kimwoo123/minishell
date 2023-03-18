@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:25:25 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 16:03:11 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 18:16:37 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	pop_stack(t_stack **stack)
 	int		ret;
 
 	if (*stack == NULL)
-		return (0);
+		return (FAILURE);
 	ret = (*stack)->type;
 	node = *stack;
 	*stack = (*stack)->next;
