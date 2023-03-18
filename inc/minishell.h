@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/18 11:48:52 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 11:53:46 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@
 # define NOT_SAME		0
 # define SAME			1
 
-typedef int	(*t_fptr)(t_stack **stack_node);
 
 typedef struct s_data
 {
@@ -86,6 +85,8 @@ typedef	struct	s_tree
 	struct s_tree	*left;
 	struct s_tree	*right;
 }	t_tree;
+
+typedef int	(*t_fptr)(t_stack **stack_node);
 /*
 enum	e_token
 {
