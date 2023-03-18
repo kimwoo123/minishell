@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:38:42 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 16:03:34 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:23:36 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	get_dollar_len(char const *line)
 	if (line[index] == '$')
 		return (++index);
 	while ((line[index] && line[index] != '$') && \
-			(!is_quote(line[index]) && !is_space(line[index])))
+		(!is_quote(line[index]) && !is_space(line[index])))
 		index++;
 	return (index);
 }
@@ -77,11 +77,8 @@ void	duplicate_str(char **result, char *line, char *quote_flag)
 {
 	size_t	s_index;
 	size_t	index;
-	size_t	r_index;
 	int		dollar_flag;
 
-	s_index = 0;
-	r_index = 0;
 	index = 0;
 	dollar_flag = 1;
 	if (*line == '$')
@@ -93,14 +90,14 @@ void	duplicate_str(char **result, char *line, char *quote_flag)
 			dollar_flag = 1;
 			s_index = index;
 			index += get_dollar_len(&line[index]);
-			result[r_index++] = ft_strndup(&line[s_index], index - s_index);
+			*(result++) = ft_strndup(&line[s_index], index - s_index);
 		}
 		else if (dollar_flag)
 		{
 			dollar_flag = 0;
 			s_index = index;
 			index += get_dollar_index(&line[index], quote_flag);
-			result[r_index++] = ft_strndup(&line[s_index], index - s_index);
+			*(result++) = ft_strndup(&line[s_index], index - s_index);
 		}
 	}
 }
