@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/17 20:33:34 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 10:34:19 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,57 +117,57 @@ reduce_rule_10 // S'
 
 int	reduce_redirection(t_stack **stack_node) // r W / R R
 {
-	t_stack *node;
+	t_stack *next_node;
 
-	pop_stack(stack_node);
-	pop_stack(stack_node);
-	push_stack(stack_node, REDIRECTION);
-
+	next_node = (*stack_node)->next;
+	(*stack_node)->next = next_node->next;
+	pop_stack(&next_node);
+	(*stack_node)->type = REDIRECTION;
 	return (SUCCESS);
 }
 
 int	reduce_cmd_token(t_stack **stack_node) // C W
 {
-	t_stack *node;
+	t_stack *next_node;
 
-	pop_stack(stack_node);
-	pop_stack(stack_node);
-	push_stack(stack_node, CMD_TOKEN);
+	next_node = (*stack_node)->next;
+	(*stack_node)->next = next_node->next;
+	pop_stack(&next_node);
+	(*stack_node)->type = CMD_TOKEN;
 
 	return (SUCCESS);
 }
 
 int	reduce_command(t_stack **stack_node) // C C
-{
-	t_stack *node;
+{	
+	t_stack *next_node;
 
-	pop_stack(stack_node);
-	pop_stack(stack_node);
-	push_stack(stack_node, COMMAND);
-
+	next_node = (*stack_node)->next;
+	(*stack_node)->next = next_node->next;
+	pop_stack(&next_node);
+	(*stack_node)->type = COMMAND;
 	return (SUCCESS);
 }
 
 int	reduce_pipe_command(t_stack **stack_node) // SP SP
 {
-	t_stack *node;
+	t_stack *next_node;
 
-	printf("come her");
-	pop_stack(stack_node);
-	pop_stack(stack_node);
-	push_stack(stack_node, PIPE_CMD);
-
+	next_node = (*stack_node)->next;
+	(*stack_node)->next = next_node->next;
+	pop_stack(&next_node);
+	(*stack_node)->type = PIPE_CMD;
 	return (SUCCESS);
 }
 
 int	reduce_group_command(t_stack **stack_node) // S S / SP P
-{
-	t_stack *node;
+{	
+	t_stack *next_node;
 
-	pop_stack(stack_node);
-	pop_stack(stack_node);
-	push_stack(stack_node, GROUP_CMD);
-
+	next_node = (*stack_node)->next;
+	(*stack_node)->next = next_node->next;
+	pop_stack(&next_node);
+	(*stack_node)->type = GROUP_CMD;
 	return (SUCCESS);
 }
 
@@ -206,26 +206,22 @@ int	shift_word_command(t_stack **stack_node)
 }
 
 int	shift_word2_command(t_stack **stack_node)
-{
-	int	type;
+{	
+	t_stack *next_node;
 
-	type = pop_stack(stack_node);
-	pop_stack(stack_node);
-	push_stack(stack_node, CMD_TOKEN);
-	push_stack(stack_node, type);
+	next_node = (*stack_node)->next;
+	next_node->type = CMD_TOKEN;
+
 	return (SUCCESS);
 }
 
 int	shift_command(t_stack **stack_node)
 {
-	int	type;
+	t_stack *ct_node;
 
-	printf("sc stack: %s\n", trans[(*stack_node)->type]);
-	pop_stack(stack_node);
-	printf("sc next: %s\n", trans[(*stack_node)->type]);
-	type = pop_stack(stack_node);
-	push_stack(stack_node, COMMAND);
-	push_stack(stack_node, type);
+	ct_node = (*stack_node)->next;
+	ct_node->type = COMMAND;
+
 	return (SUCCESS);
 }
 
@@ -241,13 +237,12 @@ int	shift_redir_command(t_stack **stack_node)
 }
 
 int	shift_gc_command(t_stack **stack_node)
-{
-	int	type;
+{	
+	t_stack *cmd_node;
 
-	type = pop_stack(stack_node);
-	pop_stack(stack_node);
-	push_stack(stack_node, GROUP_CMD);
-	push_stack(stack_node, type);
+	cmd_node = (*stack_node)->next;
+	cmd_node->type = GROUP_CMD;
+
 	return (SUCCESS);
 }
 
@@ -282,7 +277,7 @@ void	init_reduce_functions2(t_fptr **reduce_table)
 	reduce_table[CMD_TOKEN][REDIR_TOKEN] = shift_command;
 	reduce_table[CMD_TOKEN][PIPE] = shift_command;
 
-	reduce_table[REDIRECTION][PIPE] = shift_redir_command;
+	//reduce_table[REDIRECTION][PIPE] = shift_redir_command;
 
 	//reduce_table[COMMAND][REDIR_TOKEN] = waiting;
 	//reduce_table[PIPE_CMD][REDIR_TOKEN] = waiting;
@@ -393,7 +388,7 @@ int	test_code(t_list **node)
 		s_node = stack;
 		while (s_node)
 		{
-			ret += test_reduce(reduce_table, &stack);
+			ret += test_reduce(reduce_table, &s_node);
 			if (ret)
 				break ;
 			ret += test_shift(reduce_table, &s_node);
