@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dollar.c                                           :+:      :+:    :+:   */
+/*   split_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/13 09:33:22 by wooseoki         ###   ########.fr       */
+/*   Created: 2023/03/18 15:38:42 by wooseoki          #+#    #+#             */
+/*   Updated: 2023/03/18 15:39:48 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,96 +119,4 @@ char	**split_dollar(char const *line, size_t size)
 	result[r_size] = NULL;
 	free(temp);
 	return (result);
-}
-
-char	*remove_quote(char const *line)
-{
-	char	quote_flag;
-	char	*result;
-	size_t	index;
-	size_t	r_index;
-
-	result = (char *)malloc(ft_strlen(line) + 1);
-	if (result == NULL)
-		return (NULL);
-	quote_flag = '\0';
-	index = 0;
-	r_index = 0;
-	while (line[index])
-	{
-		if (!quote_flag && is_quote(line[index]))
-			quote_flag = line[index];
-		else if (quote_flag == line[index])
-			quote_flag = '\0';
-		else
-			result[r_index++] = line[index];
-		++index;
-	}
-	result[r_index] = '\0';
-	return (result);
-}
-
-char	*convert_variable(char *str)
-{
-	size_t	index;
-	char	*env;
-	char	*result;
-
-	index = 1;
-	env = getenv(&str[index]);
-	if (str[index] == '?')
-		result = ft_strdup("signal");
-	else if (!env)
-		result = ft_strdup("");
-	else
-		result = ft_strdup(env);;
-	free(str);
-	return (result);
-}
-
-char	*merge_str(char **split_str)
-{
-	char	*result;
-	char	*temp;
-	size_t	index;
-
-	result = ft_strdup("");
-	index = 0;
-	while(split_str[index])
-	{
-		temp = result;
-		result = ft_strjoin(result, split_str[index]);
-		free(temp);
-		++index;
-	}
-	return (result);
-}
-
-char	*convert_merge(char **split_str)
-{
-	char	*result;
-	char	*temp;
-	size_t	index;
-
-	index = 0;
-	while (split_str[index])
-	{
-		if (*split_str[index] == '$')
-			split_str[index] = convert_variable(split_str[index]);
-		index++;
-	}
-	temp = merge_str(split_str);
-	result = remove_quote(temp);
-	free_double(split_str);
-	return (result);
-}
-
-char	*convert_dollar(char const *line, size_t size)
-{
-	char	**temp;
-	char	*token;
-
-	temp = split_dollar(line, size);
-	token = convert_merge(temp);
-	return (token);
 }

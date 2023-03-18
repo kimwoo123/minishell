@@ -6,12 +6,15 @@
 #    By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/13 13:02:42 by wooseoki          #+#    #+#              #
-#    Updated: 2023/03/13 14:21:28 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/03/18 15:50:37 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+PAR_SRC		= \
+		set_table.c shift_rule.c reduce_rule.c syntax.c \
+		stack.c free.c expand_str.c split_dollar.c \
+		token.c utils.c parse_utils.c lexer.c
 PAR_DIR		= src/parse
-PAR_SRC		= deli_parse.c dollar.c free.c tree.c
 PAR_OBJ_DIR	= obj/parse
 PAR_OBJ		= $(PAR_SRC:.c=.o)
 PAR_OBJS	= $(addprefix $(PAR_OBJ_DIR)/, $(PAR_OBJ))
