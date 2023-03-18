@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/18 12:07:42 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 12:17:06 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,7 @@ int	reduce_token(t_fptr **reduce_table, t_stack **stack_node)
 	return (0);
 }
 
-void	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
+int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
 {
 	t_stack *s_node;
 	size_t	ret;
@@ -273,9 +273,12 @@ void	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
 			break ;
 	}
 	if ((*stack && (*stack)->next == NULL) && ((*stack)->type == COMMAND || (*stack)->type == GROUP_CMD))
+	{
 		printf("syntax fine\n");
-	else
-		printf("syntax error\n");
+		return (0);
+	}
+	printf("syntax error\n");
+	return (1);
 }
 
 void	free_stack_table(t_stack *stack, t_fptr **table)
@@ -306,7 +309,10 @@ int	test_code(t_list **node)
 	t_stack	*stack;
 	t_list	*temp;
 	t_fptr	**reduce_table;
+	int		syntax_error;
 
+	if (*node == NULL)
+		return (1);
 	reduce_table = init_reduce_functions();
 	stack = NULL;
 	temp = *node;
@@ -316,7 +322,9 @@ int	test_code(t_list **node)
 		reduce_token(reduce_table, &stack);
 		temp = temp->next;
 	}
-	repeat_reduce_shift(reduce_table, &stack);
+	syntax_error = repeat_reduce_shift(reduce_table, &stack);
 	free_stack_table(stack, reduce_table);
+	if (syntax_error == 1)
+		return (0);
 	return (1);
 }
