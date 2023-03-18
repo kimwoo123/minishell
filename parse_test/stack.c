@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/18 10:53:35 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 11:45:27 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // make_nodes_a_stack
 char *trans[] = { "ZERO", "WORD", "REDIR_TOKEN", "REDIRECTION",
-				"CMD_TOKEN", "COMMAND", "PIPE_CMD", "PARENT_REDIR", "GROUP_CMD", "QUOTE", "PIPE" };
+				"CMD_TOKEN", "COMMAND", "PIPE_CMD", "PARENT_REDIR","PARENT_CMD",  "GROUP_CMD", "QUOTE", "PIPE" };
 
 
 static void	print_list(t_stack **node)
@@ -264,32 +264,33 @@ int	shift_l_command(t_stack **stack_node)
 
 void	init_reduce_functions2(t_fptr **reduce_table)
 {
+	
+	//reduce_table[COMMAND][CMD_TOKEN] = reduce_command;
+	//reduce_table[COMMAND][REDIRECTION] = reduce_command;
+	//reduce_table[REDIRECTION][PIPE] = shift_redir_command;
+	//reduce_table[COMMAND][REDIR_TOKEN] = waiting;
+	//reduce_table[PIPE_CMD][REDIR_TOKEN] = waiting;
+	//reduce_table[COMMAND][0] = shift_l_command;
+	//reduce_table[GROUP_CMD][0] = reduce_group_command;
+	//reduce_table[COMMAND][WORD] = shift_word_command;
+	//reduce_table[PIPE_CMD][WORD] = shift_word_command;
+	//reduce_table[REDIRECTION][WORD] = shift_word_command;
+	//reduce_table[GROUP_CMD][GROUP_CMD] = reduce_group_command;
+
 	reduce_table[CMD_TOKEN][0] = shift_l_command;
 	reduce_table[WORD][0] = shift_l_command;
 	reduce_table[REDIRECTION][0] = shift_l_command;
-	//reduce_table[COMMAND][0] = shift_l_command;
-	//reduce_table[GROUP_CMD][0] = reduce_group_command;
-	
-	reduce_table[COMMAND][WORD] = shift_word_command;
-	reduce_table[PIPE_CMD][WORD] = shift_word_command;
-	reduce_table[REDIRECTION][WORD] = shift_word_command;
-
 	reduce_table[CMD_TOKEN][REDIR_TOKEN] = shift_command;
 	reduce_table[CMD_TOKEN][PIPE] = shift_command;
 
-	//reduce_table[REDIRECTION][PIPE] = shift_redir_command;
-
-	//reduce_table[COMMAND][REDIR_TOKEN] = waiting;
-	//reduce_table[PIPE_CMD][REDIR_TOKEN] = waiting;
 	reduce_table[REDIR_TOKEN][WORD] = reduce_redirection;
 	reduce_table[REDIRECTION][REDIRECTION] = reduce_redirection;
 	reduce_table[WORD][WORD] = reduce_cmd_token;
 	reduce_table[CMD_TOKEN][WORD] = reduce_cmd_token;
-	reduce_table[COMMAND][CMD_TOKEN] = reduce_command;
+	reduce_table[COMMAND][COMMAND] = reduce_command;
+	reduce_table[PIPE_CMD][COMMAND] = reduce_command;
 	reduce_table[COMMAND][PIPE] = reduce_pipe_command;
 	reduce_table[PIPE_CMD][PIPE_CMD] = reduce_pipe_command;
-	reduce_table[PIPE_CMD][COMMAND] = reduce_group_command;
-	reduce_table[GROUP_CMD][GROUP_CMD] = reduce_group_command;
 }
 
 t_fptr **init_reduce_functions(void)
@@ -307,16 +308,6 @@ t_fptr **init_reduce_functions(void)
 	init_reduce_functions2(reduce_table);
 	return (reduce_table);
 }
-
-/*
-void	print_reduce_functions(t_fptr **reduce_table, t_list *stack_node)
-{
- 	printf("%d, %d\n", stack_node->type, list_node->type);
- 	printf("%p\n", &reduce_table[stack_node->type][list_node->type]);
-  	if (reduce_table[stack_node->type][list_node->type] == NULL)
-	  	return ;
-}
-*/
 
 int	test_shift(t_fptr **reduce_table, t_stack **stack_node)
 {
@@ -343,10 +334,8 @@ int	test_reduce(t_fptr **reduce_table, t_stack **stack_node)
 	{
 		s_type = (*stack_node)->type;
 		ns_type = (*stack_node)->next->type;
-		printf("before: %s, %s\n", trans[ns_type], trans[s_type]);
 		if (reduce_table[ns_type][s_type])
 		{
-			// printf("after: %s, %s\n", trans[s_type], trans[ns_type]);
 			reduce_table[ns_type][s_type](stack_node);
 			return (1);
 		}
@@ -354,9 +343,39 @@ int	test_reduce(t_fptr **reduce_table, t_stack **stack_node)
 	return (0);
 }
 
-void	repeat_reduce(t_fptr **reduce_table, t_stack **s_node)
+void	repeat_reduce(t_fptr **reduce_table, t_stack **stack)
 {
-	
+	t_stack *s_node;
+	t_stack *temp;
+	size_t	ret;
+
+	while (1)
+	{
+		ret = 0;
+		s_node = *stack;
+		while (s_node)
+		{
+			ret += test_reduce(reduce_table, &s_node);
+			if (ret)
+				break ;
+			ret += test_shift(reduce_table, &s_node);
+			if (ret)
+				break ;
+			s_node = s_node->next;
+		}
+		if (ret == 0)
+			break ;
+	}
+	temp = *stack;
+	while (temp)
+	{
+		printf("%s\n", trans[temp->type]);
+		temp = temp->next;	
+	}
+	if ((*stack && (*stack)->next == NULL) && ((*stack)->type == COMMAND || (*stack)->type == GROUP_CMD))
+		printf("syntax fine\n");
+	else
+		printf("sytanx error\n");
 }
 int	test_code(t_list **node)
 {
@@ -364,7 +383,6 @@ int	test_code(t_list **node)
 	t_list	*temp;
 	t_tree	*root;
 	t_fptr **reduce_table;
-	t_stack *s_node;
 
 	reduce_table = init_reduce_functions();
 	stack = NULL;
@@ -379,36 +397,5 @@ int	test_code(t_list **node)
 		temp = temp->next;
 	}
 	repeat_reduce(reduce_table, &stack);
-	int	flag;
-	int ret;
-
-	while (1)
-	{
-		ret = 0;
-		s_node = stack;
-		while (s_node)
-		{
-			ret += test_reduce(reduce_table, &s_node);
-			if (ret)
-				break ;
-			ret += test_shift(reduce_table, &s_node);
-			if (ret)
-				break ;
-			s_node = s_node->next;
-		}
-		if (ret == 0)
-			break ;
-	}
-	/*
-	while (stack)
-	{
-		printf("stack %d: %s\n", stack->type, trans[stack->type]);
-		stack = stack->next;
-	}
-	*/
-	if ((stack && stack->next == NULL) && (stack->type == COMMAND || stack->type == GROUP_CMD))
-		printf("syntax fine\n");
-	else
-		printf("sytanx error\n");
-	return (0);
+	return (1);
 }
