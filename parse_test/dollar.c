@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/13 09:29:54 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 14:45:54 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,31 +184,21 @@ char	*merge_str(char **split_str)
 	return (result);
 }
 
-char	*convert_merge(char **split_str)
-{
-	char	*result;
-	char	*temp;
-	size_t	index;
-
-	index = 0;
-	while (split_str[index])
-	{
-		if (*split_str[index] == '$')
-			split_str[index] = convert_variable(split_str[index]);
-		index++;
-	}
-	temp = merge_str(split_str);
-	result = remove_quote(temp);
-	free_double(split_str);
-	return (result);
-}
-
 char	*convert_dollar(char const *line, size_t size)
 {
 	char	**temp;
-	char	*token;
+	char	*result;
+	size_t	index;
 
 	temp = split_dollar(line, size);
-	token = convert_merge(temp);
-	return (token);
+	index = 0;
+	while (temp[index])
+	{
+		if (*temp[index] == '$')
+			temp[index] = convert_variable(temp[index]);
+		++index;
+	}
+	result = merge_str(temp);
+	free_double(temp);
+	return (result);
 }
