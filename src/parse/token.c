@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 15:52:21 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:02:45 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	lst_addback(t_list **list, t_list *node)
 	temp->next = node;
 }
 
-int		check_type(const char *str)
+int	check_type(const char *str)
 {
 	if (*str == '|')
 		return (PIPE);
@@ -48,35 +48,7 @@ int		check_type(const char *str)
 		return (REDIR_TOKEN);
 	return (WORD);
 }
-/*
-size_t	ft_strlen(char const *str)
-{
-	size_t	index;
 
-	index = 0;
-	while (str[index])
-		index++;
-	return (index);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	int		i;
-	char	*addr;
-
-	addr = (char *)malloc(sizeof(char) \
-		* (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (addr == NULL)
-		return (NULL);
-	i = 0;
-	while (*s1)
-		addr[i++] = *s1++;
-	while (*s2)
-		addr[i++] = *s2++;
-	addr[i] = '\0';
-	return (addr);
-}
-*/
 char	*remove_quote(char const *line)
 {
 	char	quote_flag;

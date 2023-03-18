@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 15:47:43 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:02:12 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void	split_space(const char *line, size_t size, t_list **node)
 int	repeat_meta(const char *line, size_t index)
 {
 	if (index > 0)
-		if (!ft_strncmp(&line[index - 1], "<<" , 2) || !ft_strncmp(&line[index - 1], ">>", 2))
+		if (!ft_strncmp(&line[index - 1], "<<", 2) || \
+				!ft_strncmp(&line[index - 1], ">>", 2))
 			return (1);
 	return (0);
 }
@@ -78,7 +79,8 @@ void	split_delimiter(const char *line, t_list **node)
 	while (line[++index])
 	{
 		quote_flag = check_quote(line[index], quote_flag);
-		if ((!quote_flag && is_delimiter(line[index])) && !repeat_meta(line, index))
+		if ((!quote_flag && is_delimiter(line[index])) && \
+				!repeat_meta(line, index))
 		{
 			split_space(&line[start_index], index - start_index, node);
 			start_index = index;
@@ -89,7 +91,7 @@ void	split_delimiter(const char *line, t_list **node)
 
 t_list	*scan_command(const char *line)
 {
-	t_list *list;
+	t_list	*list;
 
 	if (close_quote(line) == 0)
 	{

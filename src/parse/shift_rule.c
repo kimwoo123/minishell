@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:26:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 15:27:01 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:03:43 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	shift_command(t_stack **stack_node)
 {
-	t_stack *ct_node;
+	t_stack	*ct_node;
 
 	ct_node = (*stack_node)->next;
 	ct_node->type = COMMAND;

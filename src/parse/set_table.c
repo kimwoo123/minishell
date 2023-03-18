@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:27:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 15:28:38 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:00:39 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,11 @@
 
 void	set_reduce_function(t_fptr **reduce_table)
 {
-
-	//reduce_table[COMMAND][CMD_TOKEN] = reduce_command;
-	//reduce_table[COMMAND][REDIRECTION] = reduce_command;
-	//reduce_table[REDIRECTION][PIPE] = shift_redir_command;
-	//reduce_table[COMMAND][REDIR_TOKEN] = waiting;
-	//reduce_table[PIPE_CMD][REDIR_TOKEN] = waiting;
-	//reduce_table[COMMAND][0] = shift_l_command;
-	//reduce_table[GROUP_CMD][0] = reduce_group_command;
-	//reduce_table[COMMAND][WORD] = shift_word_command;
-	//reduce_table[PIPE_CMD][WORD] = shift_word_command;
-	//reduce_table[REDIRECTION][WORD] = shift_word_command;
-	//reduce_table[GROUP_CMD][GROUP_CMD] = reduce_group_command;
-
 	reduce_table[CMD_TOKEN][0] = shift_ct_command;
 	reduce_table[WORD][0] = shift_w_ct;
 	reduce_table[REDIRECTION][0] = shift_r_command;
 	reduce_table[CMD_TOKEN][REDIR_TOKEN] = shift_command;
 	reduce_table[CMD_TOKEN][PIPE] = shift_command;
-
 	reduce_table[REDIR_TOKEN][WORD] = reduce_redirection;
 	reduce_table[REDIRECTION][REDIRECTION] = reduce_redirection;
 	reduce_table[WORD][WORD] = reduce_cmd_token;
@@ -43,7 +29,7 @@ void	set_reduce_function(t_fptr **reduce_table)
 	reduce_table[PIPE_CMD][PIPE_CMD] = reduce_pipe_command;
 }
 
-t_fptr **init_reduce_functions(void)
+t_fptr	**init_reduce_functions(void)
 {
 	t_fptr	**reduce_table;
 	size_t	index;

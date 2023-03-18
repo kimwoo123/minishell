@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/18 15:29:29 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:01:19 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	shift_token(t_fptr **reduce_table, t_stack **stack_node)
 int	reduce_token(t_fptr **reduce_table, t_stack **stack_node)
 {
 	int	s_type;
-	int ns_type;
+	int	ns_type;
 
 	if ((*stack_node) != NULL && (*stack_node)->next != NULL)
 	{
@@ -50,7 +50,7 @@ int	reduce_token(t_fptr **reduce_table, t_stack **stack_node)
 
 int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
 {
-	t_stack *s_node;
+	t_stack	*s_node;
 	size_t	ret;
 
 	while (1)
@@ -71,11 +71,7 @@ int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack)
 			break ;
 	}
 	if ((*stack && (*stack)->next == NULL) && (*stack)->type == COMMAND)
-	{
-		printf("syntax fine\n");
 		return (0);
-	}
-	printf("syntax error\n");
 	return (1);
 }
 

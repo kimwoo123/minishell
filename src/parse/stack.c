@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:25:25 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 15:26:04 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:03:11 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	pop_stack(t_stack **stack)
 	return (ret);
 }
 
-void	push_stack(t_stack **stack, int	type)
+void	push_stack(t_stack **stack, int type)
 {
-	t_stack *node;
+	t_stack	*node;
 
 	node = create_elem(type);
 	if (node == NULL)

@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:44:33 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 15:45:07 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:02:35 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-char *ft_strndup(const char *begin, size_t size)
+char	*ft_strndup(const char *begin, size_t size)
 {
 	size_t	index;
 	char	*result;

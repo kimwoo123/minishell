@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 15:42:01 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:57:50 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*convert_variable(char *str)
 	else if (!env)
 		result = ft_strdup("");
 	else
-		result = ft_strdup(env);;
+		result = ft_strdup(env);
 	free(str);
 	return (result);
 }
@@ -38,7 +38,7 @@ char	*merge_str(char **split_str)
 
 	result = ft_strdup("");
 	index = 0;
-	while(split_str[index])
+	while (split_str[index])
 	{
 		temp = result;
 		result = ft_strjoin(result, split_str[index]);
