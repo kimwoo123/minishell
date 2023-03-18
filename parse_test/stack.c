@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/18 10:34:19 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 10:52:23 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,12 +282,12 @@ void	init_reduce_functions2(t_fptr **reduce_table)
 	//reduce_table[COMMAND][REDIR_TOKEN] = waiting;
 	//reduce_table[PIPE_CMD][REDIR_TOKEN] = waiting;
 	reduce_table[REDIR_TOKEN][WORD] = reduce_redirection;
+	reduce_table[REDIRECTION][REDIRECTION] = reduce_redirection;
 	reduce_table[WORD][WORD] = reduce_cmd_token;
 	reduce_table[CMD_TOKEN][WORD] = reduce_cmd_token;
-	reduce_table[COMMAND][PIPE] = reduce_pipe_command;
 	reduce_table[COMMAND][CMD_TOKEN] = reduce_command;
+	reduce_table[COMMAND][PIPE] = reduce_pipe_command;
 	reduce_table[PIPE_CMD][PIPE_CMD] = reduce_pipe_command;
-	reduce_table[REDIRECTION][REDIRECTION] = reduce_redirection;
 	reduce_table[PIPE_CMD][COMMAND] = reduce_group_command;
 	reduce_table[GROUP_CMD][GROUP_CMD] = reduce_group_command;
 }
@@ -398,12 +398,20 @@ int	test_code(t_list **node)
 		}
 		if (ret == 0)
 			break ;
-	}	
+	}
+	/*
 	while (stack)
 	{
 		printf("stack %d: %s\n", stack->type, trans[stack->type]);
 		stack = stack->next;
 	}
-
+	*/
+	printf("stack: %p\n", stack);
+	printf("stack->ne: %p\n", stack->next);
+	printf("stack->typ: %p\n", trans[stack->type]);
+	if ((stack && stack->next == NULL) && (stack->type == COMMAND || stack->type == GROUP_CMD))
+		printf("syntax fine\n");
+	else
+		printf("sytanx error\n");
 	return (0);
 }
