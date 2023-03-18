@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/18 17:00:12 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:05:11 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,12 @@ enum	e_type
 	QUOTE,
 	PIPE
 };
+
+enum	e_bool
+{
+	FALSE,
+	TRUE,
+}	t_bool;
 
 /* add test code */
 int	test_code(t_list **node);
