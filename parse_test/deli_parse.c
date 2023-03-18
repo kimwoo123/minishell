@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/17 10:43:36 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/18 14:20:01 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ int	close_quote(const char *line)
 	return (1);
 }
 
-void	scan_command(const char *line)
+t_list	*scan_command(const char *line)
 {
 	t_list *list;
 
@@ -199,6 +199,7 @@ void	scan_command(const char *line)
 	//test_tree(&list);
 	test_code(&list);
 	/* add test code */
+	return (list);
 }
 
 // void	search_tree(t_node *node)
