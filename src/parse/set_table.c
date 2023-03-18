@@ -14,19 +14,19 @@
 
 void	set_reduce_function(t_fptr **parse_table)
 {
-	parse_table[CMD_TOKEN][0] = shift_ct_command;
-	parse_table[WORD][0] = shift_w_ct;
-	parse_table[REDIRECTION][0] = shift_r_command;
-	parse_table[CMD_TOKEN][REDIR_TOKEN] = shift_command;
-	parse_table[CMD_TOKEN][PIPE] = shift_command;
-	parse_table[REDIR_TOKEN][WORD] = reduce_redirection;
-	parse_table[REDIRECTION][REDIRECTION] = reduce_redirection;
-	parse_table[WORD][WORD] = reduce_cmd_token;
-	parse_table[CMD_TOKEN][WORD] = reduce_cmd_token;
-	parse_table[COMMAND][COMMAND] = reduce_command;
-	parse_table[PIPE_CMD][COMMAND] = reduce_command;
-	parse_table[COMMAND][PIPE] = reduce_pipe_command;
-	parse_table[PIPE_CMD][PIPE_CMD] = reduce_pipe_command;
+	parse_table[CMD_TOKEN][0] = &shift_ct_command;
+	parse_table[WORD][0] = &shift_w_ct;
+	parse_table[REDIRECTION][0] = &shift_r_command;
+	parse_table[CMD_TOKEN][REDIR_TOKEN] = &shift_command;
+	parse_table[CMD_TOKEN][PIPE] = &shift_command;
+	parse_table[REDIR_TOKEN][WORD] = &reduce_redirection;
+	parse_table[REDIRECTION][REDIRECTION] = &reduce_redirection;
+	parse_table[WORD][WORD] = &reduce_cmd_token;
+	parse_table[CMD_TOKEN][WORD] = &reduce_cmd_token;
+	parse_table[COMMAND][COMMAND] = &reduce_command;
+	parse_table[PIPE_CMD][COMMAND] = &reduce_command;
+	parse_table[COMMAND][PIPE] = &reduce_pipe_command;
+	parse_table[PIPE_CMD][PIPE_CMD] = &reduce_pipe_command;
 }
 
 t_fptr	**init_reduce_functions(void)
