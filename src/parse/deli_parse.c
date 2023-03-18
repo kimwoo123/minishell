@@ -12,6 +12,56 @@
 
 #include "minishell.h"
 
+void	lst_addback(t_list **list, t_list *node)
+{
+	t_list	*temp;
+
+	if (!(*list))
+	{
+		*list = node;
+		return ;
+	}
+	temp = *list;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = node;
+}
+
+int		check_type(const char *str)
+{
+	if (*str == '|')
+		return (PIPE);
+	if (*str == '<' || *str == '>')
+		return (REDIR_TOKEN);
+	return (WORD);
+}
+
+static t_list	*create_element(int type, char *content)
+{
+	t_list	*elem;
+
+	elem = (t_list *)malloc(sizeof(t_list));
+	if (elem == NULL)
+		return (NULL);
+	elem->type = type;
+	elem->content = content;
+	elem->next = NULL;
+	return (elem);
+}
+
+void	get_token(char const *line, size_t size, t_list **list)
+{
+	t_list	*node;
+	char	*content;
+	int		type;
+
+	content = convert_dollar(line, size);
+	type = check_type(content);
+	node = create_element(type, content);
+	lst_addback(list, node);
+}
+
+
 int	is_space(const char c)
 {
 	return ((c >= 9 && c <= 13) || c == ' ');
@@ -199,7 +249,7 @@ int	close_quote(const char *line)
 	return (1);
 }
 
-void	scan_command(const char *line)
+t_list	*scan_command(const char *line)
 {
 	t_list *list;
 
@@ -210,7 +260,8 @@ void	scan_command(const char *line)
 	}
 	list = NULL;
 	split_delimiter(line, &list);
-	search_list(list);
+	// search_list(list);
+	return (list);
 }
 
 void	search_tree(t_node *node)

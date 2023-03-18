@@ -51,7 +51,6 @@ typedef struct s_data
 	char	**envp;
 	char	**copied_envp;
 	char	**commands;
-	int		cmd_counts;
 	int		dup_stdin;
 	int		dup_stdout;
 }	t_data;
@@ -115,6 +114,7 @@ enum	e_type
 	COMMAND,
 	PIPE_CMD,
 	PARENT_REDIR,
+	PARENT_CMD,
 	GROUP_CMD,
 	QUOTE,
 	PIPE
@@ -122,7 +122,7 @@ enum	e_type
 
 /* add test code */
 int	test_code(t_list **node);
-int	test_tree(t_list **node);
+t_tree	*make_tree(t_list **node);
 /* add test code */
 
 int	parsing_command_line_test(t_data *data);
@@ -198,13 +198,13 @@ void	split_space(const char *line, size_t size, t_list **node);
 void	search_list(t_list *list);
 int		repeat_meta(const char *line, size_t index);
 void	split_delimiter(const char *line, t_list **node);
-void	scan_command(const char* line);
+t_list	*scan_command(const char* line);
 char 	*ft_strndup(const char *begin, size_t size);
 int		is_space(const char c);
 int		is_quote(const char c);
+void	get_token(char const *line, size_t size, t_list **list);
 
 /* tree */
-void	get_token(char const *line, size_t size, t_list **list);
 t_node	*create_node(int type, char *content);
 
 /* dollar */

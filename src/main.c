@@ -12,6 +12,60 @@
 
 #include "minishell.h"
 
+/************************************************************/
+char	*redirection_join(t_tree *tree)
+{
+	char	*temp;
+	char	*new_str;
+
+	temp = ft_strjoin(tree->left->content, " ");
+	if (temp == NULL)
+		return (NULL);
+	new_str = ft_strjoin(temp, tree->right->content);
+	if (new_str == NULL)
+		return (NULL);
+	free(temp);
+	return (new_str);
+}
+
+char	*ft_strjoin_wspace(char *str1, char *str2)
+{
+	char	*temp;
+	char	*new_str;
+
+	temp = ft_strjoin(str1, " ");
+	if (temp == NULL)
+		return (NULL);
+	new_str = ft_strjoin(temp, str2);
+	if (new_str == NULL)
+		return (NULL);
+	free(temp);
+	return (new_str);
+}
+
+char	*command_join(t_tree *tree)
+{
+	char	*str;
+	char	*new_str;
+	t_tree	*temp;
+
+	str = tree->left->content;
+	temp = tree->right;
+	while (temp != NULL)
+	{
+		if (temp->left != NULL)
+		{
+			new_str = ft_strjoin_wspace(str, temp->left->content);
+			free(str);
+			str = new_str;
+			new_str = NULL;
+		}
+		temp = temp->right;
+	}
+	return (str);
+}
+/************************************************************/
+
 int	execute_command(t_data *data)
 {
 	char	*command_path;
@@ -101,6 +155,92 @@ int	parsing_command_line(t_data *data)
 	return (0);
 }
 
+
+static int	do_pipe(t_data *data)
+{
+	pid_t	pid;
+	int		pipe_fd[2];
+
+	if (pipe(pipe_fd) == FAILURE)
+		ft_perror("pipe error in pipe", EXIT_FAILURE);
+	pid = fork();
+	if (pid == FAILURE)
+		ft_perror("fork error in pipe", EXIT_FAILURE);
+	if (pid == CHILD_PROCESS)
+	{
+		close(pipe_fd[STDIN_FILENO]);
+		dup2(pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
+		close(pipe_fd[STDOUT_FILENO]);
+	}
+	else
+	{
+		close(pipe_fd[STDOUT_FILENO]);
+		dup2(pipe_fd[STDIN_FILENO], STDIN_FILENO);
+		close(pipe_fd[STDIN_FILENO]);
+		// waitpid(pid, NULL, WNOHANG);
+	}
+	return (SUCCESS);
+}
+
+int	execve_command_line(t_data *data, t_tree *tree)
+{
+	char	*temp;
+
+	// printf("%d: %s\n", tree->type, tree->content);
+	if (tree->type == PIPE)
+	{
+		if (tree->right == NULL) // DO NOT PIPE !
+			return (0);
+		else if (tree->right != NULL) // DO PIPE!
+			// return (0);
+			do_pipe(data);
+	}
+	else if (tree->type == REDIRECTION)
+	{
+		return (0);
+	}
+	else if (tree->type == PARENT_CMD && tree->left != NULL)
+	{
+		// printf("command: %s\n", command_join(tree));
+		temp = command_join(tree);
+		data->commands = ft_split(temp, ' ');
+		free(temp);
+		if (is_builtin(data->commands[0]) == FOUND)
+			exec_builtin(data);
+		else
+			is_not_builtin(data);
+		// return (0);
+	}
+	return (0);
+}
+
+static void	test_search_tree(t_data *data, t_tree *head)
+{
+	if (head == NULL)
+		return ;
+	if (head->type == PIPE || head->type == REDIRECTION \
+	|| head->type == PARENT_CMD)
+		execve_command_line(data, head);
+	if (head->left != NULL)
+		test_search_tree(data, head->left);
+	if (head->right != NULL)
+		test_search_tree(data, head->right);
+}
+
+void	make_nice_name(t_data *data, char *command_line)
+{
+	t_list	*list;
+	t_tree	*tree;
+
+	list = scan_command(command_line);
+	if (list == NULL)
+		rl_on_new_line();
+	tree = make_tree(&list);
+	test_search_tree(data, tree);
+	free(list);
+	free(tree);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
@@ -114,11 +254,8 @@ int	main(int argc, char **argv, char **envp)
 		if (command_line == NULL)
 			break ;
 		add_history(command_line);
-		data.commands = ft_split(command_line, ' ');
-		if (data.commands == NULL)
-			ft_perror("split error in main", EXIT_FAILURE);
+		make_nice_name(&data, command_line);
 		free (command_line);
-		parsing_command_line(&data);
 	}
 	return (0);
 }
