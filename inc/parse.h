@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/19 08:18:59 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 09:18:28 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ typedef	struct	s_stack
 typedef int	(*t_fptr)(t_stack **stack_node);
 
 /* lexer */
-void	seperate_meta(const char *line, size_t size, t_list **node);
-void	split_space(const char *line, size_t size, t_list **node);
+void	seperate_meta(const char *line, size_t size, t_list **list);
+void	split_space(const char *line, size_t size, t_list **list);
 int		repeat_meta(const char *line, size_t index);
-void	split_delimiter(const char *line, t_list **node);
+void	split_delimiter(const char *line, t_list **list);
 t_list	*scan_command(const char *line);
  
 /* parse_utils */
@@ -44,9 +44,9 @@ int		is_space(char c);
 int		is_quote(char c);
 
 /* token */
-t_list	*create_element(int type, const char *content);
-void	get_token(const char *line, size_t size, t_list **list);
-int		check_type(const char *str, t_list **list);
+t_list	*create_element(int type, char *content);
+void	get_token(const char *line, size_t size, t_list **token_list);
+int		check_type(const char *str);
 void	lst_addback(t_list **list, t_list *node);
 char	*remove_quote(const char *line);
 
@@ -58,7 +58,7 @@ void	duplicate_str(char **result, const char *line, char *quote_flag);
 char	**split_dollar(const char *line, size_t size);
 
 /* expand_str */
-char	*convert_variable(const char *str);
+char	*convert_variable(char *str);
 char	*merge_str(char **split_str);
 char	*expand_str(const char *line, size_t size);
 char	*convert_dollar(char **str);
@@ -69,10 +69,11 @@ void	free_double(char **str);
 void	free_stack_table(t_stack *stack, t_fptr **table);
 
 /* syntax */
-int	check_syntax(t_list **node);
-int	repeat_reduce_shift(const t_fptr **reduce_table, t_stack **stack);
-int	reduce_token(const t_fptr **reduce_table, t_stack **stack_node);
-int	shift_token(const t_fptr **reduce_table, t_stack **stack_node);
+int	check_syntax(t_list **token_list);
+int	repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack);
+int	reduce_token(t_fptr **reduce_table, t_stack **stack_node);
+int	shift_token(t_fptr **reduce_table, t_stack **stack_node);
+int	parse_token(t_list **token_list);
 
 /* stack */
 t_stack	*create_elem(int type);
@@ -94,6 +95,6 @@ int	shift_w_ct(t_stack **stack_node);
 
 /* set_table */
 void	set_reduce_function(t_fptr **reduce_table);
-t_fptr **init_reduce_functions(void);
+t_fptr **init_parse_table(void);
 
 #endif

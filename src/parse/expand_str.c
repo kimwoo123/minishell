@@ -6,13 +6,13 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 18:16:20 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 08:34:52 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*convert_variable(const char *str)
+char	*convert_variable(char *str)
 {
 	size_t	index;
 	char	*env;

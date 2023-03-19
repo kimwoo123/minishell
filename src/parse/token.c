@@ -6,13 +6,13 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 18:15:08 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 09:16:56 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*create_element(int type, const char *content)
+t_list	*create_element(int type, char *content)
 {
 	t_list	*elem;
 
@@ -40,17 +40,14 @@ void	lst_addback(t_list **list, t_list *node)
 	temp->next = node;
 }
 
-int	check_type(const char *str, t_list **list)
+int	check_type(const char *str)
 {
 	if (*str == '|')
 		return (PIPE);
 	if (*str == '<' || *str == '>')
 	{
 		if (!ft_strncmp(str, "<<<", 3) || !ft_strncmp(str, ">>>", 3))
-		{
-			free_list(list);
-			exit(1);
-		}
+			return (ZERO);
 		return (REDIR_TOKEN);
 	}
 	return (WORD);
@@ -83,7 +80,7 @@ char	*remove_quote(const char *line)
 	return (result);
 }
 
-void	get_token(const char *line, size_t size, t_list **list)
+void	get_token(const char *line, size_t size, t_list **token_list)
 {
 	t_list	*node;
 	char	*expansion;
@@ -91,8 +88,8 @@ void	get_token(const char *line, size_t size, t_list **list)
 	int		type;
 
 	expansion = expand_str(line, size);
-	type = check_type(expansion, list);
+	type = check_type(expansion);
 	content = remove_quote(expansion);
 	node = create_element(type, content);
-	lst_addback(list, node);
+	lst_addback(token_list, node);
 }

@@ -6,13 +6,13 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/19 08:19:52 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 09:17:22 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	seperate_meta(const char *line, size_t size, t_list **node)
+void	seperate_meta(const char *line, size_t size, t_list **list)
 {
 	size_t	index;
 	size_t	start_index;
@@ -23,15 +23,15 @@ void	seperate_meta(const char *line, size_t size, t_list **node)
 	{
 		while (index < size && is_delimiter(line[index]))
 			index++;
-		get_token(&line[start_index], index - start_index, node);
+		get_token(&line[start_index], index - start_index, list);
 		if (size != index)
-			get_token(&line[index], size - index, node);
+			get_token(&line[index], size - index, list);
 	}
 	else
-		get_token(&line[index], size - index, node);
+		get_token(&line[index], size - index, list);
 }
 
-void	split_space(const char *line, size_t size, t_list **node)
+void	split_space(const char *line, size_t size, t_list **list)
 {
 	size_t	index;
 	size_t	start_index;
@@ -47,7 +47,7 @@ void	split_space(const char *line, size_t size, t_list **node)
 		quote_flag = check_quote(line[index], quote_flag);
 		if (!quote_flag && (space_flag && is_space(line[index])))
 		{
-			seperate_meta(&line[start_index], index - start_index, node);
+			seperate_meta(&line[start_index], index - start_index, list);
 			start_index = index;
 			space_flag = 0;
 		}
@@ -55,7 +55,7 @@ void	split_space(const char *line, size_t size, t_list **node)
 			space_flag = 1;
 	}
 	if (space_flag)
-		seperate_meta(&line[start_index], index - start_index, node);
+		seperate_meta(&line[start_index], index - start_index, list);
 }
 
 int	repeat_meta(const char *line, size_t index)
@@ -67,7 +67,7 @@ int	repeat_meta(const char *line, size_t index)
 	return (FALSE);
 }
 
-void	split_delimiter(const char  *line, t_list **node)
+void	split_delimiter(const char  *line, t_list **list)
 {
 	size_t	index;
 	size_t	start_index;
@@ -82,11 +82,11 @@ void	split_delimiter(const char  *line, t_list **node)
 		if ((!quote_flag && is_delimiter(line[index])) && \
 				!repeat_meta(line, index))
 		{
-			split_space(&line[start_index], index - start_index, node);
+			split_space(&line[start_index], index - start_index, list);
 			start_index = index;
 		}
 	}
-	split_space(&line[start_index], index - start_index, node);
+	split_space(&line[start_index], index - start_index, list);
 }
 
 t_list	*scan_command(const char *line)

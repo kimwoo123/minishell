@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:27:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 16:00:39 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 09:08:54 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	set_reduce_function(t_fptr **parse_table)
 	parse_table[PIPE_CMD][PIPE_CMD] = &reduce_pipe_command;
 }
 
-t_fptr	**init_reduce_functions(void)
+t_fptr	**init_parse_table(void)
 {
 	t_fptr	**parse_table;
 	size_t	index;
