@@ -6,13 +6,13 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/19 08:19:01 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 09:15:38 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	shift_token(const t_fptr **parse_table, t_stack **stack_node)
+int	shift_token(t_fptr **parse_table, t_stack **stack_node)
 {
 	int	s_type;
 
@@ -28,7 +28,7 @@ int	shift_token(const t_fptr **parse_table, t_stack **stack_node)
 	return (FALSE);
 }
 
-int	reduce_token(const t_fptr **parse_table, t_stack **stack_node)
+int	reduce_token(t_fptr **parse_table, t_stack **stack_node)
 {
 	int	s_type;
 	int	ns_type;
@@ -46,7 +46,7 @@ int	reduce_token(const t_fptr **parse_table, t_stack **stack_node)
 	return (FALSE);
 }
 
-int	repeat_reduce_shift(const t_fptr **parse_table, t_stack **stack)
+int	repeat_reduce_shift(t_fptr **parse_table, t_stack **stack)
 {
 	t_stack	*s_node;
 	size_t	ret;
@@ -73,27 +73,47 @@ int	repeat_reduce_shift(const t_fptr **parse_table, t_stack **stack)
 	return (TRUE);
 }
 
-int	check_syntax(t_list **node)
+int	parse_token(t_list **token_list)
 {
-	t_stack	*stack;
-	t_list	*temp;
 	t_fptr	**parse_table;
-	int		syntax_error;
+	t_stack	*stack;
+	t_list	*node;
+	int		accept;
+
+	parse_table = init_parse_table();
+	stack = NULL;
+	node = *token_list;
+	while (node)
+	{
+		push_stack(&stack, node->type);
+		if (node->type == ZERO)
+		{
+			free_stack_table(stack, parse_table);
+			return (FALSE);
+		}
+		reduce_token(parse_table, &stack);
+		node = node->next;
+	}
+	accept = repeat_reduce_shif(parse_table, &stack);
+	free_stack_table(stack, parse_table);
+	if (accept == FALSE)
+		return (FALSE);
+	return (TRUE);
+}
+
+int	check_syntax(t_list **token_list)
+{
+	t_list	*node;
+	int		accept;
 
 	if (*node == NULL)
-		return (FALSE);
-	parse_table = init_reduce_functions();
-	stack = NULL;
-	temp = *node;
-	while (temp)
+		return (TRUE);
+	accept = parse_token(token_list);
+	if (accept == FALSE)
 	{
-		push_stack(&stack, temp->type);
-		reduce_token(parse_table, &stack);
-		temp = temp->next;
-	}
-	syntax_error = repeat_reduce_shift(parse_table, &stack);
-	free_stack_table(stack, parse_table);
-	if (syntax_error == 1)
+		printf("syntax error\n");
 		return (FALSE);
+	}
+	printf("syntax fine\n");
 	return (TRUE);
 }
