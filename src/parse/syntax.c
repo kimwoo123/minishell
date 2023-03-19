@@ -111,9 +111,9 @@ int	check_syntax(t_list **token_list)
 	accept = parse_token(token_list);
 	if (accept == FALSE)
 	{
-		printf("syntax error\n");
+		// printf("syntax error\n");
 		return (FALSE);
 	}
-	printf("syntax fine\n");
+	// printf("syntax fine\n");
 	return (TRUE);
 }

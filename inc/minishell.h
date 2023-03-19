@@ -55,15 +55,6 @@ typedef struct s_data
 	int		dup_stdout;
 }	t_data;
 
-// not use?
-typedef struct	s_node
-{
-	int				type;
-	char			*content;
-	struct s_node	*left_child;
-	struct s_node	*right_child;	
-}	t_node;
-
 typedef struct	s_list
 {
 	int				type;

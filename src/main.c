@@ -49,7 +49,7 @@ char	*command_join(t_tree *tree)
 	char	*new_str;
 	t_tree	*temp;
 
-	str = tree->left->content;
+	str = ft_strdup(tree->left->content);
 	temp = tree->right;
 	while (temp != NULL)
 	{
@@ -135,7 +135,8 @@ int	is_not_builtin(t_data *data)
 	}
 	else
 	{
-		ft_wait(NULL);
+		wait(0);
+		// ft_wait(NULL);
 	}
 	return (0);
 }
@@ -192,8 +193,8 @@ int	execve_command_line(t_data *data, t_tree *tree)
 		if (tree->right == NULL) // DO NOT PIPE !
 			return (0);
 		else if (tree->right != NULL) // DO PIPE!
-			// return (0);
 			do_pipe(data);
+			// return (0);
 	}
 	else if (tree->type == REDIRECTION)
 	{
@@ -205,6 +206,7 @@ int	execve_command_line(t_data *data, t_tree *tree)
 		temp = command_join(tree);
 		data->commands = ft_split(temp, ' ');
 		free(temp);
+		// COMMAND
 		if (is_builtin(data->commands[0]) == FOUND)
 			exec_builtin(data);
 		else
@@ -218,7 +220,8 @@ static void	test_search_tree(t_data *data, t_tree *head)
 {
 	if (head == NULL)
 		return ;
-	if (head->type == PIPE || head->type == REDIRECTION \
+	if (head->type == PIPE \
+	|| head->type == REDIRECTION \
 	|| head->type == PARENT_CMD)
 		execve_command_line(data, head);
 	if (head->left != NULL)
@@ -239,8 +242,8 @@ void	make_nice_name(t_data *data, char *command_line)
 	{
 		tree = make_tree(&list);
 		test_search_tree(data, tree);
-		free(list);
-		free(tree);
+		// free(list);
+		// free(tree);
 	}
 }
 
