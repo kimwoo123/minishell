@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/19 09:25:40 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 14:30:09 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int	parse_token(t_list **token_list)
 
 int	check_syntax(t_list **token_list)
 {
-	t_list	*node;
 	int		accept;
 
 	if (*token_list == NULL)
@@ -111,9 +110,8 @@ int	check_syntax(t_list **token_list)
 	accept = parse_token(token_list);
 	if (accept == FALSE)
 	{
-		// printf("syntax error\n");
+		ft_putendl_fd("syntax error", STDERR_FILENO);
 		return (FALSE);
 	}
-	// printf("syntax fine\n");
 	return (TRUE);
 }

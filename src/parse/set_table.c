@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:27:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/19 09:08:54 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 09:39:29 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	set_reduce_function(t_fptr **parse_table)
 {
-	parse_table[CMD_TOKEN][0] = &shift_ct_command;
 	parse_table[WORD][0] = &shift_w_ct;
+	parse_table[CMD_TOKEN][0] = &shift_ct_command;
 	parse_table[REDIRECTION][0] = &shift_r_command;
-	parse_table[CMD_TOKEN][REDIR_TOKEN] = &shift_command;
 	parse_table[CMD_TOKEN][PIPE] = &shift_command;
-	parse_table[REDIR_TOKEN][WORD] = &reduce_redirection;
-	parse_table[REDIRECTION][REDIRECTION] = &reduce_redirection;
+	parse_table[CMD_TOKEN][REDIR_TOKEN] = &shift_command;
 	parse_table[WORD][WORD] = &reduce_cmd_token;
+	parse_table[COMMAND][PIPE] = &reduce_pipe_command;
 	parse_table[CMD_TOKEN][WORD] = &reduce_cmd_token;
 	parse_table[COMMAND][COMMAND] = &reduce_command;
+	parse_table[REDIR_TOKEN][WORD] = &reduce_redirection;
 	parse_table[PIPE_CMD][COMMAND] = &reduce_command;
-	parse_table[COMMAND][PIPE] = &reduce_pipe_command;
 	parse_table[PIPE_CMD][PIPE_CMD] = &reduce_pipe_command;
+	parse_table[REDIRECTION][REDIRECTION] = &reduce_redirection;
 }
 
 t_fptr	**init_parse_table(void)
