@@ -44,7 +44,7 @@ t_tree	*create_root(void)
 	if (parent_redir == NULL)
 		return (NULL);
 	group_cmd->left = parent_redir;
-	command = create_tree(COMMAND, NULL, NULL, NULL);
+	command = create_tree(PARENT_CMD, NULL, NULL, NULL);
 	if (parent_redir == NULL)
 		return (NULL);
 	group_cmd->right = command;
@@ -151,17 +151,17 @@ void	recursive_make_tree(t_tree **head, t_list *node)
 	}
 }
 
-void	test_search_tree(t_tree *head)
-{
-	if (head && head->content)
-		printf("type: %d, content:%s\n", head->type, head->content);
-	if (head->left != NULL)
-		test_search_tree(head->left);
-	if (head->right != NULL)
-		test_search_tree(head->right);
-}
+// static void	test_search_tree(t_tree *head)
+// {
+// 	if (head && head->content)
+// 		printf("type: %d, content:%s\n", head->type, head->content);
+// 	if (head->left != NULL)
+// 		test_search_tree(head->left);
+// 	if (head->right != NULL)
+// 		test_search_tree(head->right);
+// }
 
-t_tree	*test_tree(t_list **node)
+t_tree	*make_tree(t_list **node)
 {
 	t_tree	*head;
 
@@ -169,6 +169,6 @@ t_tree	*test_tree(t_list **node)
 	if (head == NULL)
 		return (NULL);
 	recursive_make_tree(&head, *node);
-	test_search_tree(head);
+	// test_search_tree(head);
 	return (head);
 }

@@ -235,10 +235,13 @@ void	make_nice_name(t_data *data, char *command_line)
 	list = scan_command(command_line);
 	if (list == NULL)
 		rl_on_new_line();
-	tree = make_tree(&list);
-	test_search_tree(data, tree);
-	free(list);
-	free(tree);
+	else
+	{
+		tree = make_tree(&list);
+		test_search_tree(data, tree);
+		free(list);
+		free(tree);
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
