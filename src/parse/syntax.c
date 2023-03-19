@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/19 09:15:38 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 09:25:40 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ int	repeat_reduce_shift(t_fptr **parse_table, t_stack **stack)
 			break ;
 	}
 	if ((*stack && (*stack)->next == NULL) && (*stack)->type == COMMAND)
-		return (FALSE);
-	return (TRUE);
+		return (TRUE);
+	return (FALSE);
 }
 
 int	parse_token(t_list **token_list)
@@ -94,7 +94,7 @@ int	parse_token(t_list **token_list)
 		reduce_token(parse_table, &stack);
 		node = node->next;
 	}
-	accept = repeat_reduce_shif(parse_table, &stack);
+	accept = repeat_reduce_shift(parse_table, &stack);
 	free_stack_table(stack, parse_table);
 	if (accept == FALSE)
 		return (FALSE);
@@ -106,7 +106,7 @@ int	check_syntax(t_list **token_list)
 	t_list	*node;
 	int		accept;
 
-	if (*node == NULL)
+	if (*token_list == NULL)
 		return (TRUE);
 	accept = parse_token(token_list);
 	if (accept == FALSE)
