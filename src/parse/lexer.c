@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/19 14:30:07 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/19 14:42:55 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_list	*scan_command(const char *line)
 	if (close_quote(line) == FALSE)
 	{
 		ft_putendl_fd("quote error", STDERR_FILENO);
-		return (list);
+		return (NULL);
 	}
 	split_delimiter(line, &list);
 	accept = check_syntax(&list);
