@@ -46,6 +46,9 @@
 
 typedef struct s_data
 {
+	pid_t	pid;
+	int		pipe_flag;
+	int		pipe_fd[2];
 	int		argc;
 	char	**argv;
 	char	**envp;
