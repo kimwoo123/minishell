@@ -46,14 +46,13 @@
 
 typedef struct s_data
 {
-	pid_t	pid;
-	int		pipe_flag;
-	int		pipe_fd[2];
-	int		argc;
-	char	**argv;
 	char	**envp;
 	char	**copied_envp;
 	char	**commands;
+	int		has_forked;
+	int		stat;
+	int		last_cmd;
+	int		pipe_fd[2];
 	int		dup_stdin;
 	int		dup_stdout;
 }	t_data;
