@@ -149,50 +149,23 @@ int	is_not_builtin(t_data *data)
 	}
 	if (data->pid != getpid())
 	{
-		dprintf(2, "> c pid: %d in cmd\n", getpid());
+		// dprintf(2, "> c pid: %d in cmd\n", getpid());
 		execute_command(data);
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		dprintf(2, "> p pid: %d in cmd\n", getpid());
+		// dprintf(2, "> p pid: %d in cmd\n", getpid());
 		wait(0);
 		// ft_wait(NULL);
 	}
 	return (0);
 }
 
-// static int	do_pipe(t_data *data)
-// {
-// 	pid_t	pid;
-// 	int		pipe_fd[2];
-
-// 	if (pipe(pipe_fd) == FAILURE)
-// 		ft_perror("pipe error in pipe", EXIT_FAILURE);
-// 	pid = fork();
-// 	if (pid == FAILURE)
-// 		ft_perror("fork error in pipe", EXIT_FAILURE);
-// 	if (pid == CHILD_PROCESS)
-// 	{
-// 		close(pipe_fd[STDIN_FILENO]);
-// 		dup2(pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
-// 		close(pipe_fd[STDOUT_FILENO]);
-// 	}
-// 	else
-// 	{
-// 		close(pipe_fd[STDOUT_FILENO]);
-// 		dup2(pipe_fd[STDIN_FILENO], STDIN_FILENO);
-// 		close(pipe_fd[STDIN_FILENO]);
-// 		// waitpid(pid, NULL, WNOHANG);
-// 	}
-// 	return (SUCCESS);
-// }
-
 static int	do_pipe(t_data *data)
 {
 	pid_t	pid;
 	int		pipe_fd[2];
-
 
 	if (pipe(pipe_fd) == FAILURE)
 		ft_perror("pipe error in pipe", EXIT_FAILURE);
@@ -201,22 +174,15 @@ static int	do_pipe(t_data *data)
 		ft_perror("fork error in pipe", EXIT_FAILURE);
 	if (pid == CHILD_PROCESS)
 	{
-		dprintf(2, ">>>>> c pid: %d in cmd\n", getpid());
-		
-		close(pipe_fd[STDIN_FILENO]);
-		if (dup2(pipe_fd[STDOUT_FILENO], STDOUT_FILENO) == -1)
-			ft_perror("error", EXIT_FAILURE);
-		close(pipe_fd[STDOUT_FILENO]);
+		ft_close(pipe_fd[STDIN_FILENO]);
+		ft_dup2(pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
+		ft_close(pipe_fd[STDOUT_FILENO]);
 	}
 	else
 	{
-		dprintf(2, ">>>>> p pid: %d in cmd\n", getpid());
-		
-		close(pipe_fd[STDOUT_FILENO]);
-		if (dup2(pipe_fd[STDIN_FILENO], STDIN_FILENO) == -1)
-			ft_perror("error", EXIT_FAILURE);
-		close(pipe_fd[STDIN_FILENO]);
-		// waitpid(pid, NULL, WNOHANG);
+		ft_close(pipe_fd[STDOUT_FILENO]);
+		ft_dup2(pipe_fd[STDIN_FILENO], STDIN_FILENO);
+		ft_close(pipe_fd[STDIN_FILENO]);
 	}
 	return (SUCCESS);
 }
@@ -226,24 +192,15 @@ int	execve_command_line(t_data *data, t_tree *tree)
 	pid_t	pid;
 	char	*temp;
 
-	// printf("getpid: %d\n", getpid());
-	// printf("%d: %s\n", tree->type, tree->content);
-	// dprintf(2, "1. pid: %d in pipe\n", getpid());
 	if (tree->type == PIPE)
 	{
 		if (data->pid == getpid())
+		// if (pid == 1)
 		{
-			// dprintf(2, "2. pid: %d in pipe\n", getpid());
 			if (tree->right == NULL) // DO NOT PIPE !
 				data->pipe_flag = 1;
-				// return (0);
 			else if (tree->right != NULL) // DO PIPE!
 				do_pipe(data);
-				// return (0);
-			// if (dup2(STDIN_FILENO, data->dup_stdin) == -1)
-			// 	dprintf(2, "dup2 error in execve\n");
-			// if (dup2(STDOUT_FILENO, data->dup_stdout) == -1)
-			// 	dprintf(2, "dup2 error in execve\n");
 		}
 	}
 	else if (tree->type == REDIRECTION)
@@ -252,8 +209,6 @@ int	execve_command_line(t_data *data, t_tree *tree)
 	}
 	else if (tree->type == PARENT_CMD && tree->left != NULL)
 	{
-		// printf("command: %s\n", command_join(tree));
-		// dprintf(2, "pid: %d in cmd\n", getpid());
 		temp = command_join(tree);
 		data->commands = ft_split(temp, ' ');
 		free(temp);
@@ -262,12 +217,11 @@ int	execve_command_line(t_data *data, t_tree *tree)
 			exec_builtin(data);
 		else
 			is_not_builtin(data);
-		// return (0);
 	}
 	return (0);
 }
 
-static void	test_search_tree(t_data *data, t_tree *head)
+static void	search_tree(t_data *data, t_tree *head)
 {
 	// printf("%d: %s\n", head->type, head->content);
 	if (head == NULL)
@@ -277,9 +231,9 @@ static void	test_search_tree(t_data *data, t_tree *head)
 	|| head->type == PARENT_CMD)
 		execve_command_line(data, head);
 	if (head->left != NULL)
-		test_search_tree(data, head->left);
+		search_tree(data, head->left);
 	if (head->right != NULL)
-		test_search_tree(data, head->right);
+		search_tree(data, head->right);
 }
 
 void	make_nice_name(t_data *data, char *command_line)
@@ -289,26 +243,22 @@ void	make_nice_name(t_data *data, char *command_line)
 
 	data->pid = getpid();
 	data->pipe_flag = 0;
-	data->dup_stdin = dup(STDIN_FILENO);
-	data->dup_stdout = dup(STDOUT_FILENO);
+	data->dup_stdin = ft_dup(STDIN_FILENO);
+	data->dup_stdout = ft_dup(STDOUT_FILENO);
 	list = scan_command(command_line);
 	if (list == NULL)
 		rl_on_new_line();
 	else
 	{
 		tree = make_tree(&list);
-		test_search_tree(data, tree);
+		search_tree(data, tree);
 		// free(list);
 		// free(tree);
 	}
-	if (dup2(data->dup_stdin, STDIN_FILENO) == -1)
-		ft_perror("error", EXIT_FAILURE);
-		// dprintf(2, "dup2 error in execve\n");
-	if (dup2(data->dup_stdout, STDOUT_FILENO) == -1)
-		ft_perror("error", EXIT_FAILURE);
-		// dprintf(2, "dup2 error in execve\n");
-	close(data->dup_stdin);
-	close(data->dup_stdout);
+	ft_dup2(data->dup_stdin, STDIN_FILENO);
+	ft_dup2(data->dup_stdout, STDOUT_FILENO);
+	ft_close(data->dup_stdin);
+	ft_close(data->dup_stdout);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -320,15 +270,13 @@ int	main(int argc, char **argv, char **envp)
 	set_signals();
 	while (1)
 	{
-		// dprintf(2, "CMD: %s\n", command_line);
 		command_line = readline("minishell> ");
-		// dprintf(2, "\nCMD: %s\n", command_line);
 		if (command_line == NULL)
 			break ;
 		add_history(command_line);
 		make_nice_name(&data, command_line);
 		free (command_line);
 	}
-	// dprintf(2, "bye\n");
+	ft_putendl_fd("bye", STDOUT_FILENO);
 	return (0);
 }

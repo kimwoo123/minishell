@@ -147,6 +147,7 @@ void	free_double_array(char **array);
 void	ft_perror(const char *str, int exit_code);
 int		ft_open(const char *path, int oflag, int flag);
 void	ft_close(int fd);
+int		ft_dup(int old_fd);
 void	ft_dup2(int old_fd, int new_fd);
 // void	ft_fork(pid_t *pid);
 void	ft_unlink(const char *path);
