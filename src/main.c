@@ -13,20 +13,20 @@
 #include "minishell.h"
 
 /************************************************************/
-char	*join_redirection(t_tree *tree)
-{
-	char	*temp;
-	char	*new_str;
+// char	*join_redirection(t_tree *tree)
+// {
+// 	char	*temp;
+// 	char	*new_str;
 
-	temp = ft_strjoin(tree->left->content, " ");
-	if (temp == NULL)
-		return (NULL);
-	new_str = ft_strjoin(temp, tree->right->content);
-	if (new_str == NULL)
-		return (NULL);
-	free(temp);
-	return (new_str);
-}
+// 	temp = ft_strjoin(tree->left->content, " ");
+// 	if (temp == NULL)
+// 		return (NULL);
+// 	new_str = ft_strjoin(temp, tree->right->content);
+// 	if (new_str == NULL)
+// 		return (NULL);
+// 	free(temp);
+// 	return (new_str);
+// }
 
 char	*ft_strjoin_wspace(char *str1, char *str2)
 {
@@ -197,7 +197,7 @@ int	execve_command_line(t_data *data, t_tree *tree)
 	if (tree->type == PIPE)
 		do_pipe(data, tree);
 	else if (tree->type == REDIRECTION)
-		return (0);
+		do_redirection(data, tree);
 	else if (tree->type == PARENT_CMD && tree->left != NULL)
 		do_command(data, tree);
 	return (0);

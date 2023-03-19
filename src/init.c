@@ -40,5 +40,5 @@ void	init_data(int argc, char **argv, char **envp, t_data *data)
 	data->copied_envp = set_environment_variable(envp);
 	if (!data->copied_envp)
 		ft_perror("copy_double_array error in init data", EXIT_FAILURE);
-	data->stat = FALSE;
+	data->stat = 0;
 }
