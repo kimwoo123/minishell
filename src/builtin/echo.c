@@ -53,6 +53,6 @@ int	echo_command(char **array)
 		index++;
 	}
 	if (flag)
-		write(STDIN_FILENO, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
 	return (SUCCESS);
 }

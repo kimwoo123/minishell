@@ -133,7 +133,7 @@ t_tree	*make_tree(t_list **node);
 /* add test code */
 
 
-int	is_not_builtin(t_data *data);
+int	do_fork(t_data *data);
 
 /* init */
 void	init_data(int argc, char **argv, char **envp, t_data *data);

@@ -103,6 +103,6 @@ int	do_command(t_data *data, t_tree *tree)
 	&& is_builtin(data->commands[0]) == TRUE)
 		execve_builtin(data);
 	else
-		is_not_builtin(data);
+		do_fork(data);
 	return (SUCCESS);
 }

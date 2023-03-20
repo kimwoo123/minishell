@@ -80,7 +80,7 @@ int	cd_command(t_data *data)
 	if (data->commands[1] == NULL \
 	|| !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
 	{
-		if (change_directory_to_home(data->commands, data->envp) == FAILURE)
+		if (change_directory_to_home(data->commands, data->copied_envp) == FAILURE)
 			return (FAILURE);
 	}
 	else if (!ft_strncmp(data->commands[1], "/", ft_strlen("/")))

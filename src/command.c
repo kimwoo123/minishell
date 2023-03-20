@@ -19,51 +19,63 @@ int	execve_command(t_data *data)
 	command_path = find_command_path(data);
 	if (command_path == NULL)
 	{
-		printf("%s: command not found\n", data->commands[0]);
-		return (1);
+		ft_putstr_fd(data->commands[0], STDOUT_FILENO);
+		ft_putendl_fd(": command not found", STDOUT_FILENO);
+		return (FAILURE);
 	}
 	else
 	{
 		if (execve(command_path, data->commands, data->envp) == FAILURE)
 			ft_perror("execve error", EXIT_FAILURE);
-		return (1);
+		return (FAILURE);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
-int	is_not_builtin(t_data *data)
+static void	child_redir_exec(t_data *data)
+{
+	if (data->last_cmd != TRUE)
+	{
+		ft_close(data->pipe_fd[STDIN_FILENO]);
+		ft_dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
+		ft_close(data->pipe_fd[STDOUT_FILENO]);
+	}
+	if (is_builtin(data->commands[0]) == TRUE)
+		execve_builtin(data);
+	else
+		execve_command(data);
+}
+
+static void	parent_redir_wait(t_data *data, pid_t pid)
+{
+	extern int	g_status;
+
+	if (data->last_cmd != TRUE)
+	{
+		ft_close(data->pipe_fd[STDOUT_FILENO]);
+		ft_dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO);
+		ft_close(data->pipe_fd[STDIN_FILENO]);
+		wait(0);
+	}
+	else
+		waitpid(pid, &g_status, 0);
+}
+
+int	do_fork(t_data *data)
 {
 	pid_t		pid;
-	extern int	g_status;
 
 	pid = fork();
 	if (pid == FAILURE)
 		ft_perror("fork error", EXIT_FAILURE);
 	if (pid == CHILD_PROCESS)
 	{
-		if (data->last_cmd != TRUE)
-		{
-			ft_close(data->pipe_fd[STDIN_FILENO]);
-			ft_dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
-			ft_close(data->pipe_fd[STDOUT_FILENO]);
-		}
-		if (is_builtin(data->commands[0]) == TRUE)
-			execve_builtin(data);
-		else
-			execve_command(data);
+		child_redir_exec(data);
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		if (data->last_cmd != TRUE)
-		{
-			ft_close(data->pipe_fd[STDOUT_FILENO]);
-			ft_dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO);
-			ft_close(data->pipe_fd[STDIN_FILENO]);
-			wait(0);
-		}
-		else
-			waitpid(pid, &g_status, 0);
+		parent_redir_wait(data, pid);
 	}
 	return (0);
 }

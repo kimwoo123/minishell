@@ -24,41 +24,43 @@ char	*expand_str_hd(const char *line)
 
 int	preprocess_heredoc(t_data *data, t_tree *tree)
 {	
-	char	*str;
-	char	*str_with_newline;
+	char	*str_with_nl;
 	char	*delimiter;
 	char	*expand;
 	char	*save;
 	char	*temp;
 
 	save = ft_strdup("");
+	if (save == NULL)
+		return (FAILURE);
 	while (1)
 	{
-		str = readline("> ");
-		if (str == NULL)
+		temp = readline("> ");
+		if (temp == NULL)
 			break ;
-		str_with_newline = ft_strjoin(str, "\n");
-		if (str_with_newline == NULL)
-			ft_perror("strjoin error in heredoc", EXIT_FAILURE);
-		free(str);
+		str_with_nl = ft_strjoin(temp, "\n");
+		if (str_with_nl == NULL)
+			return (FAILURE);
+		free(temp);
 		delimiter = ft_strjoin(data->commands[1], "\n");
 		if (delimiter == NULL)
-			ft_perror("strjoin error in heredoc", EXIT_FAILURE);
-		if (is_equal_to(str_with_newline, delimiter) == TRUE)
+			return (FAILURE);
+		if (is_equal_to(str_with_nl, delimiter) == TRUE)
 		{
-			free(str_with_newline);
+			free(str_with_nl);
 			free(delimiter);
 			break ;
 		}
-		expand = expand_str_hd(str_with_newline);
+		expand = expand_str_hd(str_with_nl);
 		temp = save;
-		save = ft_strjoin(temp, str_with_newline);
+		save = ft_strjoin(temp, str_with_nl);
+		if (save == NULL)
+			return (FAILURE);
 		free(temp);
-		free(str_with_newline);
+		free(str_with_nl);
 		free(delimiter);
 	}
 	free(tree->right->content);
 	tree->right->content = save;
-	save = NULL;
-	return (0);
+	return (SUCCESS);
 }
