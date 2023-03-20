@@ -88,14 +88,11 @@ enum	e_type
 	PIPE
 };
 
-// enum	e_bool
-// {
-// 	FALSE,
-// 	TRUE,
-// }	t_bool;
-
-# define FALSE	0
-# define TRUE	1
+enum	e_bool
+{
+	FALSE,
+	TRUE,
+}	t_bool;
 
 int	do_redirection(t_data *data, t_tree *tree);
 
