@@ -46,23 +46,16 @@
 
 typedef struct s_data
 {
-	int		argc;
-	char	**argv;
 	char	**envp;
 	char	**copied_envp;
 	char	**commands;
+	int		has_forked;
+	int		stat;
+	int		last_cmd;
+	int		pipe_fd[2];
 	int		dup_stdin;
 	int		dup_stdout;
 }	t_data;
-
-// not use?
-typedef struct	s_node
-{
-	int				type;
-	char			*content;
-	struct s_node	*left_child;
-	struct s_node	*right_child;	
-}	t_node;
 
 typedef struct	s_list
 {
@@ -100,6 +93,8 @@ enum	e_bool
 	FALSE,
 	TRUE,
 }	t_bool;
+
+int	do_redirection(t_data *data, t_tree *tree);
 
 /* add test code */
 int	test_code(t_list **node);
@@ -153,6 +148,7 @@ void	free_double_array(char **array);
 void	ft_perror(const char *str, int exit_code);
 int		ft_open(const char *path, int oflag, int flag);
 void	ft_close(int fd);
+int		ft_dup(int old_fd);
 void	ft_dup2(int old_fd, int new_fd);
 // void	ft_fork(pid_t *pid);
 void	ft_unlink(const char *path);

@@ -13,20 +13,20 @@
 #include "minishell.h"
 
 /************************************************************/
-char	*redirection_join(t_tree *tree)
-{
-	char	*temp;
-	char	*new_str;
+// char	*join_redirection(t_tree *tree)
+// {
+// 	char	*temp;
+// 	char	*new_str;
 
-	temp = ft_strjoin(tree->left->content, " ");
-	if (temp == NULL)
-		return (NULL);
-	new_str = ft_strjoin(temp, tree->right->content);
-	if (new_str == NULL)
-		return (NULL);
-	free(temp);
-	return (new_str);
-}
+// 	temp = ft_strjoin(tree->left->content, " ");
+// 	if (temp == NULL)
+// 		return (NULL);
+// 	new_str = ft_strjoin(temp, tree->right->content);
+// 	if (new_str == NULL)
+// 		return (NULL);
+// 	free(temp);
+// 	return (new_str);
+// }
 
 char	*ft_strjoin_wspace(char *str1, char *str2)
 {
@@ -43,19 +43,23 @@ char	*ft_strjoin_wspace(char *str1, char *str2)
 	return (new_str);
 }
 
-char	*command_join(t_tree *tree)
+char	*join_command(t_tree *tree)
 {
 	char	*str;
 	char	*new_str;
 	t_tree	*temp;
 
-	str = tree->left->content;
+	str = ft_strdup(tree->left->content);
+	if (str == NULL)
+		return (NULL);
 	temp = tree->right;
 	while (temp != NULL)
 	{
 		if (temp->left != NULL)
 		{
 			new_str = ft_strjoin_wspace(str, temp->left->content);
+			if (new_str == NULL)
+				return (NULL);
 			free(str);
 			str = new_str;
 			new_str = NULL;
@@ -66,30 +70,10 @@ char	*command_join(t_tree *tree)
 }
 /************************************************************/
 
-int	execute_command(t_data *data)
-{
-	char	*command_path;
-
-	command_path = find_command_path(data);
-	if (command_path == NULL)
-	{
-		// perror(data->commands[0]);
-		printf("%s: command not found\n", data->commands[0]);
-		return (1);
-	}
-	else
-	{
-		if (execve(command_path, data->commands, data->envp) == FAILURE)
-			ft_perror("execve error", EXIT_FAILURE);
-		return (1);
-	}
-	return (0);
-}
-
-int	exec_builtin(t_data *data)
+int	execve_builtin(t_data *data)
 {
 	int	result;
-	
+
 	result = FAILURE;
 	if (is_equal_to(data->commands[0], "echo") == SAME)
 		result = echo_command(data->commands);
@@ -121,6 +105,25 @@ int	is_builtin(char *str)
 	return (NOT_FOUND);
 }
 
+int	execve_command(t_data *data)
+{
+	char	*command_path;
+
+	command_path = find_command_path(data);
+	if (command_path == NULL)
+	{
+		printf("%s: command not found\n", data->commands[0]);
+		return (1);
+	}
+	else
+	{
+		if (execve(command_path, data->commands, data->envp) == FAILURE)
+			ft_perror("execve error", EXIT_FAILURE);
+		return (1);
+	}
+	return (0);
+}
+
 int	is_not_builtin(t_data *data)
 {
 	pid_t	pid;
@@ -130,101 +133,88 @@ int	is_not_builtin(t_data *data)
 		ft_perror("fork error", EXIT_FAILURE);
 	if (pid == CHILD_PROCESS)
 	{
-		execute_command(data);
+		if (data->last_cmd != TRUE)
+		{
+			ft_close(data->pipe_fd[STDIN_FILENO]);
+			ft_dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
+			ft_close(data->pipe_fd[STDOUT_FILENO]);
+		}
+		if (is_builtin(data->commands[0]) == TRUE)
+			execve_builtin(data);
+		else
+			execve_command(data);
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		ft_wait(NULL);
+		if (data->last_cmd != TRUE)
+		{
+			ft_close(data->pipe_fd[STDOUT_FILENO]);
+			ft_dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO);
+			ft_close(data->pipe_fd[STDIN_FILENO]);
+			wait(0);
+		}
+		else
+			waitpid(pid, &data->stat, 0);
 	}
 	return (0);
 }
 
-int	parsing_command_line(t_data *data)
+static int	do_pipe(t_data *data, t_tree *tree)
 {
-	if (data->commands[0] == NULL)
-		rl_on_new_line();
-	else if (is_equal_to(data->commands[0], "<<") == SAME)
-		here_doc(data);
-	else if (is_equal_to(data->commands[0], "|") == SAME)
-		return (0); // PIPE
-	else if (is_builtin(data->commands[0]) == FOUND)
-		exec_builtin(data);
+	if (tree->right == NULL)
+		data->last_cmd = TRUE;
+	else if (tree->right != NULL)
+	{
+		data->has_forked = TRUE;
+		if (pipe(data->pipe_fd) == FAILURE)
+			return (FAILURE);
+			// ft_perror("pipe error in pipe", EXIT_FAILURE);
+	}
+	return (SUCCESS);
+}
+
+static int	do_command(t_data *data, t_tree *tree)
+{
+	char	*temp;
+	
+	temp = join_command(tree);
+	if (temp == NULL)
+		return (FAILURE);
+	data->commands = ft_split(temp, ' ');
+	if (data->commands == NULL)
+		return (FAILURE);
+	free(temp);
+	if (data->has_forked == FALSE && is_builtin(data->commands[0]) == TRUE)
+		execve_builtin(data);
 	else
 		is_not_builtin(data);
-	return (0);
-}
-
-
-static int	do_pipe(t_data *data)
-{
-	pid_t	pid;
-	int		pipe_fd[2];
-
-	if (pipe(pipe_fd) == FAILURE)
-		ft_perror("pipe error in pipe", EXIT_FAILURE);
-	pid = fork();
-	if (pid == FAILURE)
-		ft_perror("fork error in pipe", EXIT_FAILURE);
-	if (pid == CHILD_PROCESS)
-	{
-		close(pipe_fd[STDIN_FILENO]);
-		dup2(pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
-		close(pipe_fd[STDOUT_FILENO]);
-	}
-	else
-	{
-		close(pipe_fd[STDOUT_FILENO]);
-		dup2(pipe_fd[STDIN_FILENO], STDIN_FILENO);
-		close(pipe_fd[STDIN_FILENO]);
-		// waitpid(pid, NULL, WNOHANG);
-	}
 	return (SUCCESS);
 }
 
 int	execve_command_line(t_data *data, t_tree *tree)
 {
-	char	*temp;
-
-	// printf("%d: %s\n", tree->type, tree->content);
 	if (tree->type == PIPE)
-	{
-		if (tree->right == NULL) // DO NOT PIPE !
-			return (0);
-		else if (tree->right != NULL) // DO PIPE!
-			// return (0);
-			do_pipe(data);
-	}
+		do_pipe(data, tree);
 	else if (tree->type == REDIRECTION)
-	{
-		return (0);
-	}
+		do_redirection(data, tree);
 	else if (tree->type == PARENT_CMD && tree->left != NULL)
-	{
-		// printf("command: %s\n", command_join(tree));
-		temp = command_join(tree);
-		data->commands = ft_split(temp, ' ');
-		free(temp);
-		if (is_builtin(data->commands[0]) == FOUND)
-			exec_builtin(data);
-		else
-			is_not_builtin(data);
-		// return (0);
-	}
+		do_command(data, tree);
 	return (0);
 }
 
-static void	test_search_tree(t_data *data, t_tree *head)
+static void	search_tree(t_data *data, t_tree *head)
 {
 	if (head == NULL)
 		return ;
-	if (head->type == PIPE || head->type == REDIRECTION \
+	if (head->type == PIPE \
+	|| head->type == REDIRECTION \
 	|| head->type == PARENT_CMD)
 		execve_command_line(data, head);
 	if (head->left != NULL)
-		test_search_tree(data, head->left);
+		search_tree(data, head->left);
 	if (head->right != NULL)
-		test_search_tree(data, head->right);
+		search_tree(data, head->right);
 }
 
 void	make_nice_name(t_data *data, char *command_line)
@@ -232,16 +222,24 @@ void	make_nice_name(t_data *data, char *command_line)
 	t_list	*list;
 	t_tree	*tree;
 
+	data->last_cmd = FALSE;
+	data->has_forked = FALSE;
+	data->dup_stdin = ft_dup(STDIN_FILENO);
+	data->dup_stdout = ft_dup(STDOUT_FILENO);
 	list = scan_command(command_line);
 	if (list == NULL)
 		rl_on_new_line();
 	else
 	{
 		tree = make_tree(&list);
-		test_search_tree(data, tree);
-		free(list);
-		free(tree);
+		search_tree(data, tree);
+		// free(list);
+		// free(tree);
 	}
+	ft_dup2(data->dup_stdin, STDIN_FILENO);
+	ft_dup2(data->dup_stdout, STDOUT_FILENO);
+	ft_close(data->dup_stdin);
+	ft_close(data->dup_stdout);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -260,5 +258,6 @@ int	main(int argc, char **argv, char **envp)
 		make_nice_name(&data, command_line);
 		free (command_line);
 	}
+	ft_putendl_fd("bye", STDOUT_FILENO);
 	return (0);
 }

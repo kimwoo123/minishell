@@ -85,13 +85,23 @@ void	ft_close(int fd)
 		ft_perror("close error", EXIT_FAILURE);
 }
 
+int	ft_dup(int old_fd)
+{
+	int	new_fd;
+
+	new_fd = dup(old_fd);
+	if (new_fd == FAILURE)
+		ft_perror("dup2 error", EXIT_FAILURE);
+	return (new_fd);
+}
+
 void	ft_dup2(int old_fd, int new_fd)
 {
 	if (dup2(old_fd, new_fd) == FAILURE)
 		ft_perror("dup2 error", EXIT_FAILURE);
 }
 
-// void	ft_fork(pid_t *pid)
+// pid_t	ft_fork(pid_t *pid)
 // {
 // 	*pid = fork();
 // 	if (*pid == FAILURE)

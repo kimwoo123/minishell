@@ -34,12 +34,11 @@ static char	**set_environment_variable(char **envp)
 
 void	init_data(int argc, char **argv, char **envp, t_data *data)
 {
-	data->argc = argc;
-	data->argv = argv;
+	(void)argc;
+	(void)argv;
 	data->envp = envp;
 	data->copied_envp = set_environment_variable(envp);
 	if (!data->copied_envp)
 		ft_perror("copy_double_array error in init data", EXIT_FAILURE);
-	data->dup_stdin = dup(STDIN_FILENO);
-	data->dup_stdout = dup(STDOUT_FILENO);
+	data->stat = 0;
 }
