@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 15:24:20 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 15:58:11 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/20 16:59:29 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	free_list(t_list **list)
 	{
 		temp = node->next;
 		free(node->content);
+		node->content = NULL;
 		free(node);
 		node = temp;
 	}
@@ -62,4 +63,14 @@ void	free_stack_table(t_stack *stack, t_fptr **table)
 		++index;
 	}
 	free(table);
+}
+
+void	free_tree(t_tree *node)
+{
+	if (node == NULL)
+		return ;
+	free_tree(node->left);
+	free_tree(node->right);
+	free(node);
+	node = NULL;
 }
