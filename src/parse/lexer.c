@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/19 14:42:55 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/20 15:41:30 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	repeat_meta(const char *line, size_t index)
 	return (FALSE);
 }
 
-void	split_delimiter(const char  *line, t_list **list)
+void	split_delimiter(const char *line, t_list **list)
 {
 	size_t	index;
 	size_t	start_index;
