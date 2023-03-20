@@ -94,6 +94,8 @@ enum	e_bool
 	TRUE,
 }	t_bool;
 
+void	free_tree(t_tree *node);
+
 /* redirection */
 int		do_redirection(t_data *data, t_tree *tree);
 

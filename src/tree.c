@@ -66,8 +66,9 @@ void	make_nice_name(t_data *data, char *command_line)
 	{
 		tree = make_tree(&list);
 		search_tree(data, tree);
-		// free(list);
-		// free(tree);
+		free_list(&list);
+		free_tree(tree);
+		free_double_array(data->commands);
 	}
 	ft_dup2(data->dup_stdin, STDIN_FILENO);
 	ft_dup2(data->dup_stdout, STDOUT_FILENO);
