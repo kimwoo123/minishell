@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/20 10:17:09 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/20 15:34:10 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 char	*convert_variable(char *str)
 {
-	size_t	index;
-	char	*env;
-	char	*result;
+	size_t		index;
+	char		*env;
+	char		*result;
+	extern int	status;
 
 	index = 1;
 	env = getenv(&str[index]);
 	if (!ft_strncmp(str, "$", ft_strlen(str)))
 		result = ft_strdup("$");
 	if (str[index] == '?')
-		result = ft_strdup("signal");
+		result = ft_strdup(ft_itoa(WEXITSTATUS(temp)));
 	else if (!env)
 		result = ft_strdup("");
 	else

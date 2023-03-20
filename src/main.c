@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:10 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/01 17:21:11 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/20 15:32:02 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ char	*join_command(t_tree *tree)
 	return (str);
 }
 /************************************************************/
+
+int status;
 
 int	execve_builtin(t_data *data)
 {
@@ -155,7 +157,7 @@ int	is_not_builtin(t_data *data)
 			wait(0);
 		}
 		else
-			waitpid(pid, &data->stat, 0);
+			waitpid(pid, &status, 0);
 	}
 	return (0);
 }
@@ -241,6 +243,7 @@ void	make_nice_name(t_data *data, char *command_line)
 	ft_close(data->dup_stdin);
 	ft_close(data->dup_stdout);
 }
+
 
 int	main(int argc, char **argv, char **envp)
 {
