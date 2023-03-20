@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:19:18 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/02 14:19:19 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/20 15:52:04 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ int	echo_command(char **array)
 		index++;
 	}
 	if (flag)
-		write(STDIN_FILENO, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
 	return (SUCCESS);
 }
