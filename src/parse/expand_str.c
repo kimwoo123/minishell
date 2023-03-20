@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/20 19:28:49 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:32:29 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*convert_variable(char *str)
 	if (str[index] == '?')
 	{
 		temp = ft_itoa(WEXITSTATUS(g_status));
-		result = ft_strdup(ft_itoa(WEXITSTATUS(g_status)));
+		result = ft_strdup(temp);
 		free(temp);
 	}
 	else if (!env)
