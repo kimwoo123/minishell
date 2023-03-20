@@ -17,14 +17,14 @@ char	*convert_variable(char *str)
 	size_t		index;
 	char		*env;
 	char		*result;
-	extern int	status;
+	extern int	g_status;
 
 	index = 1;
 	env = getenv(&str[index]);
 	if (!ft_strncmp(str, "$", ft_strlen(str)))
 		result = ft_strdup("$");
 	if (str[index] == '?')
-		result = ft_strdup(ft_itoa(WEXITSTATUS(temp)));
+		result = ft_strdup(ft_itoa(WEXITSTATUS(g_status)));
 	else if (!env)
 		result = ft_strdup("");
 	else

@@ -96,8 +96,35 @@ enum	e_bool
 
 /* redirection */
 int		do_redirection(t_data *data, t_tree *tree);
+
+/* redirection utils */
 char	*join_redirection(t_tree *tree);
 int		split_redirection(t_data *data, t_tree *tree);
+
+/* tree */
+void	make_nice_name(t_data *data, char *command_line);
+
+/* tree utils */
+t_tree	*create_root(void);
+t_tree	*create_tree(int type, char *content, t_tree *left, t_tree *right);
+t_tree	*make_tree(t_list **node);
+void	add_pipe(t_tree **head);
+void	add_commands(t_tree **head, t_list *node);
+void	add_redirections(t_tree **head, t_list *node, t_list *next_node);
+
+/* heredoc */
+
+
+/* heredoc utils */
+char	**split_dollar_hd(const char *line);
+
+
+/* command */
+int	is_builtin(char *str);
+int	execve_builtin(t_data *data);
+int	do_command(t_data *data, t_tree *tree);
+
+
 
 
 /* add test code */
@@ -105,7 +132,7 @@ int	test_code(t_list **node);
 t_tree	*make_tree(t_list **node);
 /* add test code */
 
-int	parsing_command_line_test(t_data *data);
+
 int	is_not_builtin(t_data *data);
 
 /* init */

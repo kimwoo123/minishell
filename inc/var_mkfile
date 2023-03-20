@@ -34,8 +34,9 @@ BTI_SRCS	= $(addprefix $(BTI_DIR)/, $(BTI_SRC))
 
 COM_DIR		= src
 COM_SRC		= \
-			main.c utils0.c signals.c heredoc.c \
-			pipe.c init.c envp_utils.c tree.c redir.c
+			main.c utils0.c signals.c heredoc.c heredoc_utils.c \
+			pipe.c init.c envp_utils.c tree.c tree_utils0.c tree_utils1.c redir.c redir_utils.c \
+			command.c command_utils.c
 COM_OBJ_DIR = obj
 COM_OBJS	= $(addprefix $(COM_OBJ_DIR)/, $(COM_OBJ))
 COM_OBJ		= $(COM_SRC:.c=.o)
