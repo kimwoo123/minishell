@@ -93,38 +93,17 @@ int	input_redir_hd(t_data *data, t_tree *tree)
 		return (FAILURE);
 	write(fd, tree->right->content, ft_strlen(tree->right->content));
 	close(fd);
-
-	// char	*buf;
-
-	// read(fd, buf, 1024);
-	// dprintf(2, "%s\n", buf);
-
 	fd = open("heredoc_temp", O_RDONLY);
-
 	if (dup2(fd, STDIN_FILENO) == FAILURE)
 		return (FAILURE);
 	ft_unlink("heredoc_temp");
 	return (SUCCESS);
-	
-	// printf("tree->content: %s\n", tree->content);			// (null)
-	// printf("tree->left->content: %s\n", tree->left->content);	// <<
-	// printf("tree->right->content: %s\n", tree->right->content);	// end
 }
 
 int	do_redirection(t_data *data, t_tree *tree)
 {
-	// char	*temp;
-
-	// temp = join_redirection(tree);
-	// if (temp == NULL)
-	// 	return (FAILURE);
-	// data->commands = ft_split(temp, ' ');
-	// if (data->commands == NULL)
-	// 	return (FAILURE);
-	// free(temp);
 	if (split_redirection(data, tree) == FAILURE)
 		return (FAILURE);
-
 	if (is_equal_to(data->commands[0], "<") == SAME)
 		input_redir(data->commands);
 	else if (is_equal_to(data->commands[0], "<<") == SAME)
