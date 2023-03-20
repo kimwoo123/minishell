@@ -44,6 +44,7 @@ int	output_append_redir(char **argv)
 {
 	int	fd;
 
+	dprintf(2, "TEST\n");
 	if (is_equal_to(">>", argv[0]) == NOT_SAME)
 		return (FAILURE);
 	fd = open(argv[1], (O_WRONLY | O_CREAT | O_APPEND), 0644);
@@ -69,7 +70,7 @@ char	*join_redirection(t_tree *tree)
 	return (new_str);
 }
 
-int	do_redirection(t_data *data, t_tree *tree)
+int	split_redirection(t_data *data, t_tree *tree)
 {
 	char	*temp;
 
@@ -80,19 +81,57 @@ int	do_redirection(t_data *data, t_tree *tree)
 	if (data->commands == NULL)
 		return (FAILURE);
 	free(temp);
+	return (SUCCESS);
+}
 
-	// data->commands = join_redirection(tree);
+int	input_redir_hd(t_data *data, t_tree *tree)
+{
+	int	fd;
+
+	fd = ft_open("heredoc_temp", (O_WRONLY | O_CREAT | O_TRUNC), 0644);
+	if (fd == FAILURE)
+		return (FAILURE);
+	write(fd, tree->right->content, ft_strlen(tree->right->content));
+	close(fd);
+
+	// char	*buf;
+
+	// read(fd, buf, 1024);
+	// dprintf(2, "%s\n", buf);
+
+	fd = open("heredoc_temp", O_RDONLY);
+
+	if (dup2(fd, STDIN_FILENO) == FAILURE)
+		return (FAILURE);
+	ft_unlink("heredoc_temp");
+	return (SUCCESS);
+	
+	// printf("tree->content: %s\n", tree->content);			// (null)
+	// printf("tree->left->content: %s\n", tree->left->content);	// <<
+	// printf("tree->right->content: %s\n", tree->right->content);	// end
+}
+
+int	do_redirection(t_data *data, t_tree *tree)
+{
+	// char	*temp;
+
+	// temp = join_redirection(tree);
+	// if (temp == NULL)
+	// 	return (FAILURE);
+	// data->commands = ft_split(temp, ' ');
 	// if (data->commands == NULL)
 	// 	return (FAILURE);
-	
-	// write(2, "TEST\n", 5);
+	// free(temp);
+	if (split_redirection(data, tree) == FAILURE)
+		return (FAILURE);
+
 	if (is_equal_to(data->commands[0], "<") == SAME)
 		input_redir(data->commands);
+	else if (is_equal_to(data->commands[0], "<<") == SAME)
+		input_redir_hd(data, tree);
 	else if (is_equal_to(data->commands[0], ">") == SAME)
 		output_redir(data->commands);
 	else if (is_equal_to(data->commands[0], ">>") == SAME)
 		output_append_redir(data->commands);
-	else if (is_equal_to(data->commands[0], "<<") == SAME)
-		here_doc(data);
 	return (SUCCESS);
 }
