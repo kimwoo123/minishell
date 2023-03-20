@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/19 08:34:52 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/20 10:17:09 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*convert_variable(char *str)
 
 	index = 1;
 	env = getenv(&str[index]);
+	if (!ft_strncmp(str, "$", ft_strlen(str)))
+		result = ft_strdup("$");
 	if (str[index] == '?')
 		result = ft_strdup("signal");
 	else if (!env)
