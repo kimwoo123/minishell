@@ -124,15 +124,18 @@ char	*expand_str_hd(const char *line)
 	return (result);
 }
 
-int	here_doc(t_data *data)
-{
-	int		heredoc_fd;
+int	preprocess_heredoc(t_data *data, t_tree *tree)
+{	
 	char	*str;
 	char	*str_with_newline;
 	char	*delimiter;
 	char	*expand;
 
-	heredoc_fd = ft_open("heredoc_temp", (O_WRONLY | O_CREAT | O_TRUNC), 0644);
+
+	char	*save;
+	char	*temp;
+	save = ft_strdup("");
+
 	while (1)
 	{
 		str = readline("> ");
@@ -153,11 +156,74 @@ int	here_doc(t_data *data)
 			break ;
 		}
 		expand = expand_str_hd(str_with_newline);
-		write(heredoc_fd, expand, ft_strlen(expand));
+		// write(heredoc_fd, expand, ft_strlen(expand));
+		
+		temp = save;
+		save = ft_strjoin(temp, str_with_newline);
+		free(temp);
+
+
 		free(str_with_newline);
 		free(delimiter);
 	}
-	ft_close(heredoc_fd);
-	// ft_unlink("heredoc_temp");
+	free(tree->right->content);
+	tree->right->content = save;
+	save = NULL;
+
+	// printf("tree->content: %s\n", tree->content);			// (null)
+	// printf("tree->left->content: %s\n", tree->left->content);	// <<
+	// printf("tree->right->content: %s\n", tree->right->content);	// end
+
 	return (0);
 }
+
+// int	here_doc(t_data *data)
+// {
+// 	int		heredoc_fd;
+// 	char	*str;
+// 	char	*str_with_newline;
+// 	char	*delimiter;
+// 	char	*expand;
+
+// 	heredoc_fd = ft_open("heredoc_temp", (O_WRONLY | O_CREAT | O_TRUNC), 0644);
+// 	while (1)
+// 	{
+// 		str = readline("> ");
+// 		if (str == NULL)
+// 			break ;
+// 		str_with_newline = ft_strjoin(str, "\n");
+// 		if (str_with_newline == NULL)
+// 			ft_perror("strjoin error in heredoc", EXIT_FAILURE);
+// 		free(str);
+// 		delimiter = ft_strjoin(data->commands[1], "\n");
+// 		if (delimiter == NULL)
+// 			ft_perror("strjoin error in heredoc", EXIT_FAILURE);
+// 		if (ft_strlen(str_with_newline) == ft_strlen(delimiter) \
+// 			&& !ft_strncmp(str_with_newline, delimiter, ft_strlen(str_with_newline)))
+// 		{
+// 			free(str_with_newline);
+// 			free(delimiter);
+// 			break ;
+// 		}
+// 		expand = expand_str_hd(str_with_newline);
+// 		write(heredoc_fd, expand, ft_strlen(expand));
+// 		free(str_with_newline);
+// 		free(delimiter);
+// 	}
+// 	ft_close(heredoc_fd);
+// 	heredoc_fd = open("heredoc_temp", O_RDONLY);
+
+// 	// data->hd_flag = TRUE;
+// 	int		stdin_fd;
+// 	stdin_fd = dup(STDIN_FILENO);
+// 	// printf("%d\n", stdin_fd);
+// 	if (dup2(heredoc_fd, stdin_fd) == FAILURE)
+// 		return (FAILURE);
+
+// 	// if (dup2(heredoc_fd, STDIN_FILENO) == FAILURE)
+// 	// 	return (FAILURE);
+// 	ft_close(stdin_fd);
+// 	// ft_close(STDIN_FILENO);
+// 	ft_unlink("heredoc_temp");
+// 	return (0);
+// }

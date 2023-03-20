@@ -133,7 +133,7 @@ int	is_not_builtin(t_data *data)
 		ft_perror("fork error", EXIT_FAILURE);
 	if (pid == CHILD_PROCESS)
 	{
-		if (data->last_cmd != TRUE)
+		if (data->last_cmd == FALSE)
 		{
 			ft_close(data->pipe_fd[STDIN_FILENO]);
 			ft_dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
@@ -147,7 +147,7 @@ int	is_not_builtin(t_data *data)
 	}
 	else
 	{
-		if (data->last_cmd != TRUE)
+		if (data->last_cmd == FALSE)
 		{
 			ft_close(data->pipe_fd[STDOUT_FILENO]);
 			ft_dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO);
@@ -203,6 +203,27 @@ int	execve_command_line(t_data *data, t_tree *tree)
 	return (0);
 }
 
+static void	search_tree_for_hd(t_data *data, t_tree *head)
+{
+	if (head == NULL)
+		return ;
+	if (head->type == REDIRECTION)
+	{
+		if (split_redirection(data, head) == FAILURE)
+			return ;
+		if (is_equal_to(data->commands[0], "<<") == SAME)
+			preprocess_heredoc(data, head);
+		
+		// printf("tree->content: %s\n", head->content);			// (null)
+		// printf("tree->left->content: %s\n", head->left->content);	// <<
+		// printf("tree->right->content: \n%s", head->right->content);	// end
+	}
+	if (head->left != NULL)
+		search_tree_for_hd(data, head->left);
+	if (head->right != NULL)
+		search_tree_for_hd(data, head->right);
+}
+
 static void	search_tree(t_data *data, t_tree *head)
 {
 	if (head == NULL)
@@ -223,6 +244,7 @@ void	make_nice_name(t_data *data, char *command_line)
 	t_tree	*tree;
 
 	data->last_cmd = FALSE;
+	data->hd_flag = FALSE;
 	data->has_forked = FALSE;
 	data->dup_stdin = ft_dup(STDIN_FILENO);
 	data->dup_stdout = ft_dup(STDOUT_FILENO);
@@ -232,6 +254,7 @@ void	make_nice_name(t_data *data, char *command_line)
 	else
 	{
 		tree = make_tree(&list);
+		search_tree_for_hd(data, tree);
 		search_tree(data, tree);
 		// free(list);
 		// free(tree);

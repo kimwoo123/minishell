@@ -43,12 +43,12 @@
 # define NOT_SAME		0
 # define SAME			1
 
-
 typedef struct s_data
 {
 	char	**envp;
 	char	**copied_envp;
 	char	**commands;
+	int		hd_flag;
 	int		has_forked;
 	int		stat;
 	int		last_cmd;
@@ -94,7 +94,11 @@ enum	e_bool
 	TRUE,
 }	t_bool;
 
-int	do_redirection(t_data *data, t_tree *tree);
+/* redirection */
+int		do_redirection(t_data *data, t_tree *tree);
+char	*join_redirection(t_tree *tree);
+int		split_redirection(t_data *data, t_tree *tree);
+
 
 /* add test code */
 int	test_code(t_list **node);
@@ -136,6 +140,8 @@ char	**alloc_double_array(t_data *data, size_t *index);
 
 /* heredoc */
 int	here_doc(t_data *data);
+// int	here_doc(t_data *data, t_tree *tree);
+int	preprocess_heredoc(t_data *data, t_tree *tree);
 
 /* signals */
 void	set_signals(void);
