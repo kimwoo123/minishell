@@ -6,7 +6,7 @@
 #    By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/01 17:15:30 by chajung           #+#    #+#              #
-#    Updated: 2023/03/13 14:21:04 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/03/20 15:45:51 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,15 +15,13 @@
 include inc/var_mkfile
 include inc/flag_mkfile
 
-##NEED ADD CFLAGS!!
-
 ifeq ($(MAKECMDGOALS), debug)
 $(NAME): $(ALL_OBJS) $(LIB)
 	@$(CC) -g $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
 	@echo "minishell make done"
 else
 $(NAME): $(ALL_OBJS) $(LIB)
-	@$(CC) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
+	@$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
 	@echo "minishell make done"
 endif
 
