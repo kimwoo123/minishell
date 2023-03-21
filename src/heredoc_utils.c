@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:57:44 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/20 15:57:45 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/21 09:18:32 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ size_t	double_array_size_hd(const char *line)
 
 char	**split_dollar_hd(const char *line)
 {
-	char	*temp;
 	char	**result;
 	size_t	r_size;
 
