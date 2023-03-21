@@ -18,15 +18,10 @@ void	ft_chdir(const char *path, const char *cmd)
 
 	if (chdir(path) == FAILURE)
 	{
-		if (cmd == NULL)
-			perror("bash: cd: "); //need to fix
-		else
-		{
-			error_str = ft_strjoin("bash: cd: ", cmd);
-			if (error_str == NULL)
-				ft_perror("strjoin error in ft_chdir function", EXIT_FAILURE);
-			perror(error_str);
-		}
+		ft_putstr_fd("bash: cd: ", STDERR_FILENO);
+		ft_putstr_fd((char *)cmd, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		perror(error_str);
 	}
 }
 

@@ -12,24 +12,47 @@
 
 #include "minishell.h"
 
-static int	change_directory_to_home(char **commands, char **envp)
+static int	get_home_path(t_data *data, char **home_path)
+{
+	extern int	g_status;
+
+	*home_path = find_home_path(data->envp);
+	if (*home_path == NULL)
+		return (FALSE);
+	if (data->commands[1] == NULL)
+	{
+		*home_path = find_home_path(data->copied_envp);
+		if (*home_path == NULL)
+		{
+			g_status = 1;
+			ft_putendl_fd("bash: cd: HOME not set", STDERR_FILENO);
+			return (FAILURE);
+		}
+	}
+	return (TRUE);
+}
+
+static int	change_directory_to_home(t_data *data)
 {
 	char	*home_path;
 	char	*path;
+	int		result;
 
-	home_path = find_home_path(envp);
-	if (home_path == NULL)
+	result = get_home_path(data, &home_path);
+	if (result == FALSE)
 		return (FAILURE);
-	if (commands[1] == NULL \
-		|| !ft_strncmp(commands[1], "~", ft_strlen(commands[1])) \
-		|| !ft_strncmp(commands[1], "~/", ft_strlen(commands[1])))
-		ft_chdir(home_path, commands[1]);
+	else if (result == FAILURE)
+		return (SUCCESS);
+	if (data->commands[1] == NULL \
+	|| !ft_strncmp(data->commands[1], "~", ft_strlen(data->commands[1])) \
+	|| !ft_strncmp(data->commands[1], "~/", ft_strlen(data->commands[1])))
+		ft_chdir(home_path, data->commands[1]);
 	else
 	{
-		path = ft_strjoin_wslash(home_path, &commands[1][2]);
+		path = ft_strjoin_wslash(home_path, &data->commands[1][2]);
 		if (path == NULL)
 			return (FAILURE);
-		ft_chdir(path, commands[1]);
+		ft_chdir(path, data->commands[1]);
 		free(path);
 	}
 	return (SUCCESS);
@@ -80,7 +103,7 @@ int	cd_command(t_data *data)
 	if (data->commands[1] == NULL \
 	|| !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
 	{
-		if (change_directory_to_home(data->commands, data->copied_envp) == FAILURE)
+		if (change_directory_to_home(data) == FAILURE)
 			return (FAILURE);
 	}
 	else if (!ft_strncmp(data->commands[1], "/", ft_strlen("/")))
