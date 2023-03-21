@@ -12,14 +12,30 @@
 
 #include "minishell.h"
 
+int	ft_getenv(char **array, char *str)
+{
+	size_t	index;
+
+	index = 0;
+	while (array[index])
+	{
+		if (!ft_strncmp(array[index], str, strlen_before_equal(str)))
+		{
+			if (array[index][strlen_before_equal(str)] == '=')
+				return (KEY_AND_VALUE);
+			if (array[index][strlen_before_equal(str)] == '\0')
+				return (ONLY_KEY);
+		}
+		index++;
+	}
+	return (NOT_FOUND);
+}
+
 static int	check_same_key(char *str, char *key)
 {
-	if (!ft_strncmp(str, key, ft_strlen_before_equal_sign(key)))
-	{
-		if (ft_strlen_before_equal_sign(str) \
-			== ft_strlen_before_equal_sign(key))
+	if (!ft_strncmp(str, key, strlen_before_equal(key)))
+		if (strlen_before_equal(str) == strlen_before_equal(key))
 			return (FOUND);
-	}
 	return (NOT_FOUND);
 }
 

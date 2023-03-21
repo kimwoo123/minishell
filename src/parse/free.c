@@ -71,6 +71,8 @@ void	free_tree(t_tree *node)
 		return ;
 	free_tree(node->left);
 	free_tree(node->right);
+	if (node->content)
+		free(node->content);
 	free(node);
 	node = NULL;
 }

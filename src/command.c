@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+static int	check_envp_index(t_data *data)
+{
+	size_t	index;
+
+	index = 0;
+	while (data->copied_envp[index] \
+	&& ft_strncmp(data->copied_envp[index], "PATH=", ft_strlen("PATH=")))
+		index++;
+	if (!data->envp[index] \
+	|| ft_strncmp(data->envp[index], "PATH=", ft_strlen("PATH=")))
+		return (FAILURE);
+	return ((int)index);
+}
+
 static char	*check_access(t_data *data, char **split)
 {
 	size_t	index;
@@ -29,20 +43,6 @@ static char	*check_access(t_data *data, char **split)
 		index++;
 	}
 	return (cmd);
-}
-
-static int	check_envp_index(t_data *data)
-{
-	size_t	index;
-
-	index = 0;
-	while (data->copied_envp[index] \
-	&& ft_strncmp(data->copied_envp[index], "PATH=", ft_strlen("PATH=")))
-		index++;
-	if (!data->envp[index] \
-	|| ft_strncmp(data->envp[index], "PATH=", ft_strlen("PATH=")))
-		return (FAILURE);
-	return ((int)index);
 }
 
 static char	*find_command_path(t_data *data)

@@ -12,14 +12,6 @@
 
 #include "minishell.h"
 
-int	is_equal_to(char *str1, char *str2)
-{
-	if (!ft_strncmp(str1, str2, ft_strlen(str2)))
-		if (ft_strlen(str1) == ft_strlen(str2))
-			return (SAME);
-	return (NOT_SAME);
-}
-
 void	ft_perror(const char *str, int exit_code)
 {
 	perror(str);
@@ -55,30 +47,12 @@ int	ft_dup(int old_fd)
 	return (new_fd);
 }
 
-void	ft_dup2(int old_fd, int new_fd)
-{
-	if (dup2(old_fd, new_fd) == FAILURE)
-		ft_perror("dup2 error", EXIT_FAILURE);
-}
-
 // pid_t	ft_fork(pid_t *pid)
 // {
 // 	*pid = fork();
 // 	if (*pid == FAILURE)
 // 		ft_perror("fork error", EXIT_FAILURE);
 // }
-
-void	ft_unlink(const char *path)
-{
-	if (unlink(path) == FAILURE)
-		ft_perror("unlink error", EXIT_FAILURE);
-}
-
-void	ft_wait(int *wstatus)
-{
-	if (wait(wstatus) == FAILURE)
-		ft_perror("wait error", EXIT_FAILURE);
-}
 
 // int	do_wait(t_data *data)
 // {
@@ -112,97 +86,3 @@ void	ft_wait(int *wstatus)
 // 		perror(error_str);
 // 	}
 // }
-
-char	*ft_strjoin_wslash(char *str1, char *str2)
-{
-	char	*temp;
-	char	*new_str;
-
-	temp = ft_strjoin(str1, "/");
-	if (temp == NULL)
-		return (NULL);
-	new_str = ft_strjoin(temp, str2);
-	if (new_str == NULL)
-		return (NULL);
-	free(temp);
-	return (new_str);
-}
-
-char	**copy_double_array(char **origin_array)
-{
-	int		i;
-	int		size;
-	char	**copied_array;
-
-	size = 0;
-	while (origin_array[size])
-		size++;
-	copied_array = (char **)malloc(sizeof(char *) * (size + 1));
-	if (!copied_array)
-		ft_perror("malloc error in copy double array", EXIT_FAILURE);
-	i = 0;
-	while (origin_array[i])
-	{
-		copied_array[i] = ft_strdup(origin_array[i]);
-		if (!copied_array)
-			ft_perror("strdup error in copy double array", EXIT_FAILURE);
-		i++;
-	}
-	copied_array[i] = NULL;
-	return (copied_array);
-}
-
-size_t	ft_strlen_before_equal_sign(char *str)
-{
-	size_t	index;
-
-	index = 0;
-	while (str[index])
-	{
-		if (str[index] == '=')
-			return (index);
-		index++;
-	}
-	return (index);
-}
-
-int	get_size_double_array(char **array)
-{
-	size_t	size;
-
-	size = 0;
-	while (array[size])
-		size++;
-	return (size);
-}
-
-void	print_double_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		ft_putendl_fd(array[i], STDOUT_FILENO);
-		i++;
-	}
-}
-
-int	ft_getenv(char **array, char *str)
-{
-	size_t	index;
-
-	index = 0;
-	while (array[index])
-	{
-		if (!ft_strncmp(array[index], str, ft_strlen_before_equal_sign(str)))
-		{
-			if (array[index][ft_strlen_before_equal_sign(str)] == '=')
-				return (KEY_AND_VALUE);
-			if (array[index][ft_strlen_before_equal_sign(str)] == '\0')
-				return (ONLY_KEY);
-		}
-		index++;
-	}
-	return (NOT_FOUND);
-}

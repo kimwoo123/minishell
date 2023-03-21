@@ -29,10 +29,10 @@ static int	change_environment_variable(char **array, char *str)
 	index = 0;
 	while (array[index])
 	{
-		if (!ft_strncmp(array[index], str, ft_strlen_before_equal_sign(str)))
+		if (!ft_strncmp(array[index], str, strlen_before_equal(str)))
 		{
-			if ((array[index][ft_strlen_before_equal_sign(str)] == '=') \
-			|| (array[index][ft_strlen_before_equal_sign(str)] == '\0'))
+			if ((array[index][strlen_before_equal(str)] == '=') \
+			|| (array[index][strlen_before_equal(str)] == '\0'))
 			{
 				temp = array[index];
 				array[index] = ft_strdup(str);

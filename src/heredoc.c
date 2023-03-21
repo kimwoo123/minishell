@@ -57,6 +57,7 @@ int	preprocess_heredoc(t_data *data, t_tree *tree)
 		save = ft_strjoin(temp, str_with_nl);
 		if (save == NULL)
 			return (FAILURE);
+		free(expand);
 		free(temp);
 		free(str_with_nl);
 		free(delimiter);

@@ -195,7 +195,7 @@ void	ft_wait(int *wstatus);
 char	*ft_strjoin_wslash(char *str1, char *str2);
 // char	*find_command_path(t_data *data);
 char	**copy_double_array(char **origin_array);
-size_t	ft_strlen_before_equal_sign(char *str);
+size_t	strlen_before_equal(char *str);
 int		get_size_double_array(char **array);
 void	print_double_array(char **array);
 int		ft_getenv(char **array, char *str);
