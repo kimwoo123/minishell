@@ -21,7 +21,11 @@ t_tree	*create_tree(int type, char *content, t_tree *left, t_tree *right)
 		return (NULL);
 	tree->type = type;
 	if (content)
+	{
 		tree->content = ft_strdup(content);
+		if (tree->content == NULL)
+			return (NULL);
+	}
 	else
 		tree->content = NULL;
 	tree->left = left;
@@ -83,7 +87,7 @@ t_tree	*make_tree(t_list **node)
 
 	head = create_root();
 	if (head == NULL)
-		return (NULL);
+		exit_with_str("malloc error in make tree", EXIT_FAILURE);
 	recursive_make_tree(&head, *node);
 	return (head);
 }

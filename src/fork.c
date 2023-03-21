@@ -12,33 +12,41 @@
 
 #include "minishell.h"
 
-static void	child_redir_exec(t_data *data)
+static int	child_redir_exec(t_data *data)
 {
 	if (data->last_cmd != TRUE)
 	{
-		ft_close(data->pipe_fd[STDIN_FILENO]);
-		ft_dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
-		ft_close(data->pipe_fd[STDOUT_FILENO]);
+		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
+			return (FAILURE);
+		if (dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO) == FAILURE)
+			return (FAILURE);
+		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
+			return (FAILURE);
 	}
 	if (is_builtin(data->commands[0]) == TRUE)
 		execve_builtin(data);
 	else
 		execve_command(data);
+	return (SUCCESS);
 }
 
-static void	parent_redir_wait(t_data *data, pid_t pid)
+static int	parent_redir_wait(t_data *data, pid_t pid)
 {
 	extern int	g_status;
 
 	if (data->last_cmd != TRUE)
 	{
-		ft_close(data->pipe_fd[STDOUT_FILENO]);
-		ft_dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO);
-		ft_close(data->pipe_fd[STDIN_FILENO]);
+		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
+			return (FAILURE);
+		if (dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO) == FAILURE)
+			return (FAILURE);
+		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
+			return (FAILURE);
 		wait(0);
 	}
 	else
 		waitpid(pid, &g_status, 0);
+	return (SUCCESS);
 }
 
 int	do_fork(t_data *data)
@@ -50,12 +58,14 @@ int	do_fork(t_data *data)
 		exit_with_str("fork error", EXIT_FAILURE);
 	if (pid == CHILD_PROCESS)
 	{
-		child_redir_exec(data);
+		if (child_redir_exec(data) == FAILURE)
+			exit_with_str("child redir error in fork", EXIT_FAILURE);
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		parent_redir_wait(data, pid);
+		if (parent_redir_wait(data, pid) == FAILURE)
+			exit_with_str("child redir error in fork", EXIT_FAILURE);
 	}
 	return (0);
 }

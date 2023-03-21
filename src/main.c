@@ -27,7 +27,7 @@ int	main(int argc, char **argv, char **envp)
 		if (command_line == NULL)
 			break ;
 		add_history(command_line);
-		make_nice_name(&data, command_line);
+		run_minishell(&data, command_line);
 		free (command_line);
 		system("leaks --list -- $PPID");
 	}

@@ -94,10 +94,10 @@ int	do_command(t_data *data, t_tree *tree)
 
 	temp = join_command(tree);
 	if (temp == NULL)
-		return (FAILURE);
+		exit_with_str("malloc error in do command", EXIT_FAILURE);
 	data->commands = ft_split(temp, ' ');
 	if (data->commands == NULL)
-		return (FAILURE);
+		exit_with_str("malloc error in do command", EXIT_FAILURE);
 	free(temp);
 	if (data->has_forked == FALSE \
 	&& is_builtin(data->commands[0]) == TRUE)

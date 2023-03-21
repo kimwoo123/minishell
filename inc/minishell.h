@@ -48,7 +48,6 @@
 # define NOT_SAME		0
 # define SAME			1
 
-
 typedef struct s_data
 {
 	char	**envp;
@@ -100,12 +99,14 @@ enum	e_bool
 	TRUE,
 }	t_bool;
 
+void	run_minishell(t_data *data, char *command_line);
+
 void	exit_with_str(const char *str, int exit_code);
 
 void	free_tree(t_tree *node);
 
 /* redirection */
-int		do_redirection(t_data *data, t_tree *tree);
+void	do_redirection(t_data *data, t_tree *tree);
 
 /* redirection utils */
 char	*join_redirection(t_tree *tree);
@@ -124,19 +125,15 @@ void	add_redirections(t_tree **head, t_list *node, t_list *next_node);
 
 /* heredoc */
 
-
 /* heredoc utils */
 char	**split_dollar_hd(const char *line);
 
 
 /* command */
-int	execve_command(t_data *data);
+void	execve_command(t_data *data);
 int	is_builtin(char *str);
 int	execve_builtin(t_data *data);
 int	do_command(t_data *data, t_tree *tree);
-
-
-
 
 /* add test code */
 int	test_code(t_list **node);
