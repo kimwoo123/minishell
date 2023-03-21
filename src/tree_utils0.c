@@ -20,7 +20,10 @@ t_tree	*create_tree(int type, char *content, t_tree *left, t_tree *right)
 	if (tree == NULL)
 		return (NULL);
 	tree->type = type;
-	tree->content = content;
+	if (content)
+		tree->content = ft_strdup(content);
+	else
+		tree->content = NULL;
 	tree->left = left;
 	tree->right = right;
 	return (tree);
