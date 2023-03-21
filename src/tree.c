@@ -36,6 +36,23 @@ static int	execve_command_line(t_data *data, t_tree *tree)
 	return (0);
 }
 
+static void	search_tree_for_hd(t_data *data, t_tree *head)
+{
+	if (head == NULL)
+		return ;
+	if (head->type == REDIRECTION)
+	{
+		if (split_redirection(data, head) == FAILURE)
+			return ;
+		if (is_equal_to(data->commands[0], "<<") == SAME)
+			preprocess_heredoc(data, head);
+	}
+	if (head->left != NULL)
+		search_tree_for_hd(data, head->left);
+	if (head->right != NULL)
+		search_tree_for_hd(data, head->right);
+}
+
 static void	search_tree(t_data *data, t_tree *head)
 {
 	if (head == NULL)
@@ -65,6 +82,7 @@ void	make_nice_name(t_data *data, char *command_line)
 	else
 	{
 		tree = make_tree(&list);
+		search_tree_for_hd(data, tree);
 		search_tree(data, tree);
 		free_list(&list);
 		free_tree(tree);
