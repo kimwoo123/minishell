@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/19 08:34:52 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:40:50 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,26 @@
 
 char	*convert_variable(char *str)
 {
-	size_t	index;
-	char	*env;
-	char	*result;
+	size_t		index;
+	char		*env;
+	char		*result;
+	char		*temp;
+	extern int	g_status;
 
 	index = 1;
 	env = getenv(&str[index]);
-	if (str[index] == '?')
-		result = ft_strdup("signal");
+	if (!ft_strncmp(str, "$", ft_strlen(str)))
+		result = ft_strdup("$");
+	else if (str[index] == '?')
+	{
+		temp = ft_itoa(WEXITSTATUS(g_status));
+		result = ft_strdup(temp);
+		free(temp);
+	}
 	else if (!env)
 		result = ft_strdup("");
 	else
 		result = ft_strdup(env);
-	free(str);
 	return (result);
 }
 
@@ -51,17 +58,21 @@ char	*merge_str(char **split_str)
 char	*convert_dollar(char **str)
 {
 	char	*result;
+	char	*temp;
 	size_t	index;
 
 	index = 0;
 	while (str[index])
 	{
 		if (*str[index] == DOLLAR)
+		{
+			temp = str[index];
 			str[index] = convert_variable(str[index]);
+			free(temp);
+		}
 		++index;
 	}
 	result = merge_str(str);
-	free_double(str);
 	return (result);
 }
 
@@ -72,5 +83,6 @@ char	*expand_str(const char *line, size_t size)
 
 	temp = split_dollar(line, size);
 	result = convert_dollar(temp);
+	free_double(temp);
 	return (result);
 }

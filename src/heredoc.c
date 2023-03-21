@@ -6,7 +6,11 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 11:01:06 by chajung           #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2023/03/21 09:01:01 by wooseoki         ###   ########.fr       */
+=======
 /*   Updated: 2023/03/20 15:30:43 by wooseoki         ###   ########.fr       */
+>>>>>>> 27a77c9b84c7eb9ecd7383e896c035f5865d5273
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +23,7 @@ char	*expand_str_hd(const char *line)
 
 	temp = split_dollar_hd(line);
 	result = convert_dollar(temp);
+	free_double(temp);
 	return (result);
 }
 
