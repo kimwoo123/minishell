@@ -92,31 +92,30 @@ static int	change_directory(char **commands)
 	return (SUCCESS);
 }
 
-int	cd_command(t_data *data)
+void	cd_command(t_data *data)
 {
 	char	*path;
 	char	*temp;
 	char	*pwd_path;
 
 	if (backup_working_directory(data) == FAILURE)
-		return (FAILURE);
+		exit_with_str("error in cd command", EXIT_FAILURE);
 	if (data->commands[1] == NULL \
 	|| !ft_strncmp(data->commands[1], "~", ft_strlen("~")))
 	{
 		if (change_directory_to_home(data) == FAILURE)
-			return (FAILURE);
+			exit_with_str("error in cd command", EXIT_FAILURE);
 	}
 	else if (!ft_strncmp(data->commands[1], "/", ft_strlen("/")))
 	{
 		if (change_directory_to_root(data->commands) == FAILURE)
-			return (FAILURE);
+			exit_with_str("error in cd command", EXIT_FAILURE);
 	}
 	else
 	{
 		if (change_directory(data->commands) == FAILURE)
-			return (FAILURE);
+			exit_with_str("error in cd command", EXIT_FAILURE);
 	}
 	if (change_working_directory(data) == FAILURE)
-		return (FAILURE);
-	return (SUCCESS);
+		exit_with_str("error in cd command", EXIT_FAILURE);
 }

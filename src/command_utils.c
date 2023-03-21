@@ -12,39 +12,35 @@
 
 #include "minishell.h"
 
-int	execve_builtin(t_data *data)
+void	execve_builtin(t_data *data)
 {
-	int	result;
-
-	result = FAILURE;
-	if (is_equal_to(data->commands[0], "echo") == SAME)
-		result = echo_command(data->commands);
-	else if (is_equal_to(data->commands[0], "cd") == SAME)
-		result = cd_command(data);
-	else if (is_equal_to(data->commands[0], "pwd") == SAME)
-		result = pwd_command(data);
-	else if (is_equal_to(data->commands[0], "export") == SAME)
-		result = export_command(data);
-	else if (is_equal_to(data->commands[0], "unset") == SAME)
-		result = unset_command(data);
-	else if (is_equal_to(data->commands[0], "env") == SAME)
-		result = env_command(data);
-	else if (is_equal_to(data->commands[0], "exit") == SAME)
-		result = exit_command(data);
-	return (result);
+	if (is_equal_to(data->commands[0], "echo"))
+		echo_command(data->commands);
+	else if (is_equal_to(data->commands[0], "cd"))
+		cd_command(data);
+	else if (is_equal_to(data->commands[0], "pwd"))
+		pwd_command(data);
+	else if (is_equal_to(data->commands[0], "export"))
+		export_command(data);
+	else if (is_equal_to(data->commands[0], "unset"))
+		unset_command(data);
+	else if (is_equal_to(data->commands[0], "env"))
+		env_command(data);
+	else if (is_equal_to(data->commands[0], "exit"))
+		exit_command(data);
 }
 
 int	is_builtin(char *str)
 {
-	if (is_equal_to(str, "echo") == SAME \
-	|| is_equal_to(str, "cd") == SAME \
-	|| is_equal_to(str, "pwd") == SAME \
-	|| is_equal_to(str, "export") == SAME \
-	|| is_equal_to(str, "unset") == SAME \
-	|| is_equal_to(str, "env") == SAME \
-	|| is_equal_to(str, "exit") == SAME)
-		return (FOUND);
-	return (NOT_FOUND);
+	if (is_equal_to(str, "echo") \
+	|| is_equal_to(str, "cd") \
+	|| is_equal_to(str, "pwd") \
+	|| is_equal_to(str, "export") \
+	|| is_equal_to(str, "unset") \
+	|| is_equal_to(str, "env") \
+	|| is_equal_to(str, "exit"))
+		return (TRUE);
+	return (FALSE);
 }
 
 static char	*ft_strjoin_wspace(char *str1, char *str2)

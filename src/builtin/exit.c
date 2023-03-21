@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-int	exit_command(t_data *data)
+void	exit_command(t_data *data)
 {
-	write(1, "exit\n", 5);
+	ft_putendl_fd("exit", STDERR_FILENO);
 	exit(EXIT_SUCCESS);
 }

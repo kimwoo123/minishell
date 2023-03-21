@@ -24,7 +24,7 @@ static int	find_path_in_envp(char **envp)
 	return (SUCCESS);
 }
 
-int	env_command(t_data *data)
+void	env_command(t_data *data)
 {
 	size_t	index;
 
@@ -32,8 +32,8 @@ int	env_command(t_data *data)
 	if (data->copied_envp == NULL \
 	|| find_path_in_envp(data->copied_envp) == FAILURE)
 	{
-		ft_putendl_fd("bash: env: No such file or directory", STDIN_FILENO);
-		return (SUCCESS);
+		ft_putendl_fd("bash: env: No such file or directory", STDERR_FILENO);
+		return ;
 	}
 	while (data->copied_envp[index])
 	{
@@ -41,5 +41,4 @@ int	env_command(t_data *data)
 			ft_putendl_fd(data->copied_envp[index], STDOUT_FILENO);
 		index++;
 	}
-	return (SUCCESS);
 }

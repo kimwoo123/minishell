@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	unset_command(t_data *data)
+void	unset_command(t_data *data)
 {
 	size_t	index;
 	char	**array;
@@ -27,11 +27,10 @@ int	unset_command(t_data *data)
 			array = delete_environment_variable(data->copied_envp, \
 				data->commands[index]);
 			if (!array)
-				exit_with_str("unset_command error", EXIT_FAILURE);
+				exit_with_str("malloc error in unset command", EXIT_FAILURE);
 			free_double_array(data->copied_envp);
 			data->copied_envp = array;
 		}
 		index++;
 	}
-	return (0);
 }

@@ -132,7 +132,7 @@ char	**split_dollar_hd(const char *line);
 /* command */
 void	execve_command(t_data *data);
 int	is_builtin(char *str);
-int	execve_builtin(t_data *data);
+void	execve_builtin(t_data *data);
 int	do_command(t_data *data, t_tree *tree);
 
 /* add test code */
@@ -148,13 +148,13 @@ void	init_data(int argc, char **argv, char **envp, t_data *data);
 
 /* built-in */
 // int		echo_command(t_data *data);
-int		cd_command(t_data *data);
-int		pwd_command(t_data *data);
-int		exit_command(t_data *data);
-int		env_command(t_data *data);
-int		export_command(t_data *data);
-int		unset_command(t_data *data);
-int		echo_command(char **array);
+void	cd_command(t_data *data);
+void	pwd_command(t_data *data);
+void	exit_command(t_data *data);
+void	env_command(t_data *data);
+void	export_command(t_data *data);
+void	unset_command(t_data *data);
+void	echo_command(char **array);
 
 /* cd */
 int		backup_working_directory(t_data *data);
