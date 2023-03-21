@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/20 10:17:09 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/21 08:37:20 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ char	*convert_dollar(char **str)
 		++index;
 	}
 	result = merge_str(str);
-	free_double(str);
 	return (result);
 }
 
@@ -74,5 +73,6 @@ char	*expand_str(const char *line, size_t size)
 
 	temp = split_dollar(line, size);
 	result = convert_dollar(temp);
+	free_double(temp);
 	return (result);
 }

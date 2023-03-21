@@ -6,7 +6,11 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:10 by chajung           #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2023/03/01 17:21:11 by chajung          ###   ########.fr       */
+=======
+/*   Updated: 2023/03/20 19:43:54 by wooseoki         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +261,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(command_line);
 		make_nice_name(&data, command_line);
 		free (command_line);
+		system("leaks --list -- $PPID");
 	}
 	ft_putendl_fd("bye", STDOUT_FILENO);
 	return (0);

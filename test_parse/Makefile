@@ -5,7 +5,7 @@ NAME		= minishell
 SRC = $(wildcard *.c)
 
 minishell : $(SRC)
-	$(CC) -L ../libft -lft -lreadline -g -fsanitize=address $^ -o $@ -I ../inc
+	$(CC) -L ../libft -lft -lreadline $^ -o $@ -I ../inc
 
 all: $(NAME)
 
