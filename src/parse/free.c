@@ -81,13 +81,17 @@ void	free_double_array(char **array)
 {
 	int	i;
 
+	if (array == NULL)
+		return ;
 	i = 0;
 	while (array[i])
 	{
-		free(array[i]);
+		if (array[i] != NULL)
+			free(array[i]);
 		array[i] = NULL;
 		i++;
 	}
-	free(array);
+	if (array != NULL)
+		free(array);
 	array = NULL;
 }

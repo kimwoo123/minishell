@@ -30,10 +30,16 @@ static int	execve_command_line(t_data *data, t_tree *tree)
 	if (tree->type == PIPE)
 		do_pipe(data, tree);
 	else if (tree->type == REDIRECTION)
+	{
 		do_redirection(data, tree);
+		free_double_array(data->commands);
+	}
 	else if (tree->type == PARENT_CMD && tree->left != NULL)
+	{
 		do_command(data, tree);
-	return (0);
+		free_double_array(data->commands);
+	}
+	return (SUCCESS);
 }
 
 static void	search_tree_for_hd(t_data *data, t_tree *head)
@@ -60,10 +66,7 @@ static void	search_tree(t_data *data, t_tree *head)
 	if (head->type == PIPE \
 	|| head->type == REDIRECTION \
 	|| head->type == PARENT_CMD)
-	{
 		execve_command_line(data, head);
-		free_double_array(data->commands);
-	}
 	if (head->left != NULL)
 		search_tree(data, head->left);
 	if (head->right != NULL)
