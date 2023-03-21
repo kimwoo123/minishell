@@ -14,36 +14,35 @@
 
 static int	find_path_in_envp(char **envp)
 {
+	size_t	index;
 
-	while (*envp && ft_strncmp(*envp, "PATH=", ft_strlen("PATH=")))
-		envp++;
-	if (!*envp || ft_strncmp(*envp, "PATH=", ft_strlen("PATH=")))
-	{
-		// printf("No such file or directory\n");
+	index = 0;
+	while (envp[index] && ft_strncmp(envp[index], "PATH=", ft_strlen("PATH=")))
+		index++;
+	if (!envp[index] || ft_strncmp(envp[index], "PATH=", ft_strlen("PATH=")))
 		return (FAILURE);
-	}
 	return (SUCCESS);
 }
 
-// bash에서 PATH 없으면 env 명령어 실행 불가
 int	env_command(t_data *data)
 {
-	// if (data->envp != NULL)
-	// 	print_double_array(data->copied_envp);
 	size_t	index;
 
 	if (data->copied_envp == NULL)
+	{
+		ft_putendl_fd("bash: env: No such file or directory", STDIN_FILENO);
 		return (0);
+	}
 	index = 0;
 	if (find_path_in_envp(data->copied_envp) == FAILURE)
+	{
+		ft_putendl_fd("bash: env: No such file or directory", STDIN_FILENO);
 		return (0);
+	}
 	while (data->copied_envp[index])
 	{
 		if (check_equal_sign(data->copied_envp[index]))
-		{
-			write(STDOUT_FILENO, data->copied_envp[index], ft_strlen(data->copied_envp[index]));
-			write(STDOUT_FILENO, "\n", 1);
-		}
+			ft_putendl_fd(data->copied_envp[index], STDOUT_FILENO);
 		index++;
 	}
 	return (0);
