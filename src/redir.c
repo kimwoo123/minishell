@@ -60,7 +60,6 @@ static int	output_append_redir(char **argv)
 {
 	int	fd;
 
-	dprintf(2, "TEST\n");
 	if (is_equal_to(">>", argv[0]) == NOT_SAME)
 		return (FAILURE);
 	fd = open(argv[1], (O_WRONLY | O_CREAT | O_APPEND), 0644);
@@ -81,7 +80,10 @@ int	do_redirection(t_data *data, t_tree *tree)
 		free_double_array(data->commands);
 	}
 	else if (is_equal_to(data->commands[0], "<<") == SAME)
+	{
 		input_redir_hd(data, tree);
+		free_double_array(data->commands); // Check here
+	}
 	else if (is_equal_to(data->commands[0], ">") == SAME)
 	{
 		output_redir(data->commands);
