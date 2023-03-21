@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parse.h"
 
 t_list	*create_element(int type, char *content)
 {
@@ -80,17 +80,17 @@ char	*remove_quote(const char *line)
 	return (result);
 }
 
-void	get_token(const char *line, size_t size, t_list **token_list)
+void	get_token(const char *line, size_t size, t_list **list, t_data *data)
 {
 	t_list	*node;
 	char	*expansion;
 	char	*content;
 	int		type;
 
-	expansion = expand_str(line, size);
+	expansion = expand_str(line, size, data);
 	type = check_type(expansion);
 	content = remove_quote(expansion);
 	free(expansion);
 	node = create_element(type, content);
-	lst_addback(token_list, node);
+	lst_addback(list, node);
 }
