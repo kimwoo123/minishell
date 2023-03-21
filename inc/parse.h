@@ -13,6 +13,7 @@
 #ifndef PARSE_H
 # define PARSE_H
 
+# include "minishell.h"
 # define DELIMITER	"<>|"
 # define DOLLAR		'$'
 
@@ -26,11 +27,11 @@ typedef	struct	s_stack
 typedef int	(*t_fptr)(t_stack **stack_node);
 
 /* lexer */
-void	seperate_meta(const char *line, size_t size, t_list **list);
-void	split_space(const char *line, size_t size, t_list **list);
+void	seperate_meta(const char *line, size_t size, t_list **list, t_data *data);
+void	split_space(const char *line, size_t size, t_list **list, t_data *data);
 int		repeat_meta(const char *line, size_t index);
-void	split_delimiter(const char *line, t_list **list);
-t_list	*scan_command(const char *line);
+void	split_delimiter(const char *line, t_list **list, t_data *data);
+t_list	*scan_command(const char *line, t_data *data);
  
 /* parse_utils */
 char	check_quote(char c, char flag);
@@ -45,7 +46,7 @@ int		is_quote(char c);
 
 /* token */
 t_list	*create_element(int type, char *content);
-void	get_token(const char *line, size_t size, t_list **token_list);
+void	get_token(const char *line, size_t size, t_list **token_list, t_data *data);
 int		check_type(const char *str);
 void	lst_addback(t_list **list, t_list *node);
 char	*remove_quote(const char *line);
@@ -58,10 +59,10 @@ void	duplicate_str(char **result, const char *line, char *quote_flag);
 char	**split_dollar(const char *line, size_t size);
 
 /* expand_str */
-char	*convert_variable(char *str);
+char	*convert_variable(char *str, t_data *data);
 char	*merge_str(char **split_str);
-char	*expand_str(const char *line, size_t size);
-char	*convert_dollar(char **str);
+char	*expand_str(const char *line, size_t size, t_data *data);
+char	*convert_dollar(char **str, t_data *data);
 
 /* free */
 void	free_list(t_list **list);

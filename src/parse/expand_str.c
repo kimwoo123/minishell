@@ -6,13 +6,14 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/21 09:09:19 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/21 13:10:19 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "parse.h"
 
-char	*convert_variable(char *str)
+
+char	*convert_variable(char *str, t_data *data)
 {
 	size_t		index;
 	char		*env;
@@ -21,7 +22,7 @@ char	*convert_variable(char *str)
 	extern int	g_status;
 
 	index = 1;
-	env = getenv(&str[index]);
+	env = ft_getenv(data->copied_envp, &str[index]);
 	if (!ft_strncmp(str, "$", ft_strlen(str)))
 		result = ft_strdup("$");
 	else if (str[index] == '?')
@@ -55,7 +56,7 @@ char	*merge_str(char **split_str)
 	return (result);
 }
 
-char	*convert_dollar(char **str)
+char	*convert_dollar(char **str, t_data *data)
 {
 	char	*result;
 	char	*temp;
@@ -67,7 +68,7 @@ char	*convert_dollar(char **str)
 		if (*str[index] == DOLLAR)
 		{
 			temp = str[index];
-			str[index] = convert_variable(str[index]);
+			str[index] = convert_variable(str[index], data);
 			free(temp);
 		}
 		++index;
@@ -76,13 +77,13 @@ char	*convert_dollar(char **str)
 	return (result);
 }
 
-char	*expand_str(const char *line, size_t size)
+char	*expand_str(const char *line, size_t size, t_data *data)
 {
 	char	**temp;
 	char	*result;
 
 	temp = split_dollar(line, size);
-	result = convert_dollar(temp);
+	result = convert_dollar(temp, data);
 	free_double(temp);
 	return (result);
 }

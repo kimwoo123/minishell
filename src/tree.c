@@ -6,11 +6,11 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 15:40:59 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/16 15:41:00 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/21 13:50:21 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parse.h"
 
 static int	do_pipe(t_data *data, t_tree *tree)
 {
@@ -83,7 +83,7 @@ void	make_nice_name(t_data *data, char *command_line)
 	data->has_forked = FALSE;
 	data->dup_stdin = ft_dup(STDIN_FILENO);
 	data->dup_stdout = ft_dup(STDOUT_FILENO);
-	list = scan_command(command_line);
+	list = scan_command(command_line, data);
 	if (list == NULL)
 		rl_on_new_line();
 	else

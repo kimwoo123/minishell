@@ -204,5 +204,4 @@ int		ft_getenv(char **array, char *str);
 char	**add_environment_variable(char **array, char *key);
 char	**delete_environment_variable(char **array, char *key);
 
-# include "parse.h"
 #endif
