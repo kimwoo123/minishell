@@ -60,6 +60,7 @@ int	backup_working_directory(t_data *data)
 	new_envp = add_environment_variable(temp, path);
 	if (!new_envp)
 		return (FAILURE);
+	free(path);
 	free_double_array(temp);
 	data->copied_envp = new_envp;
 	return (SUCCESS);
@@ -81,6 +82,7 @@ int	change_working_directory(t_data *data)
 	new_envp = add_environment_variable(temp, path);
 	if (!new_envp)
 		return (FAILURE);
+	free(path);
 	free_double_array(temp);
 	data->copied_envp = new_envp;
 	return (SUCCESS);
