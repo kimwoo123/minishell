@@ -74,3 +74,18 @@ void	free_tree(t_tree *node)
 	free(node);
 	node = NULL;
 }
+
+void	free_double_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	free(array);
+	array = NULL;
+}

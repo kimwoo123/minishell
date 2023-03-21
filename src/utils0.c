@@ -20,46 +20,6 @@ int	is_equal_to(char *str1, char *str2)
 	return (NOT_SAME);
 }
 
-/* TEST */
-void	print_all_arguments(int argc, char **argv, char **envp)
-{
-	int	i;
-
-	i = -1;
-	printf("argc: %d\n", argc);
-	while (++i < argc)
-		printf("argv[%d]: %s\n", i, argv[i]);
-	printf("argv[%d]: %s\n", i, argv[i]);
-	i = -1;
-	while (envp[++i])
-		printf("envp[%d]: %s\n", i, envp[i]);
-}
-
-/* TEST */
-void	print_all_argument_value(char **argv)
-{
-	int	i;
-
-	i = -1;
-	while (argv[++i])
-		printf("argv[%d]: %s\n", i, argv[i]);
-}
-
-void	free_double_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		array[i] = NULL;
-		i++;
-	}
-	free(array);
-	array = NULL;
-}
-
 void	ft_perror(const char *str, int exit_code)
 {
 	perror(str);
@@ -159,50 +119,13 @@ char	*ft_strjoin_wslash(char *str1, char *str2)
 	char	*new_str;
 
 	temp = ft_strjoin(str1, "/");
+	if (temp == NULL)
+		return (NULL);
 	new_str = ft_strjoin(temp, str2);
+	if (new_str == NULL)
+		return (NULL);
 	free(temp);
 	return (new_str);
-}
-
-char	*find_command_path(t_data *data)
-{
-	size_t	index;
-	int		i;
-	char	*cmd;
-	char	**split;
-
-	if (!data->commands[0] || !data->envp)
-		return (NULL);
-	if (!access(data->commands[0], X_OK))
-		return (data->commands[0]);
-	index = 0;
-	while (data->envp[index] && ft_strncmp(data->envp[index], "PATH=", ft_strlen("PATH=")))
-		data->envp++;
-	if (!data->envp[index] || ft_strncmp(data->envp[index], "PATH=", ft_strlen("PATH=")))
-	{
-		printf("No such file or directory\n");
-		return (NULL);
-	}
-	// if (*data->envp && ft_strncmp(*data->envp, "PATH=", ft_strlen("PATH=")))
-	// {
-	// 	printf("No such file or directory\n");
-	// 	return (NULL);
-	// }
-	split = ft_split(&(*data->envp)[5], ':');
-	if (split == NULL)
-		ft_perror("split error", EXIT_FAILURE);
-	i = -1;
-	while (split[++i])
-	{
-		cmd = ft_strjoin_wslash(split[i], data->commands[0]);
-		if (!access(cmd, X_OK))
-			break ;
-		free(cmd);
-	}
-	free_double_array(split);
-	if (access(cmd, X_OK))
-		return (NULL);
-	return (cmd);
 }
 
 char	**copy_double_array(char **origin_array)
@@ -228,7 +151,6 @@ char	**copy_double_array(char **origin_array)
 	copied_array[i] = NULL;
 	return (copied_array);
 }
-
 
 size_t	ft_strlen_before_equal_sign(char *str)
 {

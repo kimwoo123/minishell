@@ -5,12 +5,73 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/20 16:30:35 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/20 16:30:36 by chajung          ###   ########.fr       */
+/*   Created: 2023/03/21 09:31:44 by chajung           #+#    #+#             */
+/*   Updated: 2023/03/21 09:31:45 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*check_access(t_data *data, char **split)
+{
+	size_t	index;
+	char	*cmd;
+
+	index = 0;
+	while (split[index])
+	{
+		cmd = ft_strjoin_wslash(split[index], data->commands[0]);
+		if (cmd == NULL)
+			return (NULL);
+		if (!access(cmd, X_OK))
+			break ;
+		free(cmd);
+		index++;
+	}
+	return (cmd);
+}
+
+static int	check_envp_index(t_data *data)
+{
+	size_t	index;
+
+	index = 0;
+	while (data->copied_envp[index] \
+	&& ft_strncmp(data->copied_envp[index], "PATH=", ft_strlen("PATH=")))
+		index++;
+	if (!data->envp[index] \
+	|| ft_strncmp(data->envp[index], "PATH=", ft_strlen("PATH=")))
+		return (FAILURE);
+	return ((int)index);
+}
+
+static char	*find_command_path(t_data *data)
+{
+	size_t	index;
+	char	*cmd;
+	char	**split;
+
+	if (!data->commands[0] || !data->copied_envp)
+		return (NULL);
+	if (!access(data->commands[0], X_OK))
+		return (data->commands[0]);
+	index = check_envp_index(data);
+	if (index == FAILURE)
+	{
+		ft_putendl_fd("No such file or directory", STDIN_FILENO);
+		return (NULL);
+	}
+	split = ft_split(&(data->copied_envp)[index][5], ':');
+	if (split == NULL)
+		return (NULL);
+	cmd = check_access(data, split);
+	if (cmd == NULL)
+		return (NULL);
+	free_double_array(split);
+	if (access(cmd, X_OK))
+		return (NULL);
+	return (cmd);
+}
 
 int	execve_command(t_data *data)
 {
@@ -30,52 +91,4 @@ int	execve_command(t_data *data)
 		return (FAILURE);
 	}
 	return (SUCCESS);
-}
-
-static void	child_redir_exec(t_data *data)
-{
-	if (data->last_cmd != TRUE)
-	{
-		ft_close(data->pipe_fd[STDIN_FILENO]);
-		ft_dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
-		ft_close(data->pipe_fd[STDOUT_FILENO]);
-	}
-	if (is_builtin(data->commands[0]) == TRUE)
-		execve_builtin(data);
-	else
-		execve_command(data);
-}
-
-static void	parent_redir_wait(t_data *data, pid_t pid)
-{
-	extern int	g_status;
-
-	if (data->last_cmd != TRUE)
-	{
-		ft_close(data->pipe_fd[STDOUT_FILENO]);
-		ft_dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO);
-		ft_close(data->pipe_fd[STDIN_FILENO]);
-		wait(0);
-	}
-	else
-		waitpid(pid, &g_status, 0);
-}
-
-int	do_fork(t_data *data)
-{
-	pid_t		pid;
-
-	pid = fork();
-	if (pid == FAILURE)
-		ft_perror("fork error", EXIT_FAILURE);
-	if (pid == CHILD_PROCESS)
-	{
-		child_redir_exec(data);
-		exit(EXIT_SUCCESS);
-	}
-	else
-	{
-		parent_redir_wait(data, pid);
-	}
-	return (0);
 }

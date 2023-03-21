@@ -122,6 +122,7 @@ char	**split_dollar_hd(const char *line);
 
 
 /* command */
+int	execve_command(t_data *data);
 int	is_builtin(char *str);
 int	execve_builtin(t_data *data);
 int	do_command(t_data *data, t_tree *tree);
@@ -192,7 +193,7 @@ void	ft_wait(int *wstatus);
 // int	do_wait_bonus(t_data *data);
 // void	ft_chdir(const char *path, const char *cmd);
 char	*ft_strjoin_wslash(char *str1, char *str2);
-char	*find_command_path(t_data *data);
+// char	*find_command_path(t_data *data);
 char	**copy_double_array(char **origin_array);
 size_t	ft_strlen_before_equal_sign(char *str);
 int		get_size_double_array(char **array);
