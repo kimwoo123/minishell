@@ -76,13 +76,21 @@ int	do_redirection(t_data *data, t_tree *tree)
 	if (split_redirection(data, tree) == FAILURE)
 		return (FAILURE);
 	if (is_equal_to(data->commands[0], "<") == SAME)
+	{
 		input_redir(data->commands);
+		free_double_array(data->commands);
+	}
 	else if (is_equal_to(data->commands[0], "<<") == SAME)
 		input_redir_hd(data, tree);
 	else if (is_equal_to(data->commands[0], ">") == SAME)
+	{
 		output_redir(data->commands);
+		free_double_array(data->commands);
+	}
 	else if (is_equal_to(data->commands[0], ">>") == SAME)
+	{
 		output_append_redir(data->commands);
-	free_double_array(data->commands);
+		free_double_array(data->commands);
+	}
 	return (SUCCESS);
 }
