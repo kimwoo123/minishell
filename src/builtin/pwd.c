@@ -18,7 +18,7 @@ int	pwd_command(t_data *data)
 
 	path = getcwd(NULL, 0);
 	if (path == NULL)
-		ft_perror("pwd error", EXIT_FAILURE);
+		exit_with_str("pwd error", EXIT_FAILURE);
 	printf("%s\n", path);
 	free(path);
 	path = NULL;

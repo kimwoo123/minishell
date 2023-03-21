@@ -87,7 +87,7 @@ int	execve_command(t_data *data)
 	else
 	{
 		if (execve(command_path, data->commands, data->envp) == FAILURE)
-			ft_perror("execve error", EXIT_FAILURE);
+			exit_with_str("execve error", EXIT_FAILURE);
 		return (FAILURE);
 	}
 	return (SUCCESS);

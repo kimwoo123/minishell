@@ -19,10 +19,10 @@ static char	**set_environment_variable(char **envp)
 
 	temp = copy_double_array(envp);
 	if (!temp)
-		ft_perror("copy_double_array error in init data", EXIT_FAILURE);
+		exit_with_str("copy_double_array error in init data", EXIT_FAILURE);
 	array = delete_environment_variable(temp, "OLDPWD");
 	if (!array)
-		ft_perror("unset_command error in init data", EXIT_FAILURE);
+		exit_with_str("unset_command error in init data", EXIT_FAILURE);
 	free_double_array(temp);
 	temp = array;
 	array = add_environment_variable(temp, "OLDPWD");
@@ -39,6 +39,6 @@ void	init_data(int argc, char **argv, char **envp, t_data *data)
 	data->envp = envp;
 	data->copied_envp = set_environment_variable(envp);
 	if (!data->copied_envp)
-		ft_perror("copy_double_array error in init data", EXIT_FAILURE);
+		exit_with_str("copy_double_array error in init data", EXIT_FAILURE);
 	data->stat = 0;
 }

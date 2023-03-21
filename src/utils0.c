@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-void	ft_perror(const char *str, int exit_code)
+void	exit_with_str(const char *str, int exit_code)
 {
-	perror(str);
+	ft_putendl_fd(str);
 	exit(exit_code);
 }
 
@@ -27,14 +27,14 @@ int	ft_open(const char *path, int oflag, int flag)
 	else
 		fd = open(path, oflag, flag);
 	if (fd == FAILURE)
-		ft_perror("open error", EXIT_FAILURE);
+		exit_with_str("open error", EXIT_FAILURE);
 	return (fd);
 }
 
 void	ft_close(int fd)
 {
 	if (close(fd) == FAILURE)
-		ft_perror("close error", EXIT_FAILURE);
+		exit_with_str("close error", EXIT_FAILURE);
 }
 
 int	ft_dup(int old_fd)
@@ -43,7 +43,7 @@ int	ft_dup(int old_fd)
 
 	new_fd = dup(old_fd);
 	if (new_fd == FAILURE)
-		ft_perror("dup2 error", EXIT_FAILURE);
+		exit_with_str("dup2 error", EXIT_FAILURE);
 	return (new_fd);
 }
 
@@ -51,7 +51,7 @@ int	ft_dup(int old_fd)
 // {
 // 	*pid = fork();
 // 	if (*pid == FAILURE)
-// 		ft_perror("fork error", EXIT_FAILURE);
+// 		exit_with_str("fork error", EXIT_FAILURE);
 // }
 
 // int	do_wait(t_data *data)
@@ -82,7 +82,7 @@ int	ft_dup(int old_fd)
 // 			return ;
 // 		error_str = ft_strjoin("bash: cd: ", cmd);
 // 		if (error_str == NULL)
-// 			ft_perror("strjoin error in ft_chdir function", EXIT_FAILURE);
+// 			exit_with_str("strjoin error in ft_chdir function", EXIT_FAILURE);
 // 		perror(error_str);
 // 	}
 // }

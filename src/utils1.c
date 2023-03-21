@@ -70,13 +70,13 @@ char	**copy_double_array(char **origin_array)
 		size++;
 	copied_array = (char **)malloc(sizeof(char *) * (size + 1));
 	if (!copied_array)
-		ft_perror("malloc error in copy double array", EXIT_FAILURE);
+		exit_with_str("malloc error in copy double array", EXIT_FAILURE);
 	i = 0;
 	while (origin_array[i])
 	{
 		copied_array[i] = ft_strdup(origin_array[i]);
 		if (!copied_array)
-			ft_perror("strdup error in copy double array", EXIT_FAILURE);
+			exit_with_str("strdup error in copy double array", EXIT_FAILURE);
 		i++;
 	}
 	copied_array[i] = NULL;

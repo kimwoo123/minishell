@@ -96,6 +96,6 @@ char	**alloc_double_array(t_data *data, size_t *index)
 	add_size = get_size_double_array(&data->commands[1]);
 	array = ft_calloc((origin_size + add_size + 1), sizeof(char *));
 	if (!array)
-		ft_perror("error in alloc_double_array", EXIT_FAILURE);
+		exit_with_str("error in alloc_double_array", EXIT_FAILURE);
 	return (array);
 }

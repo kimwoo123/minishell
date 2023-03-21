@@ -27,7 +27,7 @@ int	unset_command(t_data *data)
 			array = delete_environment_variable(data->copied_envp, \
 				data->commands[index]);
 			if (!array)
-				ft_perror("unset_command error", EXIT_FAILURE);
+				exit_with_str("unset_command error", EXIT_FAILURE);
 			free_double_array(data->copied_envp);
 			data->copied_envp = array;
 		}

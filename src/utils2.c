@@ -15,17 +15,17 @@
 void	ft_dup2(int old_fd, int new_fd)
 {
 	if (dup2(old_fd, new_fd) == FAILURE)
-		ft_perror("dup2 error", EXIT_FAILURE);
+		exit_with_str("dup2 error", EXIT_FAILURE);
 }
 
 void	ft_unlink(const char *path)
 {
 	if (unlink(path) == FAILURE)
-		ft_perror("unlink error", EXIT_FAILURE);
+		exit_with_str("unlink error", EXIT_FAILURE);
 }
 
 void	ft_wait(int *wstatus)
 {
 	if (wait(wstatus) == FAILURE)
-		ft_perror("wait error", EXIT_FAILURE);
+		exit_with_str("wait error", EXIT_FAILURE);
 }

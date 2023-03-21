@@ -43,11 +43,11 @@ static char	**add_environment_variables(t_data *data)
 	index = 0;
 	array = alloc_double_array(data, &index);
 	if (!array)
-		ft_perror("error in add_environment_variables", EXIT_FAILURE);
+		exit_with_str("error in add_environment_variables", EXIT_FAILURE);
 	if (copy_origin_arguments(data, array, &index) == FAILURE)
-		ft_perror("error in add_environment_variable", EXIT_FAILURE);
+		exit_with_str("error in add_environment_variable", EXIT_FAILURE);
 	if (copy_additional_arguments(data, array, &index) == FAILURE)
-		ft_perror("error in add_environment_variable", EXIT_FAILURE);
+		exit_with_str("error in add_environment_variable", EXIT_FAILURE);
 	return (array);
 }
 
@@ -63,7 +63,7 @@ int	export_command(t_data *data)
 	{
 		array = add_environment_variables(data);
 		if (!array)
-			ft_perror("error in add_environment_variables", EXIT_FAILURE);
+			exit_with_str("error in add_environment_variables", EXIT_FAILURE);
 		free_double_array(data->copied_envp);
 		data->copied_envp = array;
 	}

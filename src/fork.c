@@ -47,7 +47,7 @@ int	do_fork(t_data *data)
 
 	pid = fork();
 	if (pid == FAILURE)
-		ft_perror("fork error", EXIT_FAILURE);
+		exit_with_str("fork error", EXIT_FAILURE);
 	if (pid == CHILD_PROCESS)
 	{
 		child_redir_exec(data);

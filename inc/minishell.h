@@ -19,11 +19,16 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <signal.h>
+# include <termios.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
 
 # include "../libft/inc/libft.h"
+
+# define SIGINT			2
+# define SIGQUIT		3
 
 # define EXIT_SUCCESS	0
 # define EXIT_FAILURE	1
@@ -42,6 +47,7 @@
 
 # define NOT_SAME		0
 # define SAME			1
+
 
 typedef struct s_data
 {
@@ -93,6 +99,8 @@ enum	e_bool
 	FALSE,
 	TRUE,
 }	t_bool;
+
+void	exit_with_str(const char *str, int exit_code);
 
 void	free_tree(t_tree *node);
 
@@ -181,7 +189,7 @@ int		is_equal_to(char *str1, char *str2);
 void	print_all_arguments(int argc, char **argv, char **envp);
 void	print_all_argument_value(char **argv);
 void	free_double_array(char **array);
-void	ft_perror(const char *str, int exit_code);
+void	exit_with_str(const char *str, int exit_code);
 int		ft_open(const char *path, int oflag, int flag);
 void	ft_close(int fd);
 int		ft_dup(int old_fd);
