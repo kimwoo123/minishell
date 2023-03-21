@@ -26,28 +26,26 @@ char	*expand_str_hd(const char *line)
 int	check_equal(char *input_line, char *delim)
 {
 	input_line = ft_strjoin(input_line, "\n");
-	if (temp == NULL)
+	if (input_line == NULL)
 		return (FAILURE);
 	delim = ft_strjoin(delim, "\n");
 	if (delim == NULL)
 		return (FAILURE);
 	if (is_equal_to(input_line, delim) == TRUE)
 	{
-		free(temp);
+		free(input_line);
 		free(delim);
 		return (TRUE);
 	}
-	free(temp);
+	free(input_line);
 	free(delim);
 	return (FAILURE);
 }
 
-static void	free_each(char *str1, char *str2, char *str3, char *str4)
+static void	free_each(char *str1, char *str2)
 {
 	free(str1);
 	free(str2);
-	free(str3);
-	free(str4);
 }
 
 int	preprocess_heredoc(t_data *data, t_tree *tree)
@@ -64,15 +62,15 @@ int	preprocess_heredoc(t_data *data, t_tree *tree)
 		temp = readline("> ");
 		if (temp == NULL)
 			break ;
-		if (check_equal(temp, data->command[1]) == TRUE)
+		if (check_equal(temp, data->commands[1]) == TRUE)
 			break;
 		free(temp);
-		expand = expand_str_hd(str_with_nl);
+		expand = expand_str_hd(temp);
 		temp = save;
 		save = ft_strjoin(temp, expand);
 		if (save == NULL)
 			return (FAILURE);
-		free_each(temp, expand, str_with_nl, delimiter);
+		free_each(temp, expand);
 	}
 	free(tree->right->content);
 	tree->right->content = save;
