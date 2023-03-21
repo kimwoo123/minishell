@@ -83,5 +83,6 @@ int	do_redirection(t_data *data, t_tree *tree)
 		output_redir(data->commands);
 	else if (is_equal_to(data->commands[0], ">>") == SAME)
 		output_append_redir(data->commands);
+	free_double_array(data->commands);
 	return (SUCCESS);
 }
