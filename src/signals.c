@@ -108,14 +108,28 @@ void	set_signals(void)
 
 	set_input_mode();
 	new_signal.sa_handler = &signal_handler;
-	new_signal.sa_flags = SA_RESTART; // 왜 되는건지 모름 ???????????
+	new_signal.sa_flags = SA_RESTART;
 	sigemptyset(&new_signal.sa_mask);
-	// sigemptyset(&new_signal.sa_mask);
-	// sigaddset(&new_signal.sa_mask, SIGINT);
-	// sigaddset(&new_signal.sa_mask, SIGQUIT);
 	sigaction(SIGINT, &new_signal, &old_signal);
 	sigaction(SIGQUIT, &new_signal, &old_signal);
 }
+
+
+// void	set_signals(void)
+// {
+// 	struct sigaction new_signal;
+// 	struct sigaction old_signal;
+
+// 	set_input_mode();
+// 	new_signal.sa_handler = &signal_handler;
+// 	new_signal.sa_flags = SA_RESTART; // 왜 되는건지 모름 ???????????
+// 	sigemptyset(&new_signal.sa_mask);
+// 	// sigemptyset(&new_signal.sa_mask);
+// 	// sigaddset(&new_signal.sa_mask, SIGINT);
+// 	// sigaddset(&new_signal.sa_mask, SIGQUIT);
+// 	sigaction(SIGINT, &new_signal, &old_signal);
+// 	sigaction(SIGQUIT, &new_signal, &old_signal);
+// }
 
 // void	set_signals(void)
 // {

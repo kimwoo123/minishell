@@ -53,10 +53,11 @@ int	preprocess_heredoc(t_data *data, t_tree *tree)
 		}
 		expand = expand_str_hd(str_with_nl);
 		temp = save;
-		save = ft_strjoin(temp, str_with_nl);
+		save = ft_strjoin(temp, expand);
 		if (save == NULL)
 			return (FAILURE);
 		free(temp);
+		free(expand);
 		free(str_with_nl);
 		free(delimiter);
 	}
