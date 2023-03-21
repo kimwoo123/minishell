@@ -52,6 +52,7 @@ static void	search_tree_for_hd(t_data *data, t_tree *head)
 			return ;
 		if (is_equal_to(data->commands[0], "<<") == SAME)
 			preprocess_heredoc(data, head);
+		free_double_array(data->commands);
 	}
 	if (head->left != NULL)
 		search_tree_for_hd(data, head->left);
@@ -92,7 +93,6 @@ void	make_nice_name(t_data *data, char *command_line)
 		search_tree(data, tree);
 		free_list(&list);
 		free_tree(tree);
-		// free_double_array(data->commands);
 	}
 	ft_dup2(data->dup_stdin, STDIN_FILENO);
 	ft_dup2(data->dup_stdout, STDOUT_FILENO);
