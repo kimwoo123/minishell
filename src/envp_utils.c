@@ -12,7 +12,39 @@
 
 #include "minishell.h"
 
-int	ft_getenv(char **array, char *str)
+static int	check_same_key(char *str, char *key)
+{
+	if (!ft_strncmp(str, key, strlen_before_equal(key)))
+		if (strlen_before_equal(str) == strlen_before_equal(key))
+			return (TRUE);
+	return (FALSE);
+}
+
+char	*ft_getenv(char **array, char *str)
+{
+	size_t	index;
+	size_t	size;
+	char	*result;
+
+	if (is_there_envp(array, str) != KEY_AND_VALUE)
+		return (NULL);
+	index = 0;
+	while (array[index])
+	{
+		if (check_same_key(array[index], str))
+		{
+			size = strlen_before_equal(array[index]);
+			result = ft_strdup(&array[index][size + 1]);
+			if (result == NULL)
+				exit_with_str("malloc error in ft_getenv", EXIT_FAILURE);
+			return (result);
+		}
+		index++;
+	}
+	return (NULL);
+}
+
+int	is_there_envp(char **array, char *str)
 {
 	size_t	index;
 
@@ -28,14 +60,6 @@ int	ft_getenv(char **array, char *str)
 		}
 		index++;
 	}
-	return (NOT_FOUND);
-}
-
-static int	check_same_key(char *str, char *key)
-{
-	if (!ft_strncmp(str, key, strlen_before_equal(key)))
-		if (strlen_before_equal(str) == strlen_before_equal(key))
-			return (FOUND);
 	return (NOT_FOUND);
 }
 

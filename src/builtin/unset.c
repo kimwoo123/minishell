@@ -20,9 +20,9 @@ void	unset_command(t_data *data)
 	index = 1;
 	while (data->commands[index])
 	{
-		if (ft_getenv(data->copied_envp, \
+		if (is_there_envp(data->copied_envp, \
 			data->commands[index]) == KEY_AND_VALUE \
-		|| ft_getenv(data->copied_envp, data->commands[index]) == ONLY_KEY)
+		|| is_there_envp(data->copied_envp, data->commands[index]) == ONLY_KEY)
 		{
 			array = delete_environment_variable(data->copied_envp, \
 				data->commands[index]);

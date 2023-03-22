@@ -53,14 +53,14 @@ int	copy_additional_arguments(t_data *data, char **array, size_t *array_index)
 	{
 		if (data->commands[argument_index][0] == '=')
 			print_not_vaild_identifier(data->commands[argument_index]);
-		else if (ft_getenv(array, data->commands[argument_index]) == NOT_FOUND)
+		else if (is_there_envp(array, data->commands[argument_index]) == NOT_FOUND)
 		{
 			array[*array_index] = ft_strdup(data->commands[argument_index]);
 			if (!array[*array_index])
 				return (FAILURE);
 			(*array_index)++;
 		}
-		else if (ft_getenv(array, data->commands[argument_index]) != NOT_FOUND \
+		else if (is_there_envp(array, data->commands[argument_index]) != NOT_FOUND \
 		&& check_equal_sign(data->commands[argument_index]) == FOUND)
 		{
 			if (change_environment_variable(array, \

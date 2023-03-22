@@ -113,6 +113,8 @@ enum	e_bool
 	TRUE,
 }	t_bool;
 
+char	*ft_getenv(char **array, char *str);
+
 char 	*ft_strndup(const char *begin, size_t size);
 
 void	search_tree_for_hd(t_data *data, t_tree *head);
@@ -222,7 +224,7 @@ char	**copy_double_array(char **origin_array);
 size_t	strlen_before_equal(char *str);
 int		get_size_double_array(char **array);
 void	print_double_array(char **array);
-int		ft_getenv(char **array, char *str);
+int		is_there_envp(char **array, char *str);
 
 /* envp_utils */
 char	**add_environment_variable(char **array, char *key);
