@@ -43,8 +43,11 @@ void	exit_command(t_data *data)
 {
 	extern int	g_status;
 
-	if (check_argument(data))
+	if (data->commands[1] != NULL)
+	{
+		check_argument(data);
 		exit(g_status);
+	}
 	else
 	{
 		ft_putendl_fd("exit", STDERR_FILENO);
