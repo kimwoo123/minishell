@@ -51,6 +51,7 @@ static int	parent_redir_wait(t_data *data, pid_t pid)
 
 void	do_fork(t_data *data)
 {
+	extern int	g_status;
 	pid_t		pid;
 
 	pid = fork();
@@ -60,7 +61,7 @@ void	do_fork(t_data *data)
 	{
 		if (child_redir_exec(data) == FAILURE)
 			exit_with_str("child redir error in fork", EXIT_FAILURE);
-		exit(EXIT_SUCCESS);
+		exit(g_status);
 	}
 	else
 	{
