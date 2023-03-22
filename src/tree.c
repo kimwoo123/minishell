@@ -6,11 +6,11 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 15:40:59 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/21 13:50:21 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 10:31:50 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "minishell.h"
 
 static void	do_pipe(t_data *data, t_tree *tree)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "minishell.h"
 
 void	seperate_meta(const char *line, size_t size, t_list **list, t_data *d)
 {

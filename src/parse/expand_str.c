@@ -6,11 +6,11 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/22 09:05:26 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 10:25:17 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "minishell.h"
 
 char	*convert_variable(char *str, t_data *data)
 {
