@@ -75,13 +75,17 @@ static char	*find_command_path(t_data *data)
 
 void	execve_command(t_data *data)
 {
-	char	*command_path;
+	int			signo;
+	extern int	g_status;
+	char		*command_path;
 
 	command_path = find_command_path(data);
 	if (command_path == NULL)
 	{
 		ft_putstr_fd(data->commands[0], STDOUT_FILENO);
-		ft_putendl_fd(": command not TRUE", STDOUT_FILENO);
+		ft_putendl_fd(": command not found", STDOUT_FILENO);
+		g_status = 127;
+		exit(g_status);
 	}
 	else
 	{

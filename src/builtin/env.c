@@ -32,7 +32,7 @@ void	env_command(t_data *data)
 	if (data->copied_envp == NULL \
 	|| find_path_in_envp(data->copied_envp) == FAILURE)
 	{
-		ft_putendl_fd("bash: env: No such file or directory", STDERR_FILENO);
+		ft_putendl_fd("env: No such file or directory", STDERR_FILENO);
 		return ;
 	}
 	while (data->copied_envp[index])
