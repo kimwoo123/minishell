@@ -21,18 +21,13 @@ static int	check_numbers(t_data *data)
 	i = 1;
 	while (data->commands[i])
 	{
-		j = 0;
-		while (data->commands[i][j])
+		if (ft_isdigit(data->commands[i][0]) != 0)
 		{
-			if (ft_isdigit(data->commands[i][j]) != 0)
-			{
-				ft_putstr_fd("unset: '", STDERR_FILENO);
-				ft_putstr_fd(data->commands[i], STDERR_FILENO);
-				ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
-				g_status = 1;
-				return (TRUE);
-			}
-			j++;
+			ft_putstr_fd("unset: '", STDERR_FILENO);
+			ft_putstr_fd(data->commands[i], STDERR_FILENO);
+			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+			g_status = (1 << 8);
+			return (TRUE);
 		}
 		i++;
 	}
