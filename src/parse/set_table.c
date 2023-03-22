@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:27:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/19 09:39:29 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:35:33 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ t_fptr	**init_parse_table(void)
 	size_t	index;
 
 	parse_table = (t_fptr **)ft_calloc((PIPE + 1), sizeof(t_fptr *));
-	if (!parse_table)
+	if (parse_table == NULL)
 		return (NULL);
 	index = 0;
 	while (index < PIPE + 1)
 	{
 		parse_table[index] = (t_fptr *)ft_calloc((PIPE + 1), sizeof(t_fptr));
+		if (parse_table[index] == NULL)
+			return (NULL);
 		++index;
 	}
 	set_reduce_function(parse_table);

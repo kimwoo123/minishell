@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/22 09:15:20 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:18:10 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ t_list	*scan_command(const char *line, t_data *data)
 	accept = check_syntax(&list);
 	if (accept == FALSE)
 	{
+		ft_putendl_fd("syntax error", STDERR_FILENO);
 		free_list(&list);
 		return (NULL);
 	}

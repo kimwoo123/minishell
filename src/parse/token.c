@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/20 18:34:11 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:41:04 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,11 @@ void	get_token(const char *line, size_t size, t_list **list, t_data *data)
 	expansion = expand_str(line, size, data);
 	type = check_type(expansion);
 	content = remove_quote(expansion);
+	if (content == NULL)
+		exit_with_str("malloc error in get_token", EXIT_FAILURE);
 	free(expansion);
 	node = create_element(type, content);
+	if (node == NULL)
+		exit_with_str("malloc error in create_element", EXIT_FAILURE);
 	lst_addback(list, node);
 }
