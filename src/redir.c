@@ -12,15 +12,21 @@
 
 #include "minishell.h"
 
-static int	input_redir(char **argv)
+static int	input_redir(t_data *data)
 {
 	int	fd;
 
-	if (is_equal_to("<", argv[0]) == FALSE)
+	if (is_equal_to("<", data->commands[0]) == FALSE)
 		return (FAILURE);
-	fd = open(argv[1], O_RDONLY);
+	fd = open(data->commands[1], O_RDONLY);
 	if (fd == FAILURE)
-		return (FAILURE);
+	{
+		ft_putstr_fd(data->commands[1], STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+		data->redir_stat = 1;
+		set_status(EXIT_FAILURE);
+		return (SUCCESS);
+	}
 	if (dup2(fd, STDIN_FILENO) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
@@ -77,7 +83,8 @@ void	do_redirection(t_data *data, t_tree *tree)
 		exit_with_str("malloc error in do redirection", EXIT_FAILURE);
 	if (is_equal_to(data->commands[0], "<") == TRUE)
 	{
-		if (input_redir(data->commands) == FAILURE)
+		// if (input_redir(data->commands) == FAILURE)
+		if (input_redir(data) == FAILURE)
 			exit_with_str("error in do redirection", EXIT_FAILURE);
 	}
 	else if (is_equal_to(data->commands[0], "<<") == TRUE)

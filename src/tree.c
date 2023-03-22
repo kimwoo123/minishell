@@ -33,7 +33,7 @@ static void	execve_command_line(t_data *data, t_tree *tree)
 		do_redirection(data, tree);
 		free_double_array(data->commands);
 	}
-	else if (tree->type == PARENT_CMD && tree->left != NULL)
+	else if (data->redir_stat == 0 && (tree->type == PARENT_CMD && tree->left != NULL))
 	{
 		do_command(data, tree);
 		free_double_array(data->commands);

@@ -41,6 +41,7 @@ void	run_minishell(t_data *data, char *command_line)
 	t_list	*list;
 	t_tree	*tree;
 
+	data->redir_stat = 0;
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	if (backup_stdio(data) == FAILURE)

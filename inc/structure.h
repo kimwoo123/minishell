@@ -40,6 +40,7 @@ typedef struct s_data
 	char	**envp;
 	char	**copied_envp;
 	char	**commands;
+	int		redir_stat;
 	int		hd_flag;
 	int		has_forked;
 	int		last_cmd;
