@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 14:19:05 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/12 14:19:06 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/22 11:06:20 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_getenv(char **array, char *str)
 		if (check_same_key(array[index], str))
 		{
 			size = strlen_before_equal(array[index]);
-			result = ft_strdup(&array[index][size + 1]);
+			result = &array[index][size + 1];
 			if (result == NULL)
 				exit_with_str("malloc error in ft_getenv", EXIT_FAILURE);
 			return (result);
