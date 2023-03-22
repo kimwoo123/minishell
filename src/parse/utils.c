@@ -6,12 +6,11 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:44:33 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 18:13:53 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 09:06:16 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
-
+#include "minishell.h"
 
 int	is_space(char c)
 {

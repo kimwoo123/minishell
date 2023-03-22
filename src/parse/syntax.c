@@ -6,12 +6,11 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/19 14:30:09 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 09:06:31 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
-
+#include "minishell.h"
 
 int	shift_token(t_fptr **parse_table, t_stack **stack_node)
 {

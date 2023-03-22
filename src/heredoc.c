@@ -6,11 +6,11 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 11:01:06 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/21 10:10:56 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 10:31:34 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "minishell.h"
 
 static char	*expand_str_hd(t_data *data, const char *line)
 {
