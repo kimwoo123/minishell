@@ -1,3 +1,4 @@
+#include "parse.h"
 
 static int	backup_stdio(t_data *data)
 {
@@ -31,7 +32,7 @@ void	run_minishell(t_data *data, char *command_line)
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	if (backup_stdio(data) == FAILURE)
-		exit_with_str(backup error in run minishell, EXIT_FAILURE);
+		exit_with_str("backup error in run minishell", EXIT_FAILURE);
 	list = scan_command(command_line, data);
 	if (list == NULL)
 		rl_on_new_line();
@@ -44,5 +45,5 @@ void	run_minishell(t_data *data, char *command_line)
 		free_tree(tree);
 	}
 	if (restore_stdio(data) == FAILURE)
-		exit_with_str(backup error in run minishell, EXIT_FAILURE);
+		exit_with_str("backup error in run minishell", EXIT_FAILURE);
 }

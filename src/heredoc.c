@@ -10,15 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parse.h"
 
-static char	*expand_str_hd(const char *line)
+static char	*expand_str_hd(t_data *data, const char *line)
 {
 	char	**temp;
 	char	*result;
 
 	temp = split_dollar_hd(line);
-	result = convert_dollar(temp);
+	result = convert_dollar(temp, data);
 	free_double(temp);
 	return (result);
 }
@@ -66,7 +66,7 @@ int	preprocess_heredoc(t_data *data, t_tree *tree)
 		if (temp == NULL \
 		|| strjoin_compare(data, &temp, &str_nl, &delim) == FAILURE)
 			break ;
-		expand = expand_str_hd(str_nl);
+		expand = expand_str_hd(data, str_nl);
 		temp = save;
 		save = ft_strjoin(temp, expand);
 		if (save == NULL)

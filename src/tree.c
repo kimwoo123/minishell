@@ -40,7 +40,7 @@ static void	execve_command_line(t_data *data, t_tree *tree)
 	}
 }
 
-static void	search_tree_for_hd(t_data *data, t_tree *head)
+void	search_tree_for_hd(t_data *data, t_tree *head)
 {
 	if (head == NULL)
 		return ;
@@ -51,7 +51,7 @@ static void	search_tree_for_hd(t_data *data, t_tree *head)
 		if (is_equal_to(data->commands[0], "<<") == SAME)
 		{
 			if (preprocess_heredoc(data, head) == FAILURE)
-				exit_with_str(error in preprocess heredoc, EXIT_FAILURE);
+				exit_with_str("error in preprocess heredoc", EXIT_FAILURE);
 		}
 		free_double_array(data->commands);
 	}
@@ -61,7 +61,7 @@ static void	search_tree_for_hd(t_data *data, t_tree *head)
 		search_tree_for_hd(data, head->right);
 }
 
-static void	search_tree(t_data *data, t_tree *head)
+void	search_tree(t_data *data, t_tree *head)
 {
 	if (head == NULL)
 		return ;
