@@ -42,10 +42,7 @@ static int	parent_redir_wait(t_data *data, pid_t pid)
 			return (FAILURE);
 		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
 			return (FAILURE);
-		wait(0);
 	}
-	else
-		waitpid(pid, &g_status, 0);
 	return (SUCCESS);
 }
 

@@ -14,6 +14,7 @@
 
 static void	do_pipe(t_data *data, t_tree *tree)
 {
+	data->count_pipe++;
 	if (tree->right == NULL)
 		data->last_cmd = TRUE;
 	else if (tree->right != NULL)

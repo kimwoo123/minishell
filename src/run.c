@@ -36,12 +36,27 @@ static int	restore_stdio(t_data *data)
 	return (SUCCESS);
 }
 
+static void	waiting(t_data *data)
+{
+	extern int	g_status;
+	size_t		count;
+
+	count = 1;
+	while (count < data->count_pipe)
+	{
+		wait(0);
+		count++;
+	}
+	waitpid(-1, &g_status, 0);
+}
+
 void	run_minishell(t_data *data, char *command_line)
 {
 	t_list	*list;
 	t_tree	*tree;
 
 	data->redir_stat = 0;
+	data->count_pipe = 0;
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	if (backup_stdio(data) == FAILURE)
@@ -54,6 +69,7 @@ void	run_minishell(t_data *data, char *command_line)
 		tree = make_tree(&list);
 		search_tree_for_hd(data, tree);
 		search_tree(data, tree);
+		waiting(data);
 		free_list(&list);
 		free_tree(tree);
 	}
