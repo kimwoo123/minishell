@@ -6,12 +6,11 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:25:25 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 18:16:37 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 09:06:11 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
-
 
 t_stack	*create_elem(int type)
 {
