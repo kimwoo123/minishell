@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/22 10:37:50 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 10:54:34 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	free_list(t_list **list);
 void	free_double(char **str);
 void	free_stack_table(t_stack *stack, t_fptr **table);
 void	free_tree(t_tree *node);
+void	free_double_array(char **array);
 
 /* syntax */
 int		check_syntax(t_list **token_list);

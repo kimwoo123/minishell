@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/22 10:25:15 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:04:08 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include "structure.h"
 # include "../libft/inc/libft.h"
 
+char	*ft_getenv(char **array, char *str);
 void	search_tree_for_hd(t_data *data, t_tree *head);
 void	search_tree(t_data *data, t_tree *head);
 
