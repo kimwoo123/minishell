@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:38:42 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/22 12:41:06 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:45:32 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ char	**split_dollar(const char *line, size_t size)
 	if (result == NULL)
 		return (NULL);
 	duplicate_str(result, temp, &quote_flag);
+	index = 0;
 	while (index < r_size)
 	{
 		if (result[index] == NULL)
