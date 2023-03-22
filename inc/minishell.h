@@ -13,15 +13,14 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <unistd.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/wait.h>
-# include <fcntl.h>
 # include <signal.h>
 # include <termios.h>
-
+# include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -52,7 +51,7 @@ int		check_equal_sign(char *str);
 void	print_with_double_quotation(char *str);
 
 /* export utils1 */
-int		copy_additional_arguments(t_data *data, char **array, size_t *array_index);
+int		copy_additional_args(t_data *data, char **array, size_t *array_index);
 int		copy_origin_arguments(t_data *data, char **array, size_t *index);
 char	**alloc_double_array(t_data *data, size_t *index);
 

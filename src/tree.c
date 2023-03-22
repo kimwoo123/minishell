@@ -48,7 +48,7 @@ void	search_tree_for_hd(t_data *data, t_tree *head)
 	{
 		if (split_redirection(data, head) == FAILURE)
 			return ;
-		if (is_equal_to(data->commands[0], "<<") == SAME)
+		if (is_equal_to(data->commands[0], "<<") == TRUE)
 		{
 			if (preprocess_heredoc(data, head) == FAILURE)
 				exit_with_str("error in preprocess heredoc", EXIT_FAILURE);

@@ -65,6 +65,6 @@ void	do_fork(t_data *data)
 	else
 	{
 		if (parent_redir_wait(data, pid) == FAILURE)
-			exit_with_str("child redir error in fork", EXIT_FAILURE);
+			exit_with_str("parent redir error in fork", EXIT_FAILURE);
 	}
 }

@@ -45,7 +45,7 @@ static char	**add_environment_variables(t_data *data)
 		return (NULL);
 	if (copy_origin_arguments(data, array, &index) == FAILURE)
 		return (NULL);
-	if (copy_additional_arguments(data, array, &index) == FAILURE)
+	if (copy_additional_args(data, array, &index) == FAILURE)
 		return (NULL);
 	return (array);
 }

@@ -81,7 +81,7 @@ void	execve_command(t_data *data)
 	if (command_path == NULL)
 	{
 		ft_putstr_fd(data->commands[0], STDOUT_FILENO);
-		ft_putendl_fd(": command not found", STDOUT_FILENO);
+		ft_putendl_fd(": command not TRUE", STDOUT_FILENO);
 	}
 	else
 	{

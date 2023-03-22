@@ -16,7 +16,7 @@ static int	input_redir(char **argv)
 {
 	int	fd;
 
-	if (is_equal_to("<", argv[0]) == NOT_SAME)
+	if (is_equal_to("<", argv[0]) == FALSE)
 		return (FAILURE);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == FAILURE)
@@ -47,7 +47,7 @@ static int	output_redir(char **argv)
 {
 	int	fd;
 
-	if (is_equal_to(">", argv[0]) == NOT_SAME)
+	if (is_equal_to(">", argv[0]) == FALSE)
 		return (FAILURE);
 	fd = open(argv[1], (O_WRONLY | O_CREAT | O_TRUNC), 0644);
 	if (fd == FAILURE)
@@ -61,7 +61,7 @@ static int	output_append_redir(char **argv)
 {
 	int	fd;
 
-	if (is_equal_to(">>", argv[0]) == NOT_SAME)
+	if (is_equal_to(">>", argv[0]) == FALSE)
 		return (FAILURE);
 	fd = open(argv[1], (O_WRONLY | O_CREAT | O_APPEND), 0644);
 	if (fd == FAILURE)
@@ -75,22 +75,22 @@ void	do_redirection(t_data *data, t_tree *tree)
 {
 	if (split_redirection(data, tree) == FAILURE)
 		exit_with_str("malloc error in do redirection", EXIT_FAILURE);
-	if (is_equal_to(data->commands[0], "<") == SAME)
+	if (is_equal_to(data->commands[0], "<") == TRUE)
 	{
 		if (input_redir(data->commands) == FAILURE)
 			exit_with_str("error in do redirection", EXIT_FAILURE);
 	}
-	else if (is_equal_to(data->commands[0], "<<") == SAME)
+	else if (is_equal_to(data->commands[0], "<<") == TRUE)
 	{
 		if (input_redir_hd(data, tree) == FAILURE)
 			exit_with_str("error in do redirection", EXIT_FAILURE);
 	}
-	else if (is_equal_to(data->commands[0], ">") == SAME)
+	else if (is_equal_to(data->commands[0], ">") == TRUE)
 	{
 		if (output_redir(data->commands) == FAILURE)
 			exit_with_str("error in do redirection", EXIT_FAILURE);
 	}
-	else if (is_equal_to(data->commands[0], ">>") == SAME)
+	else if (is_equal_to(data->commands[0], ">>") == TRUE)
 	{
 		if (output_append_redir(data->commands) == FAILURE)
 			exit_with_str("error in do redirection", EXIT_FAILURE);
