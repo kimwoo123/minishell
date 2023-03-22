@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:21:20 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/20 16:21:22 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/22 18:42:51 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,40 @@ static char	*join_command(t_tree *tree)
 	return (str);
 }
 
+char	**_join(t_tree *tree)
+{
+	size_t	size;
+	size_t	index;
+	t_tree	*temp;
+	char	**result;
+
+	size = 1;
+	temp = tree->right;
+	while (temp != NULL)
+	{
+		if (temp->left != NULL)
+			++size;
+		temp = temp->right;
+	}
+	// need null guard
+	result = (char **)malloc(sizeof(char *) * (size + 1));
+	result[size] = NULL;
+	index = 0;
+	result[index++] = ft_strdup(tree->left->content);
+	temp = tree->right;
+	while (temp != NULL)
+	{
+		if (temp->left != NULL)
+			result[index++] = ft_strdup(temp->left->content);
+		temp = temp->right;
+	}
+	return (result);
+}
+
 int	do_command(t_data *data, t_tree *tree)
 {
-	char	*temp;
-
+	// modify
+	/*
 	temp = join_command(tree);
 	if (temp == NULL)
 		exit_with_str("malloc error in do command", EXIT_FAILURE);
@@ -95,6 +125,8 @@ int	do_command(t_data *data, t_tree *tree)
 	if (data->commands == NULL)
 		exit_with_str("malloc error in do command", EXIT_FAILURE);
 	free(temp);
+	*/
+	data->commands = _join(tree);
 	if (data->has_forked == FALSE \
 	&& is_builtin(data->commands[0]) == TRUE)
 		execve_builtin(data);
