@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 14:15:25 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/08 14:15:30 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/22 17:06:16 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	print_export(char **array)
 	index = 0;
 	while (new_array[index])
 	{
-		ft_putendl_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		if (check_equal_sign(new_array[index]))
 			print_with_double_quotation(new_array[index]);
 		else

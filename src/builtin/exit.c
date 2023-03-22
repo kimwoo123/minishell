@@ -14,12 +14,14 @@
 
 static int	check_argument(t_data *data)
 {
+	extern int	g_status;
+
 	if (ft_isalpha(data->commands[1][0]))
 	{
 		ft_putstr_fd("exit: ", STDERR_FILENO);
 		ft_putstr_fd(data->commands[1], STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		set_status(255);
+		g_status = 255;
 		return (TRUE);
 	}
 	else if (ft_isdigit(data->commands[1][0]))
@@ -27,12 +29,12 @@ static int	check_argument(t_data *data)
 		if (data->commands[2] != NULL)
 		{
 			ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
-			set_status(EXIT_FAILURE);
+			g_status = EXIT_FAILURE;
 		}
 		else
 		{
 			ft_putendl_fd("exit", STDERR_FILENO);
-			set_status(ft_atoi(data->commands[1]));
+			g_status = ft_atoi(data->commands[1]);
 		}
 		return (TRUE);
 	}
@@ -51,6 +53,7 @@ void	exit_command(t_data *data)
 	else
 	{
 		ft_putendl_fd("exit", STDERR_FILENO);
-		exit(EXIT_SUCCESS);
+		g_status = EXIT_SUCCESS;
+		exit(g_status);
 	}
 }
