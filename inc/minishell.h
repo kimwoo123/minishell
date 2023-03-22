@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:21:46 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/22 11:04:08 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:05:46 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ char	**copy_double_array(char **origin_array);
 size_t	strlen_before_equal(char *str);
 int		get_size_double_array(char **array);
 void	print_double_array(char **array);
-int		ft_getenv(char **array, char *str);
+int		is_there_envp(char **array, char *str);
 
 /* envp_utils */
 char	**add_environment_variable(char **array, char *key);
