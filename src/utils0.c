@@ -12,77 +12,73 @@
 
 #include "minishell.h"
 
-void	exit_with_str(const char *str, int exit_code)
+int	is_equal_to(char *str1, char *str2)
 {
-	ft_putendl_fd((char *)str, STDERR_FILENO);
-	exit(exit_code);
+	if (!ft_strncmp(str1, str2, ft_strlen(str2)))
+		if (ft_strlen(str1) == ft_strlen(str2))
+			return (TRUE);
+	return (FALSE);
 }
 
-int	ft_open(const char *path, int oflag, int flag)
+size_t	strlen_before_equal(char *str)
 {
-	int	fd;
+	size_t	index;
 
-	if (flag == -1)
-		fd = open(path, oflag);
-	else
-		fd = open(path, oflag, flag);
-	if (fd == FAILURE)
-		exit_with_str("open error", EXIT_FAILURE);
-	return (fd);
+	index = 0;
+	while (str[index])
+	{
+		if (str[index] == '=')
+			return (index);
+		index++;
+	}
+	return (index);
 }
 
-void	ft_close(int fd)
+int	get_size_double_array(char **array)
 {
-	if (close(fd) == FAILURE)
-		exit_with_str("close error", EXIT_FAILURE);
+	size_t	size;
+
+	size = 0;
+	while (array[size])
+		size++;
+	return (size);
 }
 
-int	ft_dup(int old_fd)
+char	*ft_strjoin_wslash(char *str1, char *str2)
 {
-	int	new_fd;
+	char	*temp;
+	char	*new_str;
 
-	new_fd = dup(old_fd);
-	if (new_fd == FAILURE)
-		exit_with_str("dup2 error", EXIT_FAILURE);
-	return (new_fd);
+	temp = ft_strjoin(str1, "/");
+	if (temp == NULL)
+		return (NULL);
+	new_str = ft_strjoin(temp, str2);
+	if (new_str == NULL)
+		return (NULL);
+	free(temp);
+	return (new_str);
 }
 
-// pid_t	ft_fork(pid_t *pid)
-// {
-// 	*pid = fork();
-// 	if (*pid == FAILURE)
-// 		exit_with_str("fork error", EXIT_FAILURE);
-// }
+char	**copy_double_array(char **origin_array)
+{
+	int		i;
+	int		size;
+	char	**copied_array;
 
-// int	do_wait(t_data *data)
-// {
-// 	waitpid(data->pid, &data->stat, 0);
-// 	while (data->index > 3)
-// 	{
-// 		ft_wait(NULL);
-// 		data->index--;
-// 	}
-// 	return ((data->stat >> 8) & 0x000000ff);
-// }
-
-// int	do_wait_bonus(t_data *data)
-// {
-// 	waitpid(data->pid, &data->stat, 0);
-// 	ft_wait(NULL);
-// 	return ((data->stat >> 8) & 0x000000ff);
-// }
-
-// void	ft_chdir(const char *path, const char *cmd)
-// {
-// 	char	*error_str;
-
-// 	if (chdir(path) == FAILURE)
-// 	{
-// 		if (cmd == NULL)
-// 			return ;
-// 		error_str = ft_strjoin("bash: cd: ", cmd);
-// 		if (error_str == NULL)
-// 			exit_with_str("strjoin error in ft_chdir function", EXIT_FAILURE);
-// 		perror(error_str);
-// 	}
-// }
+	size = 0;
+	while (origin_array[size])
+		size++;
+	copied_array = (char **)malloc(sizeof(char *) * (size + 1));
+	if (!copied_array)
+		return (NULL);
+	i = 0;
+	while (origin_array[i])
+	{
+		copied_array[i] = ft_strdup(origin_array[i]);
+		if (!copied_array)
+			return (NULL);
+		i++;
+	}
+	copied_array[i] = NULL;
+	return (copied_array);
+}

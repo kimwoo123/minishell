@@ -30,7 +30,7 @@ static int	input_redir_hd(t_data *data, t_tree *tree)
 {
 	int	fd;
 
-	fd = ft_open("heredoc_temp", (O_WRONLY | O_CREAT | O_TRUNC), 0644);
+	fd = open("heredoc_temp", (O_WRONLY | O_CREAT | O_TRUNC), 0644);
 	if (fd == FAILURE)
 		return (FAILURE);
 	write(fd, tree->right->content, ft_strlen(tree->right->content));
@@ -38,7 +38,8 @@ static int	input_redir_hd(t_data *data, t_tree *tree)
 	fd = open("heredoc_temp", O_RDONLY);
 	if (dup2(fd, STDIN_FILENO) == FAILURE)
 		return (FAILURE);
-	ft_unlink("heredoc_temp");
+	if (unlink("heredoc_temp") == FAILURE)
+		return (FAILURE);
 	return (SUCCESS);
 }
 
