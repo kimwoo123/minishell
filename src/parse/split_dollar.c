@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:38:42 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/20 19:29:19 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:45:32 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,23 @@ char	**split_dollar(const char *line, size_t size)
 	char	*temp;
 	char	**result;
 	size_t	r_size;
+	size_t	index;
 	char	quote_flag;
 
 	quote_flag = '\0';
 	temp = ft_strndup(line, size);
 	r_size = double_array_size(temp, &quote_flag);
 	result = (char **)malloc(sizeof(char *) * (r_size + 1));
+	if (result == NULL)
+		return (NULL);
 	duplicate_str(result, temp, &quote_flag);
+	index = 0;
+	while (index < r_size)
+	{
+		if (result[index] == NULL)
+			return (NULL);
+		++index;
+	}
 	result[r_size] = NULL;
 	free(temp);
 	return (result);

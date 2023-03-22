@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:44:33 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/22 09:06:16 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:44:27 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_strndup(const char *begin, size_t size)
 	char	*result;
 
 	result = (char *)malloc(size + 1);
-	if (!result)
+	if (result == NULL)
 		return (NULL);
 	index = 0;
 	while (index < size)

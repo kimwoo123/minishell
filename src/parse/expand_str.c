@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/22 10:25:17 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 12:44:15 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*convert_variable(char *str, t_data *data)
 		result = ft_strdup("");
 	else
 		result = ft_strdup(env);
+	if (result == NULL)
+		return (NULL);
 	return (result);
 }
 
@@ -44,11 +46,15 @@ char	*merge_str(char **split_str)
 	size_t	index;
 
 	result = ft_strdup("");
+	if (result == NULL)
+		return (NULL);
 	index = 0;
 	while (split_str[index])
 	{
 		temp = result;
 		result = ft_strjoin(result, split_str[index]);
+		if (result == NULL)
+			return (NULL);
 		free(temp);
 		++index;
 	}
@@ -68,6 +74,8 @@ char	*convert_dollar(char **str, t_data *data)
 		{
 			temp = str[index];
 			str[index] = convert_variable(str[index], data);
+			if (str[index] == NULL)
+				return (NULL);
 			free(temp);
 		}
 		++index;
@@ -82,7 +90,11 @@ char	*expand_str(const char *line, size_t size, t_data *data)
 	char	*result;
 
 	temp = split_dollar(line, size);
+	if (temp == NULL)
+		exit_with_str("malloc error in expand_str", EXIT_FAILURE);
 	result = convert_dollar(temp, data);
+	if (result == NULL)
+		exit_with_str("malloc error in expand_str", EXIT_FAILURE);
 	free_double(temp);
 	return (result);
 }

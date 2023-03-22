@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/22 09:06:31 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:37:50 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ int	parse_token(t_list **token_list)
 	int		accept;
 
 	parse_table = init_parse_table();
+	if (parse_table == NULL)
+		exit_with_str("malloc error in init_parse_table", EXIT_FAILURE);
 	stack = NULL;
 	node = *token_list;
 	while (node)
