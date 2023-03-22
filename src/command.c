@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:31:44 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/22 18:17:56 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 18:47:43 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ static int	check_envp_index(t_data *data)
 	return ((int)index);
 }
 
-#include <sys/stat.h>
-#include <sys/types.h>
-
+// need feed back
 static char	*check_access(t_data *data, char **split)
 {
 	size_t	index;
