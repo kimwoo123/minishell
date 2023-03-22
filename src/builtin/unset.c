@@ -12,12 +12,42 @@
 
 #include "minishell.h"
 
+static int	check_numbers(t_data *data)
+{
+	extern int	g_status;
+	size_t		i;
+	size_t		j;
+
+	i = 1;
+	while (data->commands[i])
+	{
+		j = 0;
+		while (data->commands[i][j])
+		{
+			if (ft_isdigit(data->commands[i][j]) != 0)
+			{
+				ft_putstr_fd("unset: '", STDERR_FILENO);
+				ft_putstr_fd(data->commands[i], STDERR_FILENO);
+				ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+				g_status = 1;
+				return (TRUE);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (FALSE);
+}
+
 void	unset_command(t_data *data)
 {
-	size_t	index;
-	char	**array;
+	extern int	g_status;
+	size_t		index;
+	char		**array;
 
 	index = 1;
+	if (check_numbers(data))
+		return ;
 	while (data->commands[index])
 	{
 		if (is_there_envp(data->copied_envp, \
@@ -33,4 +63,5 @@ void	unset_command(t_data *data)
 		}
 		index++;
 	}
+	g_status = 0;
 }
