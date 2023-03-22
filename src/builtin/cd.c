@@ -14,8 +14,6 @@
 
 static int	get_home_path(t_data *data, char **home_path)
 {
-	extern int	g_status;
-
 	*home_path = find_home_path(data->envp);
 	if (*home_path == NULL)
 		return (FALSE);
@@ -24,8 +22,8 @@ static int	get_home_path(t_data *data, char **home_path)
 		*home_path = find_home_path(data->copied_envp);
 		if (*home_path == NULL)
 		{
-			g_status = 1;
 			ft_putendl_fd("cd: HOME not set", STDERR_FILENO);
+			set_status(EXIT_FAILURE);
 			return (FAILURE);
 		}
 	}

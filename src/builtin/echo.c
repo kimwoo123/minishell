@@ -54,4 +54,5 @@ void	echo_command(char **array)
 	}
 	if (flag)
 		write(STDOUT_FILENO, "\n", 1);
+	set_status(EXIT_SUCCESS);
 }
