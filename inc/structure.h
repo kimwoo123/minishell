@@ -42,7 +42,6 @@ typedef struct s_data
 	char	**commands;
 	int		hd_flag;
 	int		has_forked;
-	int		stat;
 	int		last_cmd;
 	int		pipe_fd[2];
 	int		dup_stdin;

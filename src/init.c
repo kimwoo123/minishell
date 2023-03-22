@@ -40,5 +40,4 @@ void	init_data(int argc, char **argv, char **envp, t_data *data)
 	data->copied_envp = set_environment_variable(envp);
 	if (data->copied_envp == NULL)
 		exit_with_str("copy error in set environment", EXIT_FAILURE);
-	data->stat = 0;
 }
