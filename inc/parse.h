@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/19 09:18:28 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 09:14:10 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef	struct	s_stack
 typedef int	(*t_fptr)(t_stack **stack_node);
 
 /* lexer */
-void	seperate_meta(const char *line, size_t size, t_list **list, t_data *data);
+void	seperate_meta(const char *line, size_t size, t_list **list, t_data *d);
 void	split_space(const char *line, size_t size, t_list **list, t_data *data);
 int		repeat_meta(const char *line, size_t index);
 void	split_delimiter(const char *line, t_list **list, t_data *data);

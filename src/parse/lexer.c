@@ -6,30 +6,29 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/21 13:49:24 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 09:15:20 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-
-void	seperate_meta(const char *line, size_t size, t_list **list, t_data *data)
+void	seperate_meta(const char *line, size_t size, t_list **list, t_data *d)
 {
 	size_t	index;
 	size_t	start_index;
 
-	index = trim_line(&line[0]);
+	index = trim_line(line);
 	start_index = index;
 	if (is_delimiter(line[index]))
 	{
 		while (index < size && is_delimiter(line[index]))
 			index++;
-		get_token(&line[start_index], index - start_index, list, data);
+		get_token(&line[start_index], index - start_index, list, d);
 		if (size != index)
-			get_token(&line[index], size - index, list, data);
+			get_token(&line[index], size - index, list, d);
 	}
 	else
-		get_token(&line[index], size - index, list, data);
+		get_token(&line[index], size - index, list, d);
 }
 
 void	split_space(const char *line, size_t size, t_list **list, t_data *data)
