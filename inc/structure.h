@@ -15,27 +15,16 @@
 
 # define DELIMITER	"<>|"
 # define DOLLAR		'$'
-
 # define SIGINT			2
 # define SIGQUIT		3
-
 # define EXIT_SUCCESS	0
 # define EXIT_FAILURE	1
-
 # define SUCCESS		0
 # define FAILURE		-1
-
 # define CHILD_PROCESS  0
-
-# define NOT_FOUND		0
+# define NOT_TRUE		0
 # define ONLY_KEY		1
 # define KEY_AND_VALUE	2
-
-# define NOT_FOUND		0
-# define FOUND			1
-
-# define NOT_SAME		0
-# define SAME			1
 
 typedef struct s_stack
 {

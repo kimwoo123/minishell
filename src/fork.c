@@ -49,7 +49,7 @@ static int	parent_redir_wait(t_data *data, pid_t pid)
 	return (SUCCESS);
 }
 
-int	do_fork(t_data *data)
+void	do_fork(t_data *data)
 {
 	pid_t		pid;
 
@@ -65,7 +65,6 @@ int	do_fork(t_data *data)
 	else
 	{
 		if (parent_redir_wait(data, pid) == FAILURE)
-			exit_with_str("child redir error in fork", EXIT_FAILURE);
+			exit_with_str("parent redir error in fork", EXIT_FAILURE);
 	}
-	return (0);
 }

@@ -18,7 +18,7 @@ void	ft_chdir(const char *path, const char *cmd)
 
 	if (chdir(path) == FAILURE)
 	{
-		ft_putstr_fd("bash: cd: ", STDERR_FILENO);
+		ft_putstr_fd("cd: ", STDERR_FILENO);
 		ft_putstr_fd((char *)cmd, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		perror(error_str);

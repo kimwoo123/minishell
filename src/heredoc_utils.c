@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-size_t	get_dollar_len_hd(const char *line)
+static size_t	get_dollar_len_hd(const char *line)
 {
 	size_t	index;
 
@@ -29,7 +29,7 @@ size_t	get_dollar_len_hd(const char *line)
 	return (index);
 }
 
-size_t	get_dollar_index_hd(const char *line)
+static size_t	get_dollar_index_hd(const char *line)
 {
 	size_t	index;
 
@@ -43,7 +43,7 @@ size_t	get_dollar_index_hd(const char *line)
 	return (index);
 }
 
-void	duplicate_str_hd(char **result, const char *line)
+static void	duplicate_str_hd(char **result, const char *line)
 {
 	size_t	s_index;
 	size_t	index;
@@ -72,7 +72,7 @@ void	duplicate_str_hd(char **result, const char *line)
 	}
 }
 
-size_t	double_array_size_hd(const char *line)
+static size_t	double_array_size_hd(const char *line)
 {
 	int		dollar_flag;
 	size_t	size;

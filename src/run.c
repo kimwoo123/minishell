@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   run.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/22 10:54:03 by chajung           #+#    #+#             */
+/*   Updated: 2023/03/22 10:54:04 by chajung          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	backup_stdio(t_data *data)
 {
-	data->dup_stdin = ft_dup(STDIN_FILENO);
+	data->dup_stdin = dup(STDIN_FILENO);
 	if (data->dup_stdin == FAILURE)
 		return (FAILURE);
-	data->dup_stdout = ft_dup(STDOUT_FILENO);
+	data->dup_stdout = dup(STDOUT_FILENO);
 	if (data->dup_stdout== FAILURE)
 		return (FAILURE);
 	return (SUCCESS);

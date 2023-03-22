@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	check_same_key(char *str, char *key)
+static int	check_TRUE_key(char *str, char *key)
 {
 	if (!ft_strncmp(str, key, strlen_before_equal(key)))
 		if (strlen_before_equal(str) == strlen_before_equal(key))
@@ -31,7 +31,7 @@ char	*ft_getenv(char **array, char *str)
 	index = 0;
 	while (array[index])
 	{
-		if (check_same_key(array[index], str))
+		if (check_TRUE_key(array[index], str))
 		{
 			size = strlen_before_equal(array[index]);
 			result = &array[index][size + 1];
@@ -60,7 +60,7 @@ int	is_there_envp(char **array, char *str)
 		}
 		index++;
 	}
-	return (NOT_FOUND);
+	return (NOT_TRUE);
 }
 
 char	**delete_environment_variable(char **array, char *key)
@@ -78,7 +78,7 @@ char	**delete_environment_variable(char **array, char *key)
 	j = 0;
 	while (array[i])
 	{
-		if (check_same_key(array[i], key) == FOUND)
+		if (check_TRUE_key(array[i], key) == TRUE)
 			i++;
 		else
 		{
