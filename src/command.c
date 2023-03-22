@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:31:44 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/21 09:31:45 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/22 18:17:56 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,14 @@ static int	check_envp_index(t_data *data)
 	return ((int)index);
 }
 
+#include <sys/stat.h>
+#include <sys/types.h>
+
 static char	*check_access(t_data *data, char **split)
 {
 	size_t	index;
 	char	*cmd;
+	struct stat finfo;
 
 	index = 0;
 	while (split[index])
@@ -37,12 +41,16 @@ static char	*check_access(t_data *data, char **split)
 		cmd = ft_strjoin_wslash(split[index], data->commands[0]);
 		if (cmd == NULL)
 			return (NULL);
-		if (!access(cmd, X_OK))
-			break ;
+		stat(cmd, &finfo);
+		if (S_ISDIR(finfo.st_mode) == FALSE)
+		{
+			if (!access(cmd, X_OK))
+				break ;
+		}
 		free(cmd);
 		index++;
 	}
-	return (cmd);
+	return (NULL);
 }
 
 static char	*find_command_path(t_data *data)
@@ -68,8 +76,11 @@ static char	*find_command_path(t_data *data)
 	if (cmd == NULL)
 		return (NULL);
 	free_double_array(split);
+	// need this?
+	/*
 	if (access(cmd, X_OK))
 		return (NULL);
+	*/
 	return (cmd);
 }
 
