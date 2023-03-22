@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+void	set_status(int	stat)
+{
+	extern int	g_status;
+
+	g_status = stat << 8;
+}
+
 void	exit_with_str(const char *str, int exit_code)
 {
 	ft_putendl_fd((char *)str, STDERR_FILENO);

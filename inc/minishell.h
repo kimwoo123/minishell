@@ -117,5 +117,6 @@ char	**copy_double_array(char **origin_array);
 
 /* utils1 */
 void	exit_with_str(const char *str, int exit_code);
+void	set_status(int	stat);
 
 #endif

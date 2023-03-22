@@ -14,9 +14,7 @@
 
 static int	check_numbers(t_data *data)
 {
-	extern int	g_status;
-	size_t		i;
-	size_t		j;
+	size_t	i;
 
 	i = 1;
 	while (data->commands[i])
@@ -26,7 +24,7 @@ static int	check_numbers(t_data *data)
 			ft_putstr_fd("unset: '", STDERR_FILENO);
 			ft_putstr_fd(data->commands[i], STDERR_FILENO);
 			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
-			g_status = (1 << 8);
+			set_status(EXIT_FAILURE);
 			return (TRUE);
 		}
 		i++;
@@ -36,7 +34,6 @@ static int	check_numbers(t_data *data)
 
 void	unset_command(t_data *data)
 {
-	extern int	g_status;
 	size_t		index;
 	char		**array;
 
@@ -58,5 +55,5 @@ void	unset_command(t_data *data)
 		}
 		index++;
 	}
-	g_status = 0;
+	set_status(EXIT_SUCCESS);
 }

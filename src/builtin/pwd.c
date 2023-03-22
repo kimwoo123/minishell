@@ -14,7 +14,8 @@
 
 void	pwd_command(t_data *data)
 {
-	char	*path;
+	extern int	g_status;
+	char		*path;
 
 	path = getcwd(NULL, 0);
 	if (path == NULL)
@@ -22,4 +23,5 @@ void	pwd_command(t_data *data)
 	ft_putendl_fd(path, STDOUT_FILENO);
 	free(path);
 	path = NULL;
+	set_status(EXIT_SUCCESS);
 }
