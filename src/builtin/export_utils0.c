@@ -59,10 +59,10 @@ int	check_equal_sign(char *str)
 	while (str[index])
 	{
 		if (str[index] == '=')
-			return (FOUND);
+			return (TRUE);
 		index++;
 	}
-	return (NOT_FOUND);
+	return (FALSE);
 }
 
 void	print_with_double_quotation(char *str)

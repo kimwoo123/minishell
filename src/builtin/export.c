@@ -18,18 +18,17 @@ static void	print_export(char **array)
 	size_t	index;
 
 	new_array = copy_double_array(array);
+	if (new_array == NULL)
+		exit_with_str("malloc error in print export", EXIT_FAILURE);
 	sort_double_array(new_array);
 	index = 0;
 	while (new_array[index])
 	{
-		write(STDOUT_FILENO, "declare -x ", ft_strlen("declare -x "));
+		ft_putendl_fd("declare -x ", STDOUT_FILENO);
 		if (check_equal_sign(new_array[index]))
 			print_with_double_quotation(new_array[index]);
 		else
-		{
-			write(STDOUT_FILENO, new_array[index], ft_strlen(new_array[index]));
-			write(STDOUT_FILENO, "\n", 1);
-		}
+			ft_putendl_fd(new_array[index], STDOUT_FILENO);
 		index++;
 	}
 	free_double_array(new_array);
@@ -43,29 +42,28 @@ static char	**add_environment_variables(t_data *data)
 	index = 0;
 	array = alloc_double_array(data, &index);
 	if (!array)
-		exit_with_str("error in add_environment_variables", EXIT_FAILURE);
+		return (NULL);
 	if (copy_origin_arguments(data, array, &index) == FAILURE)
-		exit_with_str("error in add_environment_variable", EXIT_FAILURE);
+		return (NULL);
 	if (copy_additional_arguments(data, array, &index) == FAILURE)
-		exit_with_str("error in add_environment_variable", EXIT_FAILURE);
+		return (NULL);
 	return (array);
 }
 
-int	export_command(t_data *data)
+void	export_command(t_data *data)
 {
 	char	**array;
 
 	if (data->copied_envp == NULL)
-		return (0);
+		return ;
 	else if (data->commands[1] == NULL)
 		print_export(data->copied_envp);
 	else
 	{
 		array = add_environment_variables(data);
 		if (!array)
-			exit_with_str("error in add_environment_variables", EXIT_FAILURE);
+			exit_with_str("error in export command", EXIT_FAILURE);
 		free_double_array(data->copied_envp);
 		data->copied_envp = array;
 	}
-	return (0);
 }

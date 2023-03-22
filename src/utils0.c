@@ -14,7 +14,7 @@
 
 void	exit_with_str(const char *str, int exit_code)
 {
-	ft_putendl_fd(str);
+	ft_putendl_fd((char *)str, STDERR_FILENO);
 	exit(exit_code);
 }
 

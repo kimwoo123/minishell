@@ -70,17 +70,28 @@ static int	output_append_redir(char **argv)
 	return (SUCCESS);
 }
 
-int	do_redirection(t_data *data, t_tree *tree)
+void	do_redirection(t_data *data, t_tree *tree)
 {
 	if (split_redirection(data, tree) == FAILURE)
-		return (FAILURE);
+		exit_with_str("malloc error in do redirection", EXIT_FAILURE);
 	if (is_equal_to(data->commands[0], "<") == SAME)
-		input_redir(data->commands);
+	{
+		if (input_redir(data->commands) == FAILURE)
+			exit_with_str("error in do redirection", EXIT_FAILURE);
+	}
 	else if (is_equal_to(data->commands[0], "<<") == SAME)
-		input_redir_hd(data, tree);
+	{
+		if (input_redir_hd(data, tree) == FAILURE)
+			exit_with_str("error in do redirection", EXIT_FAILURE);
+	}
 	else if (is_equal_to(data->commands[0], ">") == SAME)
-		output_redir(data->commands);
+	{
+		if (output_redir(data->commands) == FAILURE)
+			exit_with_str("error in do redirection", EXIT_FAILURE);
+	}
 	else if (is_equal_to(data->commands[0], ">>") == SAME)
-		output_append_redir(data->commands);
-	return (SUCCESS);
+	{
+		if (output_append_redir(data->commands) == FAILURE)
+			exit_with_str("error in do redirection", EXIT_FAILURE);
+	}
 }

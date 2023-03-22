@@ -14,10 +14,9 @@
 
 static void	print_not_vaild_identifier(char *str)
 {
-	write(STDOUT_FILENO, "bash: export: '", ft_strlen("bash: export: '"));
-	write(STDOUT_FILENO, str, ft_strlen(str));
-	write(STDOUT_FILENO, "': not a valid identifier\n", \
-		ft_strlen("': not a valid identifier\n"));
+	ft_putstr_fd("export: ", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier\n", STDERR_FILENO);
 }
 
 static int	change_environment_variable(char **array, char *str)
@@ -96,6 +95,6 @@ char	**alloc_double_array(t_data *data, size_t *index)
 	add_size = get_size_double_array(&data->commands[1]);
 	array = ft_calloc((origin_size + add_size + 1), sizeof(char *));
 	if (!array)
-		exit_with_str("error in alloc_double_array", EXIT_FAILURE);
+		exit_with_str("malloc error in alloc double array", EXIT_FAILURE);
 	return (array);
 }

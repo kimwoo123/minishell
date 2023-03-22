@@ -16,8 +16,8 @@ int	is_equal_to(char *str1, char *str2)
 {
 	if (!ft_strncmp(str1, str2, ft_strlen(str2)))
 		if (ft_strlen(str1) == ft_strlen(str2))
-			return (SAME);
-	return (NOT_SAME);
+			return (TRUE);
+	return (FALSE);
 }
 
 size_t	strlen_before_equal(char *str)

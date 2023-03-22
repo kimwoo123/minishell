@@ -14,17 +14,18 @@
 # define PARSE_H
 
 # include "minishell.h"
-# define DELIMITER	"<>|"
-# define DOLLAR		'$'
 
-typedef	struct	s_stack
-{
-	int				type;
-	char			*content;
-	struct s_stack	*next;
-}	t_stack;
+// # define DELIMITER	"<>|"
+// # define DOLLAR		'$'
 
-typedef int	(*t_fptr)(t_stack **stack_node);
+// typedef	struct	s_stack
+// {
+// 	int				type;
+// 	char			*content;
+// 	struct s_stack	*next;
+// }	t_stack;
+
+// typedef int	(*t_fptr)(t_stack **stack_node);
 
 /* lexer */
 void	seperate_meta(const char *line, size_t size, t_list **list, t_data *d);

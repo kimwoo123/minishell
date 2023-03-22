@@ -12,15 +12,14 @@
 
 #include "minishell.h"
 
-int	pwd_command(t_data *data)
+void	pwd_command(t_data *data)
 {
 	char	*path;
 
 	path = getcwd(NULL, 0);
 	if (path == NULL)
-		exit_with_str("pwd error", EXIT_FAILURE);
-	printf("%s\n", path);
+		exit_with_str("getcwd error in pwd command", EXIT_FAILURE);
+	ft_putendl_fd(path, STDOUT_FILENO);
 	free(path);
 	path = NULL;
-	return (0);
 }

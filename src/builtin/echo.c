@@ -34,7 +34,7 @@ static size_t	check_index(char **array)
 	return (i);
 }
 
-int	echo_command(char **array)
+void	echo_command(char **array)
 {
 	size_t	index;
 	int		size;
@@ -54,5 +54,4 @@ int	echo_command(char **array)
 	}
 	if (flag)
 		write(STDOUT_FILENO, "\n", 1);
-	return (SUCCESS);
 }

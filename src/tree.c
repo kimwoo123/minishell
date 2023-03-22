@@ -12,7 +12,7 @@
 
 #include "parse.h"
 
-static int	do_pipe(t_data *data, t_tree *tree)
+static void	do_pipe(t_data *data, t_tree *tree)
 {
 	if (tree->right == NULL)
 		data->last_cmd = TRUE;
@@ -20,12 +20,11 @@ static int	do_pipe(t_data *data, t_tree *tree)
 	{
 		data->has_forked = TRUE;
 		if (pipe(data->pipe_fd) == FAILURE)
-			return (FAILURE);
+			exit_with_str("pipe error in do pipe", EXIT_FAILURE);
 	}
-	return (SUCCESS);
 }
 
-static int	execve_command_line(t_data *data, t_tree *tree)
+static void	execve_command_line(t_data *data, t_tree *tree)
 {
 	if (tree->type == PIPE)
 		do_pipe(data, tree);
@@ -39,10 +38,9 @@ static int	execve_command_line(t_data *data, t_tree *tree)
 		do_command(data, tree);
 		free_double_array(data->commands);
 	}
-	return (SUCCESS);
 }
 
-static void	search_tree_for_hd(t_data *data, t_tree *head)
+void	search_tree_for_hd(t_data *data, t_tree *head)
 {
 	if (head == NULL)
 		return ;
@@ -51,7 +49,10 @@ static void	search_tree_for_hd(t_data *data, t_tree *head)
 		if (split_redirection(data, head) == FAILURE)
 			return ;
 		if (is_equal_to(data->commands[0], "<<") == SAME)
-			preprocess_heredoc(data, head);
+		{
+			if (preprocess_heredoc(data, head) == FAILURE)
+				exit_with_str("error in preprocess heredoc", EXIT_FAILURE);
+		}
 		free_double_array(data->commands);
 	}
 	if (head->left != NULL)
@@ -60,7 +61,7 @@ static void	search_tree_for_hd(t_data *data, t_tree *head)
 		search_tree_for_hd(data, head->right);
 }
 
-static void	search_tree(t_data *data, t_tree *head)
+void	search_tree(t_data *data, t_tree *head)
 {
 	if (head == NULL)
 		return ;
@@ -72,30 +73,4 @@ static void	search_tree(t_data *data, t_tree *head)
 		search_tree(data, head->left);
 	if (head->right != NULL)
 		search_tree(data, head->right);
-}
-
-void	make_nice_name(t_data *data, char *command_line)
-{
-	t_list	*list;
-	t_tree	*tree;
-
-	data->last_cmd = FALSE;
-	data->has_forked = FALSE;
-	data->dup_stdin = ft_dup(STDIN_FILENO);
-	data->dup_stdout = ft_dup(STDOUT_FILENO);
-	list = scan_command(command_line, data);
-	if (list == NULL)
-		rl_on_new_line();
-	else
-	{
-		tree = make_tree(&list);
-		search_tree_for_hd(data, tree);
-		search_tree(data, tree);
-		free_list(&list);
-		free_tree(tree);
-	}
-	ft_dup2(data->dup_stdin, STDIN_FILENO);
-	ft_dup2(data->dup_stdout, STDOUT_FILENO);
-	ft_close(data->dup_stdin);
-	ft_close(data->dup_stdout);
 }
