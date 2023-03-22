@@ -52,7 +52,7 @@ static char	**add_environment_variables(t_data *data)
 
 void	export_command(t_data *data)
 {
-	char	**array;
+	char		**array;
 
 	if (data->copied_envp == NULL)
 		return ;
@@ -60,6 +60,7 @@ void	export_command(t_data *data)
 		print_export(data->copied_envp);
 	else
 	{
+		set_status(EXIT_SUCCESS);
 		array = add_environment_variables(data);
 		if (!array)
 			exit_with_str("error in export command", EXIT_FAILURE);

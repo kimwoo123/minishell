@@ -12,6 +12,15 @@
 
 #include "minishell.h"
 
+//env: ‘/home/chanmuk’: Permission denied
+static void	print_no_such_file_or_directory(char *str)
+{
+	set_status(COMMAND_NOT_FOUND);
+	ft_putstr_fd("env: '", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putendl_fd("': No such file or directory", STDERR_FILENO);
+}
+
 static int	find_path_in_envp(char **envp)
 {
 	size_t	index;
@@ -33,6 +42,11 @@ void	env_command(t_data *data)
 	|| find_path_in_envp(data->copied_envp) == FAILURE)
 	{
 		ft_putendl_fd("env: No such file or directory", STDERR_FILENO);
+		return ;
+	}
+	else if (data->commands[1] != NULL)
+	{
+		print_no_such_file_or_directory(data->commands[1]);
 		return ;
 	}
 	while (data->copied_envp[index])

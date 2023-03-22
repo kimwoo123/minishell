@@ -93,7 +93,7 @@ void	execve_command(t_data *data)
 	{
 		ft_putstr_fd(data->commands[0], STDOUT_FILENO);
 		ft_putendl_fd(": command not found", STDOUT_FILENO);
-		g_status = 127;
+		g_status = COMMAND_NOT_FOUND;
 	}
 	else
 	{

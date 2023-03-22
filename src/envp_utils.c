@@ -60,7 +60,7 @@ int	is_there_envp(char **array, char *str)
 		}
 		index++;
 	}
-	return (NOT_TRUE);
+	return (FALSE);
 }
 
 char	**delete_environment_variable(char **array, char *key)

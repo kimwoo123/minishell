@@ -14,9 +14,10 @@
 
 static void	print_not_vaild_identifier(char *str)
 {
-	ft_putstr_fd("export: ", STDERR_FILENO);
+	set_status(EXIT_FAILURE);
+	ft_putstr_fd("export: '", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putendl_fd("': not a valid identifier\n", STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 }
 
 static int	change_environment_variable(char **array, char *str)
@@ -51,16 +52,17 @@ int	copy_additional_args(t_data *data, char **array, size_t *array_index)
 	argument_index = 0;
 	while (data->commands[++argument_index])
 	{
-		if (data->commands[argument_index][0] == '=')
+		if (data->commands[argument_index][0] == '=' \
+		|| ft_isdigit(data->commands[argument_index][0]))
 			print_not_vaild_identifier(data->commands[argument_index]);
-		else if (is_there_envp(array, data->commands[argument_index]) == NOT_TRUE)
+		else if (is_there_envp(array, data->commands[argument_index]) == FALSE)
 		{
 			array[*array_index] = ft_strdup(data->commands[argument_index]);
 			if (!array[*array_index])
 				return (FAILURE);
 			(*array_index)++;
 		}
-		else if (is_there_envp(array, data->commands[argument_index]) != NOT_TRUE \
+		else if (is_there_envp(array, data->commands[argument_index]) != FALSE \
 		&& check_equal_sign(data->commands[argument_index]) == TRUE)
 		{
 			if (change_environment_variable(array, \
