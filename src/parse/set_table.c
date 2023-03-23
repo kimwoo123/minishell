@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:27:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/22 11:35:33 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 10:37:11 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ t_fptr	**init_parse_table(void)
 
 	parse_table = (t_fptr **)ft_calloc((PIPE + 1), sizeof(t_fptr *));
 	if (parse_table == NULL)
-		return (NULL);
+		exit_with_str("malloc error in init_parse_table", EXIT_FAILURE);
 	index = 0;
 	while (index < PIPE + 1)
 	{
 		parse_table[index] = (t_fptr *)ft_calloc((PIPE + 1), sizeof(t_fptr));
 		if (parse_table[index] == NULL)
-			return (NULL);
+			exit_with_str("malloc error in init_parse_table", EXIT_FAILURE);
 		++index;
 	}
 	set_reduce_function(parse_table);
