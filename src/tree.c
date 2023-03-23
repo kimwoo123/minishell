@@ -22,6 +22,14 @@ static void	do_pipe(t_data *data, t_tree *tree)
 		data->has_forked = TRUE;
 		if (pipe(data->pipe_fd) == FAILURE)
 			exit_with_str("pipe error in do pipe", EXIT_FAILURE);
+		// if (dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO) == FAILURE)
+		// 	return ;
+		if (dup2 (data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO) == FAILURE)
+			return ;
+		// if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
+		// 	return ;
+		// if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
+		// 	return ;
 	}
 }
 

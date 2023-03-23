@@ -57,6 +57,8 @@ void	run_minishell(t_data *data, char *command_line)
 
 	data->redir_stat = 0;
 	data->count_pipe = 0;
+	data->redir_in = 0;
+	data->redir_out = 0;
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	if (backup_stdio(data) == FAILURE)

@@ -14,12 +14,15 @@
 
 static int	child_redir_exec(t_data *data)
 {
-	if (data->last_cmd != TRUE)
+	if (data->last_cmd == FALSE)
 	{
 		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
 			return (FAILURE);
-		if (dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO) == FAILURE)
-			return (FAILURE);
+		if (data->redir_out == 0)
+		{
+			if (dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO) == FAILURE)
+				return (FAILURE);
+		}
 		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
 			return (FAILURE);
 	}
@@ -32,13 +35,23 @@ static int	child_redir_exec(t_data *data)
 
 static int	parent_redir_wait(t_data *data)
 {
-	extern int	g_status;
-
-	if (data->last_cmd != TRUE)
+	if (data->last_cmd == FALSE)
 	{
 		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
 			return (FAILURE);
-		if (dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO) == FAILURE)
+		if (data->redir_in == 0)
+		{
+			if (dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO) == FAILURE)
+				return (FAILURE);
+		}
+		if (dup2(STDOUT_FILENO, data->pipe_fd[STDIN_FILENO]) == FAILURE)
+			return (FAILURE);
+		if (dup2(data->dup_stdout, STDOUT_FILENO) == FAILURE)
+			return (FAILURE);
+		if (close(data->dup_stdout) == FAILURE)
+			return (FAILURE);
+		data->dup_stdout = dup(STDOUT_FILENO);
+		if (data->dup_stdout == FAILURE)
 			return (FAILURE);
 		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
 			return (FAILURE);
