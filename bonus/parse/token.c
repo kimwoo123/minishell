@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 18:14:15 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 18:22:31 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ void	lst_addback(t_list **list, t_list *node)
 
 int	check_type(const char *str)
 {
-	if (!ft_strncmp(str, "||", ft_strlen(str)))
-		return (OPERATOR);
-	else if (!ft_strncmp(str, "&&", ft_strlen(str)))
+	if (!ft_strncmp(str, "||", 2) || !ft_strncmp(str, "&&", 2))
 		return (OPERATOR);
 	else if (*str == '|')
 		return (PIPE);
