@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 10:28:23 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:51:31 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,29 +58,38 @@ void	split_space(const char *line, size_t size, t_list **list, t_data *data)
 		seperate_meta(&line[start_index], index - start_index, list, data);
 }
 
-int	repeat_meta(const char *line, size_t index)
+int	repeat_meta(const char *line, size_t index, size_t *flag)
 {
-	if (index > 0)
-		if (!ft_strncmp(&line[index - 1], "<<", 2) || \
-				!ft_strncmp(&line[index - 1], ">>", 2))
-			return (TRUE);
+	if (*flag == 0)
+	{
+		if (index > 0)
+			if (line[index - 1] == line[index])
+			{
+				*flag = 1;
+				return (TRUE);
+			}
+	}
+	else
+		*flag = 0;
 	return (FALSE);
 }
 
 void	split_delimiter(const char *line, t_list **list, t_data *data)
 {
 	size_t	index;
+	size_t	repeat_flag;
 	size_t	start_index;
 	char	quote_flag;
 
 	quote_flag = '\0';
 	start_index = 0;
 	index = -1;
+	repeat_flag = 0;
 	while (line[++index])
 	{
 		quote_flag = check_quote(line[index], quote_flag);
 		if ((!quote_flag && is_delimiter(line[index])) && \
-				!repeat_meta(line, index))
+		!repeat_meta(line, index, &repeat_flag))
 		{
 			split_space(&line[start_index], index - start_index, list, data);
 			start_index = index;
