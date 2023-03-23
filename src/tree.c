@@ -14,8 +14,7 @@
 
 static void	do_pipe(t_data *data, t_tree *tree)
 {
-	data->redir_in = 0;
-	data->redir_out = 0;
+	data->redir_out = FALSE;
 	data->count_pipe++;
 	if (tree->right == NULL)
 		data->last_cmd = TRUE;
@@ -65,30 +64,6 @@ void	search_tree_for_hd(t_data *data, t_tree *head)
 		search_tree_for_hd(data, head->right);
 }
 
-// static int	backup_stdio(t_data *data)
-// {
-// 	data->dup_stdin = dup(STDIN_FILENO);
-// 	if (data->dup_stdin == FAILURE)
-// 		return (FAILURE);
-// 	data->dup_stdout = dup(STDOUT_FILENO);
-// 	if (data->dup_stdout == FAILURE)
-// 		return (FAILURE);
-// 	return (SUCCESS);
-// }
-
-// static int	restore_stdio(t_data *data)
-// {
-// 	if (dup2(data->dup_stdin, STDIN_FILENO) == FAILURE)
-// 		return (FAILURE);
-// 	if (dup2(data->dup_stdout, STDOUT_FILENO) == FAILURE)
-// 		return (FAILURE);
-// 	if (close(data->dup_stdin) == FAILURE)
-// 		return (FAILURE);
-// 	if (close(data->dup_stdout) == FAILURE)
-// 		return (FAILURE);
-// 	return (SUCCESS);
-// }
-
 void	search_tree(t_data *data, t_tree *head)
 {
 	if (head == NULL)
@@ -96,13 +71,7 @@ void	search_tree(t_data *data, t_tree *head)
 	if (head->type == PIPE \
 	|| head->type == REDIRECTION \
 	|| head->type == PARENT_CMD)
-	{
 		execve_command_line(data, head);
-		// if (restore_stdio(data) == FAILURE)
-		// 	exit_with_str("restore error in run minishell", EXIT_FAILURE);
-		// if (backup_stdio(data) == FAILURE)
-		// 	exit_with_str("backup error in run minishell", EXIT_FAILURE);
-	}
 	if (head->left != NULL)
 		search_tree(data, head->left);
 	if (head->right != NULL)
