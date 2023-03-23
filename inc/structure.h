@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:38:00 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/22 10:47:34 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 17:56:42 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ typedef struct s_tree
 
 enum	e_type
 {
-	ZERO,
 	WORD,
 	REDIR_TOKEN,
 	REDIRECTION,
@@ -78,8 +77,6 @@ enum	e_type
 	PIPE_CMD,
 	PARENT_REDIR,
 	PARENT_CMD,
-	GROUP_CMD,
-	QUOTE,
 	PIPE
 };
 
