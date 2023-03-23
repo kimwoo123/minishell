@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:38:00 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 17:56:42 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 18:05:20 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_tree
 
 enum	e_type
 {
-	WORD,
+	WORD = 1,
 	REDIR_TOKEN,
 	REDIRECTION,
 	CMD_TOKEN,
