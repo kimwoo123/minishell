@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:21:20 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/22 18:42:51 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 09:58:29 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,53 +43,10 @@ int	is_builtin(char *str)
 	return (FALSE);
 }
 
-static char	*ft_strjoin_wspace(char *str1, char *str2)
-{
-	char	*temp;
-	char	*new_str;
-
-	temp = ft_strjoin(str1, " ");
-	if (temp == NULL)
-		return (NULL);
-	new_str = ft_strjoin(temp, str2);
-	if (new_str == NULL)
-		return (NULL);
-	free(temp);
-	return (new_str);
-}
-
-static char	*join_command(t_tree *tree)
-{
-	char	*str;
-	char	*new_str;
-	t_tree	*temp;
-
-	str = ft_strdup(tree->left->content);
-	if (str == NULL)
-		return (NULL);
-	temp = tree->right;
-	while (temp != NULL)
-	{
-		if (temp->left != NULL)
-		{
-			new_str = ft_strjoin_wspace(str, temp->left->content);
-			if (new_str == NULL)
-				return (NULL);
-			free(str);
-			str = new_str;
-			new_str = NULL;
-		}
-		temp = temp->right;
-	}
-	return (str);
-}
-
-char	**_join(t_tree *tree)
+static size_t	get_cmd_size(t_tree *tree)
 {
 	size_t	size;
-	size_t	index;
 	t_tree	*temp;
-	char	**result;
 
 	size = 1;
 	temp = tree->right;
@@ -99,8 +56,20 @@ char	**_join(t_tree *tree)
 			++size;
 		temp = temp->right;
 	}
-	// need null guard
+	return (size);
+}
+
+static char	**join_command(t_tree *tree)
+{
+	size_t	size;
+	size_t	index;
+	t_tree	*temp;
+	char	**result;
+
+	size = get_cmd_size(tree);
 	result = (char **)malloc(sizeof(char *) * (size + 1));
+	if (result == NULL)
+		return (NULL);
 	result[size] = NULL;
 	index = 0;
 	result[index++] = ft_strdup(tree->left->content);
@@ -116,17 +85,7 @@ char	**_join(t_tree *tree)
 
 int	do_command(t_data *data, t_tree *tree)
 {
-	// modify
-	/*
-	temp = join_command(tree);
-	if (temp == NULL)
-		exit_with_str("malloc error in do command", EXIT_FAILURE);
-	data->commands = ft_split(temp, ' ');
-	if (data->commands == NULL)
-		exit_with_str("malloc error in do command", EXIT_FAILURE);
-	free(temp);
-	*/
-	data->commands = _join(tree);
+	data->commands = join_command(tree);
 	if (data->has_forked == FALSE \
 	&& is_builtin(data->commands[0]) == TRUE)
 		execve_builtin(data);

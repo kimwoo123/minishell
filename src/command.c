@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:31:44 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/22 18:47:43 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 10:01:31 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int	check_envp_index(t_data *data)
 	return ((int)index);
 }
 
-// need feed back
 static char	*check_access(t_data *data, char **split)
 {
 	size_t	index;
@@ -40,10 +39,10 @@ static char	*check_access(t_data *data, char **split)
 		if (cmd == NULL)
 			return (NULL);
 		stat(cmd, &finfo);
-		if (S_ISDIR(finfo.st_mode) == FALSE)
+		if (!S_ISDIR(finfo.st_mode))
 		{
 			if (!access(cmd, X_OK))
-				break ;
+				return (cmd);
 		}
 		free(cmd);
 		index++;
@@ -74,11 +73,6 @@ static char	*find_command_path(t_data *data)
 	if (cmd == NULL)
 		return (NULL);
 	free_double_array(split);
-	// need this?
-	/*
-	if (access(cmd, X_OK))
-		return (NULL);
-	*/
 	return (cmd);
 }
 
