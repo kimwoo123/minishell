@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	pwd_command(t_data *data)
+void	pwd_command(void)
 {
 	extern int	g_status;
 	char		*path;

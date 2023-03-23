@@ -55,7 +55,7 @@ static void	handle_signals(int signal_code)
 	pid_t			pid;
 	int				status;
 	struct termios	org_term;
-	struct termios	new_term;
+	// struct termios	new_term;
 
 	if (tcgetattr(STDIN_FILENO, &org_term) == FAILURE)
 		exit_with_str("tcgetattr error in set input mode", EXIT_FAILURE);

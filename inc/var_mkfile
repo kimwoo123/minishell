@@ -44,10 +44,10 @@ COM_SRCS	= $(addprefix $(COM_DIR)/, $(COM_SRC))
 
 
 $(COM_OBJ_DIR)/%.o : $(COM_DIR)/%.c
-	@$(CC) -c $< -o $@ $(CPPFLAGS)
+	@$(CC) -c $(CFLAGS) $< -o $@ $(CPPFLAGS)
 
 $(BTI_OBJ_DIR)/%.o : $(BTI_DIR)/%.c
-	@$(CC) -c $< -o $@ $(CPPFLAGS)
+	@$(CC) -c $(CFLAGS) $< -o $@ $(CPPFLAGS)
 
 $(PAR_OBJ_DIR)/%.o : $(PAR_DIR)/%.c
-	@$(CC) -c $< -o $@ $(CPPFLAGS)
+	@$(CC) -c $(CFLAGS) $< -o $@ $(CPPFLAGS)

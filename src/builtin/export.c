@@ -40,7 +40,7 @@ static char	**add_environment_variables(t_data *data)
 	size_t	index;
 
 	index = 0;
-	array = alloc_double_array(data, &index);
+	array = alloc_double_array(data);
 	if (!array)
 		return (NULL);
 	if (copy_origin_arguments(data, array, &index) == FAILURE)

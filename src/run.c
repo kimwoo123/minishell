@@ -39,7 +39,7 @@ static int	restore_stdio(t_data *data)
 static void	waiting(t_data *data)
 {
 	extern int	g_status;
-	size_t		count;
+	int			count;
 
 	count = 1;
 	while (count < data->count_pipe)

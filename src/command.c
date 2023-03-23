@@ -61,7 +61,7 @@ static char	*find_command_path(t_data *data)
 	if (!access(data->commands[0], X_OK))
 		return (data->commands[0]);
 	index = check_envp_index(data);
-	if (index == FAILURE)
+	if (index == (size_t)FAILURE)
 	{
 		ft_putendl_fd("No such file or directory", STDIN_FILENO);
 		return (NULL);
@@ -78,7 +78,6 @@ static char	*find_command_path(t_data *data)
 
 void	execve_command(t_data *data)
 {
-	int			signo;
 	extern int	g_status;
 	char		*command_path;
 

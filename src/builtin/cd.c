@@ -28,23 +28,23 @@ static int	change_dir_nothing(t_data *data)
 	return (SUCCESS);
 }
 
-static int	get_home_path(t_data *data, char **home_path)
-{
-	*home_path = find_home_path(data->envp);
-	if (*home_path == NULL)
-		return (FALSE);
-	if (data->commands[1] == NULL)
-	{
-		*home_path = find_home_path(data->copied_envp);
-		if (*home_path == NULL)
-		{
-			ft_putendl_fd("cd: HOME not set", STDERR_FILENO);
-			set_status(EXIT_FAILURE);
-			return (FAILURE);
-		}
-	}
-	return (TRUE);
-}
+// static int	get_home_path(t_data *data, char **home_path)
+// {
+// 	*home_path = find_home_path(data->envp);
+// 	if (*home_path == NULL)
+// 		return (FALSE);
+// 	if (data->commands[1] == NULL)
+// 	{
+// 		*home_path = find_home_path(data->copied_envp);
+// 		if (*home_path == NULL)
+// 		{
+// 			ft_putendl_fd("cd: HOME not set", STDERR_FILENO);
+// 			set_status(EXIT_FAILURE);
+// 			return (FAILURE);
+// 		}
+// 	}
+// 	return (TRUE);
+// }
 
 static int	change_dir_to_home(t_data *data)
 {
@@ -125,8 +125,6 @@ static int	change_directory(t_data *data)
 
 void	cd_command(t_data *data)
 {
-	char	*path;
-
 	if (backup_working_directory(data) == FAILURE)
 		exit_with_str("backup error in cd command", EXIT_FAILURE);
 	if (change_directory(data) == FAILURE)

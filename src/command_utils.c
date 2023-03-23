@@ -19,7 +19,7 @@ void	execve_builtin(t_data *data)
 	else if (is_equal_to(data->commands[0], "cd"))
 		cd_command(data);
 	else if (is_equal_to(data->commands[0], "pwd"))
-		pwd_command(data);
+		pwd_command();
 	else if (is_equal_to(data->commands[0], "export"))
 		export_command(data);
 	else if (is_equal_to(data->commands[0], "unset"))

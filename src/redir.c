@@ -32,7 +32,7 @@ static int	input_redir(t_data *data)
 	return (SUCCESS);
 }
 
-static int	input_redir_hd(t_data *data, t_tree *tree)
+static int	input_redir_hd(t_tree *tree)
 {
 	int	fd;
 
@@ -89,7 +89,7 @@ void	do_redirection(t_data *data, t_tree *tree)
 	}
 	else if (is_equal_to(data->commands[0], "<<") == TRUE)
 	{
-		if (input_redir_hd(data, tree) == FAILURE)
+		if (input_redir_hd(tree) == FAILURE)
 			exit_with_str("error in do redirection", EXIT_FAILURE);
 	}
 	else if (is_equal_to(data->commands[0], ">") == TRUE)
