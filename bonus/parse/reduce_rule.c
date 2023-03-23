@@ -9,7 +9,7 @@
 /*   Updated: 2023/03/18 16:04:11 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 int	reduce_redirection(t_stack **stack_node)
 {

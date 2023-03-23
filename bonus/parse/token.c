@@ -6,11 +6,11 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 17:41:58 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 17:56:18 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 t_list	*create_element(int type, char *content)
 {
@@ -42,10 +42,12 @@ void	lst_addback(t_list **list, t_list *node)
 
 int	check_type(const char *str)
 {
+
 	if (*str == '|')
 		return (PIPE);
 	if (*str == '<' || *str == '>')
 		return (REDIR_TOKEN);
+
 	return (WORD);
 }
 

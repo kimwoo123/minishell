@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 t_tree	*create_tree(int type, char *content, t_tree *left, t_tree *right)
 {
