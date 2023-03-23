@@ -6,12 +6,12 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:38:00 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 18:05:20 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 18:21:36 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTURE_H
-# define STRUCTURE_H
+#ifndef STRUCTURE_BONUS_H
+# define STRUCTURE_BONUS_H
 
 # define DELIMITER			"<>|"
 # define DOLLAR				'$'
@@ -40,7 +40,6 @@ typedef struct s_data
 	char	**envp;
 	char	**copied_envp;
 	char	**commands;
-	pid_t	pid;
 	int		redir_in;
 	int		redir_out;
 	int		count_pipe;
@@ -78,7 +77,10 @@ enum	e_type
 	PIPE_CMD,
 	PARENT_REDIR,
 	PARENT_CMD,
-	PIPE
+	OPERATOR,
+	OPERATOR_CMD,
+	PIPE,
+	GROUP_CMD
 };
 
 enum e_bool
