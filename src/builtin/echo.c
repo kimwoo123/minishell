@@ -37,7 +37,7 @@ static size_t	check_index(char **array)
 void	echo_command(char **array)
 {
 	size_t	index;
-	int		size;
+	size_t	size;
 	int		flag;
 
 	flag = 0;

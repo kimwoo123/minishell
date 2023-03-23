@@ -34,7 +34,7 @@ size_t	strlen_before_equal(char *str)
 	return (index);
 }
 
-int	get_size_double_array(char **array)
+size_t	get_size_double_array(char **array)
 {
 	size_t	size;
 

@@ -33,7 +33,7 @@
 
 /* built-in */
 void	cd_command(t_data *data);
-void	pwd_command(t_data *data);
+void	pwd_command(void);
 void	exit_command(t_data *data);
 void	env_command(t_data *data);
 void	export_command(t_data *data);
@@ -56,7 +56,7 @@ void	print_with_double_quotation(char *str);
 /* export utils1 */
 int		copy_additional_args(t_data *data, char **array, size_t *array_index);
 int		copy_origin_arguments(t_data *data, char **array, size_t *index);
-char	**alloc_double_array(t_data *data, size_t *index);
+char	**alloc_double_array(t_data *data);
 
 /* init */
 void	init_data(int argc, char **argv, char **envp, t_data *data);
@@ -114,7 +114,7 @@ char	**add_environment_variable(char **array, char *key);
 /* utils0 */
 int		is_equal_to(char *str1, char *str2);
 size_t	strlen_before_equal(char *str);
-int		get_size_double_array(char **array);
+size_t	get_size_double_array(char **array);
 char	*ft_strjoin_wslash(char *str1, char *str2);
 char	**copy_double_array(char **origin_array);
 

@@ -23,7 +23,6 @@ static void	print_not_vaild_identifier(char *str)
 static int	change_environment_variable(char **array, char *str)
 {
 	size_t	index;
-	char	*key;
 	char	*temp;
 
 	index = 0;
@@ -87,7 +86,7 @@ int	copy_origin_arguments(t_data *data, char **array, size_t *index)
 	return (SUCCESS);
 }
 
-char	**alloc_double_array(t_data *data, size_t *index)
+char	**alloc_double_array(t_data *data)
 {
 	char	**array;
 	size_t	origin_size;

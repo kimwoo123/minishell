@@ -60,8 +60,6 @@ t_tree	*create_root(void)
 
 static void	recursive_make_tree(t_tree **head, t_list *node)
 {
-	t_tree	*temp;
-
 	if (node == NULL)
 		return ;
 	else if (node->type == PIPE)

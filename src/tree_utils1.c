@@ -24,10 +24,9 @@ void	add_pipe(t_tree **head)
 		exit_with_str("tree error in add pipe", EXIT_FAILURE);
 }
 
-static t_tree	*add_redirection(t_tree **head, t_list *node, t_list *next_node)
+static t_tree	*add_redirection(t_list *node, t_list *next_node)
 {
 	t_tree	*redir;
-	t_tree	*temp;
 
 	redir = create_tree(REDIRECTION, NULL, NULL, NULL);
 	if (redir == NULL)
@@ -52,7 +51,7 @@ void	add_redirections(t_tree **head, t_list *node, t_list *next_node)
 		temp = temp->left;
 	while (temp->right != NULL)
 		temp = temp->right;
-	temp->left = add_redirection(head, node, next_node);
+	temp->left = add_redirection(node, next_node);
 	if (temp->left == NULL)
 		exit_with_str("tree error in add redirections", EXIT_FAILURE);
 	temp->right = create_tree(PARENT_REDIR, NULL, NULL, NULL);
@@ -60,10 +59,9 @@ void	add_redirections(t_tree **head, t_list *node, t_list *next_node)
 		exit_with_str("tree error in add redirections", EXIT_FAILURE);
 }
 
-static t_tree	*add_command(t_tree **head, t_list *node)
+static t_tree	*add_command(t_list *node)
 {
 	t_tree	*command;
-	t_tree	*temp;
 
 	command = create_tree(CMD_TOKEN, node->content, NULL, NULL);
 	if (command == NULL)
@@ -81,7 +79,7 @@ void	add_commands(t_tree **head, t_list *node)
 	temp = temp->left->right;
 	while (temp->right != NULL)
 		temp = temp->right;
-	temp->left = add_command(head, node);
+	temp->left = add_command(node);
 	if (temp->left == NULL)
 		exit_with_str("tree error in add commands", EXIT_FAILURE);
 	temp->right = create_tree(COMMAND, NULL, NULL, NULL);
