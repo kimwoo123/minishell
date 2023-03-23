@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:38:00 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 18:08:20 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 18:21:36 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@ enum	e_type
 	PARENT_REDIR,
 	PARENT_CMD,
 	OPERATOR,
-	OPERATOR_CMD
-	PIPE
+	OPERATOR_CMD,
+	PIPE,
+	GROUP_CMD
 };
 
 enum e_bool
