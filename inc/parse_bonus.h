@@ -6,12 +6,12 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 18:00:57 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 18:00:30 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_BONUS_H
-# define PARSE_BONUS_H
+#ifndef PARSE_H
+# define PARSE_H
 
 # include <stdlib.h>
 # include "structure_bonus.h"
