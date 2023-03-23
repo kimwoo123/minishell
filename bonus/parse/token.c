@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 17:56:18 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/23 18:14:15 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,14 @@ void	lst_addback(t_list **list, t_list *node)
 
 int	check_type(const char *str)
 {
-
-	if (*str == '|')
+	if (!ft_strncmp(str, "||", ft_strlen(str)))
+		return (OPERATOR);
+	else if (!ft_strncmp(str, "&&", ft_strlen(str)))
+		return (OPERATOR);
+	else if (*str == '|')
 		return (PIPE);
-	if (*str == '<' || *str == '>')
+	else if (*str == '<' || *str == '>')
 		return (REDIR_TOKEN);
-
 	return (WORD);
 }
 
