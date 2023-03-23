@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:59:14 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/22 17:20:17 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/22 18:45:20 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ char	**ft_split(char const *s, char c)
 	char	**array;
 
 	size = double_array_size((char *)s, c);
-	if (size == 0)
-		size = 1;
 	array = (char **)malloc(sizeof(char *) * (size + 1));
 	if (array == NULL)
 		return (NULL);
