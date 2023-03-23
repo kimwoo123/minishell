@@ -23,7 +23,7 @@ static char	*expand_str_hd(t_data *data, const char *line)
 	return (result);
 }
 
-static int	strjoin_compare(t_data *data, char **temp, char **str_nl, char **delim)
+static int	strjoin_cmp(t_data *data, char **temp, char **str_nl, char **delim)
 {
 	*str_nl = ft_strjoin(*temp, "\n");
 	if (*str_nl == NULL)
@@ -64,7 +64,7 @@ int	preprocess_heredoc(t_data *data, t_tree *tree)
 	{
 		temp = readline("> ");
 		if (temp == NULL \
-		|| strjoin_compare(data, &temp, &str_nl, &delim) == FAILURE)
+		|| strjoin_cmp(data, &temp, &str_nl, &delim) == FAILURE)
 			break ;
 		expand = expand_str_hd(data, str_nl);
 		temp = save;

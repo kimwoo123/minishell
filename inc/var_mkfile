@@ -23,9 +23,9 @@ PAR_SRCS	= $(addprefix $(PAR_DIR)/, $(PAR_SRC))
 
 BTI_DIR		= src/builtin
 BTI_SRC		= \
-			echo.c cd.c cd_utils0.c cd_utils1.c pwd.c exit.c env.c \
+			echo.c  pwd.c exit.c env.c  export_utils1.c unset.c \
 			export.c export_utils0.c \
-			export_utils1.c unset.c
+			cd.c cd_utils0.c cd_utils1.c cd_utils2.c
 BTI_OBJ_DIR = obj/builtin
 BTI_OBJS	= $(addprefix $(BTI_OBJ_DIR)/, $(BTI_OBJ))
 BTI_OBJ		= $(BTI_SRC:.c=.o)

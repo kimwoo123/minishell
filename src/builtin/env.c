@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-//env: ‘/home/chanmuk’: Permission denied
 static void	print_no_such_file_or_directory(char *str)
 {
 	set_status(COMMAND_NOT_FOUND);

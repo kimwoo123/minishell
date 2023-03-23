@@ -79,27 +79,19 @@ static int	output_append_redir(char **argv)
 
 void	do_redirection(t_data *data, t_tree *tree)
 {
+	int	result;
+
+	result = SUCCESS;
 	if (split_redirection(data, tree) == FAILURE)
 		exit_with_str("malloc error in do redirection", EXIT_FAILURE);
 	if (is_equal_to(data->commands[0], "<") == TRUE)
-	{
-		// if (input_redir(data->commands) == FAILURE)
-		if (input_redir(data) == FAILURE)
-			exit_with_str("error in do redirection", EXIT_FAILURE);
-	}
+		result = input_redir(data);
 	else if (is_equal_to(data->commands[0], "<<") == TRUE)
-	{
-		if (input_redir_hd(tree) == FAILURE)
-			exit_with_str("error in do redirection", EXIT_FAILURE);
-	}
+		result = input_redir_hd(tree);
 	else if (is_equal_to(data->commands[0], ">") == TRUE)
-	{
-		if (output_redir(data->commands) == FAILURE)
-			exit_with_str("error in do redirection", EXIT_FAILURE);
-	}
+		result = output_redir(data->commands);
 	else if (is_equal_to(data->commands[0], ">>") == TRUE)
-	{
-		if (output_append_redir(data->commands) == FAILURE)
-			exit_with_str("error in do redirection", EXIT_FAILURE);
-	}
+		result = output_append_redir(data->commands);
+	if (result == FAILURE)
+		exit_with_str("error in do redirection", EXIT_FAILURE);
 }

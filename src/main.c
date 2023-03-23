@@ -23,7 +23,6 @@ int	main(int argc, char **argv, char **envp)
 	set_signals();
 	while (1)
 	{
-		// printf("1: %d\n", g_status);
 		command_line = readline("minishell> ");
 		if (command_line == NULL)
 			break ;
@@ -31,7 +30,6 @@ int	main(int argc, char **argv, char **envp)
 		run_minishell(&data, command_line);
 		free (command_line);
 		// system("leaks --list -- $PPID");
-		// printf("2: %d\n", g_status);
 	}
 	ft_putendl_fd("bye", STDOUT_FILENO);
 	return (0);

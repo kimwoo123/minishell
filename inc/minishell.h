@@ -26,7 +26,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-
 # include "parse.h"
 # include "structure.h"
 # include "../libft/inc/libft.h"
@@ -41,10 +40,16 @@ void	unset_command(t_data *data);
 void	echo_command(char **array);
 
 /* cd utils0 */
+int		change_dir_nothing(t_data *data);
+int		change_dir_to_home(t_data *data);
+int		change_dir_to_root(char **commands);
+int		change_dir(char **commands);
+
+/* cd utils1 */
 int		backup_working_directory(t_data *data);
 int		change_working_directory(t_data *data);
 
-/* cd utils1 */
+/* cd utils2 */
 void	ft_chdir(const char *path, const char *cmd);
 char	*find_home_path(char **envp);
 
@@ -120,6 +125,6 @@ char	**copy_double_array(char **origin_array);
 
 /* utils1 */
 void	exit_with_str(const char *str, int exit_code);
-void	set_status(int	stat);
+void	set_status(int stat);
 
 #endif

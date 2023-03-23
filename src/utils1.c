@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	set_status(int	stat)
+void	set_status(int stat)
 {
 	extern int	g_status;
 

@@ -12,78 +12,71 @@
 
 #include "minishell.h"
 
-static char	*get_old_working_directory(void)
-{
-	char	*temp;
-	char	*path;
-
-	temp = getcwd(NULL, 0);
-	if (!temp)
-		return (NULL);
-	path = ft_strjoin("OLDPWD=", temp);
-	if (!path)
-		return (NULL);
-	free(temp);
-	temp = NULL;
-	return (path);
-}
-
-static char	*get_present_working_directory(void)
-{
-	char	*temp;
-	char	*path;
-
-	temp = getcwd(NULL, 0);
-	if (!temp)
-		return (NULL);
-	path = ft_strjoin("PWD=", temp);
-	if (!path)
-		return (NULL);
-	free(temp);
-	temp = NULL;
-	return (path);
-}
-
-int	backup_working_directory(t_data *data)
+int	change_dir_nothing(t_data *data)
 {
 	char	*path;
-	char	**temp;
-	char	**new_envp;
 
-	path = get_old_working_directory();
-	if (!path)
-		return (FAILURE);
-	temp = delete_environment_variable(data->copied_envp, "OLDPWD");
-	if (!temp)
-		return (FAILURE);
-	free_double_array(data->copied_envp);
-	new_envp = add_environment_variable(temp, path);
-	if (!new_envp)
-		return (FAILURE);
-	free(path);
-	free_double_array(temp);
-	data->copied_envp = new_envp;
+	path = find_home_path(data->copied_envp);
+	if (path == NULL)
+	{
+		ft_putendl_fd("cd: HOME not set", STDERR_FILENO);
+		set_status(EXIT_FAILURE);
+		return (SUCCESS);
+	}
+	ft_chdir(path, path);
 	return (SUCCESS);
 }
 
-int	change_working_directory(t_data *data)
+int	change_dir_to_home(t_data *data)
+{
+	char	*home_path;
+	char	*path;
+
+	home_path = find_home_path(data->envp);
+	if (!ft_strncmp(data->commands[1], "~", ft_strlen(data->commands[1])) \
+	|| !ft_strncmp(data->commands[1], "~/", ft_strlen(data->commands[1])))
+		ft_chdir(home_path, data->commands[1]);
+	else
+	{
+		path = ft_strjoin_wslash(home_path, &data->commands[1][2]);
+		if (path == NULL)
+			return (FAILURE);
+		ft_chdir(path, data->commands[1]);
+		free(path);
+	}
+	return (SUCCESS);
+}
+
+int	change_dir_to_root(char **commands)
 {
 	char	*path;
-	char	**temp;
-	char	**new_envp;
 
-	path = get_present_working_directory();
-	if (!path)
+	if (!ft_strncmp(commands[1], "/", ft_strlen(commands[1])))
+		ft_chdir("/", commands[1]);
+	else
+	{
+		path = ft_strjoin_wslash("/", &commands[1][1]);
+		if (path == NULL)
+			return (FAILURE);
+		ft_chdir(path, commands[1]);
+		free(path);
+	}
+	return (SUCCESS);
+}
+
+int	change_dir(char **commands)
+{
+	char	*current_path;
+	char	*path;
+
+	current_path = getcwd(NULL, 0);
+	if (current_path == NULL)
 		return (FAILURE);
-	temp = delete_environment_variable(data->copied_envp, "PWD");
-	if (!temp)
+	path = ft_strjoin_wslash(current_path, commands[1]);
+	if (path == NULL)
 		return (FAILURE);
-	free_double_array(data->copied_envp);
-	new_envp = add_environment_variable(temp, path);
-	if (!new_envp)
-		return (FAILURE);
+	free(current_path);
+	ft_chdir(path, commands[1]);
 	free(path);
-	free_double_array(temp);
-	data->copied_envp = new_envp;
 	return (SUCCESS);
 }

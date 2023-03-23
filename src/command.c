@@ -28,9 +28,9 @@ static int	check_envp_index(t_data *data)
 
 static char	*check_access(t_data *data, char **split)
 {
-	size_t	index;
-	char	*cmd;
-	struct stat finfo;
+	size_t		index;
+	char		*cmd;
+	struct stat	finfo;
 
 	index = 0;
 	while (split[index])

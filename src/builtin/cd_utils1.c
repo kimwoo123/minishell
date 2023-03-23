@@ -12,29 +12,78 @@
 
 #include "minishell.h"
 
-void	ft_chdir(const char *path, const char *cmd)
+static char	*get_old_working_directory(void)
 {
-	char	*error_str;
+	char	*temp;
+	char	*path;
 
-	if (chdir(path) == FAILURE)
-	{
-		ft_putstr_fd("cd: ", STDERR_FILENO);
-		ft_putstr_fd((char *)cmd, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror(error_str);
-	}
+	temp = getcwd(NULL, 0);
+	if (!temp)
+		return (NULL);
+	path = ft_strjoin("OLDPWD=", temp);
+	if (!path)
+		return (NULL);
+	free(temp);
+	temp = NULL;
+	return (path);
 }
 
-char	*find_home_path(char **envp)
+static char	*get_present_working_directory(void)
 {
-	size_t	index;
+	char	*temp;
+	char	*path;
 
-	if (!envp)
+	temp = getcwd(NULL, 0);
+	if (!temp)
 		return (NULL);
-	index = 0;
-	while (envp[index] && ft_strncmp(envp[index], "HOME=", ft_strlen("HOME=")))
-		index++;
-	if (!envp[index] || ft_strncmp(envp[index], "HOME=", ft_strlen("HOME=")))
+	path = ft_strjoin("PWD=", temp);
+	if (!path)
 		return (NULL);
-	return (&(envp)[index][5]);
+	free(temp);
+	temp = NULL;
+	return (path);
+}
+
+int	backup_working_directory(t_data *data)
+{
+	char	*path;
+	char	**temp;
+	char	**new_envp;
+
+	path = get_old_working_directory();
+	if (!path)
+		return (FAILURE);
+	temp = delete_environment_variable(data->copied_envp, "OLDPWD");
+	if (!temp)
+		return (FAILURE);
+	free_double_array(data->copied_envp);
+	new_envp = add_environment_variable(temp, path);
+	if (!new_envp)
+		return (FAILURE);
+	free(path);
+	free_double_array(temp);
+	data->copied_envp = new_envp;
+	return (SUCCESS);
+}
+
+int	change_working_directory(t_data *data)
+{
+	char	*path;
+	char	**temp;
+	char	**new_envp;
+
+	path = get_present_working_directory();
+	if (!path)
+		return (FAILURE);
+	temp = delete_environment_variable(data->copied_envp, "PWD");
+	if (!temp)
+		return (FAILURE);
+	free_double_array(data->copied_envp);
+	new_envp = add_environment_variable(temp, path);
+	if (!new_envp)
+		return (FAILURE);
+	free(path);
+	free_double_array(temp);
+	data->copied_envp = new_envp;
+	return (SUCCESS);
 }

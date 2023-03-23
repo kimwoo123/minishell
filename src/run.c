@@ -18,7 +18,7 @@ static int	backup_stdio(t_data *data)
 	if (data->dup_stdin == FAILURE)
 		return (FAILURE);
 	data->dup_stdout = dup(STDOUT_FILENO);
-	if (data->dup_stdout== FAILURE)
+	if (data->dup_stdout == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }
