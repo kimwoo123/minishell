@@ -30,7 +30,7 @@ static int	input_redir(t_data *data)
 	if (dup2(fd, STDIN_FILENO) == FAILURE)
 		return (FAILURE);
 	if (close(fd) == FAILURE)
-		return (FAILURE);;
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -65,7 +65,7 @@ static int	output_redir(char **argv)
 	if (dup2(fd, STDOUT_FILENO) == FAILURE)
 		return (FAILURE);
 	if (close(fd) == FAILURE)
-		return (FAILURE);;
+		return (FAILURE);
 	return (SUCCESS);
 }
 

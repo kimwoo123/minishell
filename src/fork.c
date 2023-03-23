@@ -16,11 +16,13 @@ static int	child_redir_exec(t_data *data)
 {
 	if (data->last_cmd == FALSE)
 	{
-		if (data->redir_out == FALSE)
-			if (dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO) == FAILURE)
-				return (FAILURE);
 		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
 			return (FAILURE);
+		if (data->redir_out == FALSE)
+		{
+			if (dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO) == FAILURE)
+				return (FAILURE);
+		}
 		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
 			return (FAILURE);
 	}
@@ -36,8 +38,10 @@ static int	parent_redir_wait(t_data *data)
 	if (data->last_cmd == FALSE)
 	{
 		if (data->redir_in == FALSE)
+		{
 			if (dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO) == FAILURE)
 				return (FAILURE);
+		}
 		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
 			return (FAILURE);
 		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
@@ -62,41 +66,9 @@ void	do_fork(t_data *data)
 	}
 	else
 	{
+		if (data->last_cmd == TRUE)
+			data->pid = pid;
 		if (parent_redir_wait(data) == FAILURE)
 			exit_with_str("parent redir error in fork", EXIT_FAILURE);
 	}
 }
-
-// if (close(data->dup_stdin) == FAILURE)
-// 	return (FAILURE);
-// if (dup2(data->dup_stdout, STDOUT_FILENO) == FAILURE)
-// 	return (FAILURE);
-
-// if (dup2(data->dup_stdout, data->pipe_fd[STDIN_FILENO]) == FAILURE)
-// 	return (FAILURE);
-// if (close(data->dup_stdout) == FAILURE)
-// 	return (FAILURE);
-
-// if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
-// 	return (FAILURE);
-// if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
-// 	return (FAILURE);
-
-// data->dup_stdin = dup(STDIN_FILENO); // STDIN backup
-// if (data->dup_stdin == FAILURE)
-// 	return (FAILURE);
-
-// data->dup_stdout = dup(STDOUT_FILENO); // STDOUT backup
-// if (data->dup_stdout == FAILURE)
-// 	return (FAILURE);
-
-// else
-// {
-// 	data->dup_stdout = dup(STDOUT_FILENO); // STDOUT backup
-// 	if (data->dup_stdout == FAILURE)
-// 		return (FAILURE);
-// }
-// if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
-// 	return (FAILURE);
-// if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
-// 	return (FAILURE);
