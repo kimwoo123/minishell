@@ -6,13 +6,18 @@
 #    By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/01 17:15:30 by chajung           #+#    #+#              #
-#    Updated: 2023/03/20 15:45:51 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/03/23 18:38:40 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .DEFAULT_GOAL := all
 
+ifeq ($(MAKECMDGOALS), bonus)	
+include inc/bns_mkfile
+else
 include inc/var_mkfile
+endif
+
 include inc/flag_mkfile
 
 ifeq ($(MAKECMDGOALS), debug)
