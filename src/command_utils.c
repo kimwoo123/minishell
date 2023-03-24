@@ -43,37 +43,7 @@ int	is_builtin(char *str)
 	return (FALSE);
 }
 
-#include <dirent.h>
-#include "minishell.h"
-
-// if count == 0, do not convert wild card.
-// use count like flag
-int	count_wild_cards(size_t *wc_flag)
-{
-	// int				count;
-	DIR				*dir;
-	struct dirent	*entry;
-
- 	dir = opendir(".");
-	if (dir == NULL)
-		return (FAILURE);
-	// count = 0;
-	while (1)
-	{
-		entry = readdir(dir);
-		if (entry == NULL)
-			break ;
-		if (is_equal_to(entry->d_name, ".") == FALSE \
-		&& is_equal_to(entry->d_name, "..") == FALSE)
-			(*wc_flag)++;
-			// count++;
-	}
-	if (closedir(dir) == FAILURE)
-		return (FAILURE);
-	return (SUCCESS);
-}
-
-static size_t	get_cmd_size(t_tree *tree, size_t *wc_flag)
+static size_t	get_cmd_size(t_tree *tree)
 {
 	size_t	size;
 	t_tree	*temp;
@@ -83,41 +53,10 @@ static size_t	get_cmd_size(t_tree *tree, size_t *wc_flag)
 	while (temp != NULL)
 	{
 		if (temp->left != NULL)
-		{
-			if (is_equal_to(temp->left->content, "*") == TRUE)
-				count_wild_cards(wc_flag);
-			size++;
-		}
+			++size;
 		temp = temp->right;
 	}
 	return (size);
-}
-
-int	copy_tester(char **result, size_t *index)
-{
-	DIR				*dir;
-	struct dirent	*entry;
-
- 	dir = opendir(".");
-	if (dir == NULL)
-		return (FAILURE);
-	while (1)
-	{
-		entry = readdir(dir);
-		if (entry == NULL)
-			break ;
-		if (is_equal_to(entry->d_name, ".") == FALSE \
-		&& is_equal_to(entry->d_name, "..") == FALSE)
-		{
-			result[*index] = ft_strdup(entry->d_name);
-			if (result[*index] == NULL)
-				return (FAILURE);
-			(*index)++;
-		}
-	}
-	if (closedir(dir) == FAILURE)
-		return (FAILURE);
-	return (SUCCESS);
 }
 
 static char	**join_command(t_tree *tree)
@@ -127,13 +66,8 @@ static char	**join_command(t_tree *tree)
 	t_tree	*temp;
 	char	**result;
 
-	size_t	wc_flag;
-	size_t	new_size;
-
-	wc_flag = 0;
-	size = get_cmd_size(tree, &wc_flag);
-	new_size = size + wc_flag;
-	result = (char **)malloc(sizeof(char *) * (new_size + 1));
+	size = get_cmd_size(tree);
+	result = (char **)malloc(sizeof(char *) * (size + 1));
 	if (result == NULL)
 		return (NULL);
 	result[size] = NULL;
