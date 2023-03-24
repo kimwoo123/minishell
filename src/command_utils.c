@@ -72,12 +72,16 @@ static char	**join_command(t_tree *tree)
 		return (NULL);
 	result[size] = NULL;
 	index = 0;
-	result[index++] = ft_strdup(tree->left->content);
-	temp = tree->right;
+	temp = tree;
 	while (temp != NULL)
 	{
 		if (temp->left != NULL)
-			result[index++] = ft_strdup(temp->left->content);
+		{
+			result[index] = ft_strdup(temp->left->content);
+			if (result[index] == NULL)
+				return (NULL);
+			index++;
+		}
 		temp = temp->right;
 	}
 	return (result);
@@ -86,9 +90,14 @@ static char	**join_command(t_tree *tree)
 int	do_command(t_data *data, t_tree *tree)
 {
 	data->commands = join_command(tree);
+	if (data->commands == NULL)
+		exit_with_str("malloc error in do command", EXIT_FAILURE);
 	if (data->has_forked == FALSE \
 	&& is_builtin(data->commands[0]) == TRUE)
+	{
+		data->pid = -1;
 		execve_builtin(data);
+	}
 	else
 		do_fork(data);
 	return (SUCCESS);
