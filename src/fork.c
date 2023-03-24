@@ -28,6 +28,8 @@ static int	child_redir_exec(t_data *data)
 	}
 	if (data->no_cmd == TRUE)
 		exit(EXIT_SUCCESS);
+	else if (data->redir_stat == TRUE)
+		exit(EXIT_FAILURE);
 	else if (is_builtin(data->commands[0]) == TRUE)
 		execve_builtin(data);
 	else
