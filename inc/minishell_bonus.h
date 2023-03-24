@@ -13,6 +13,7 @@
 #ifndef MINISHELL_BONUS_H
 # define MINISHELL_BONUS_H
 
+# include <dirent.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -126,5 +127,9 @@ char	**copy_double_array(char **origin_array);
 /* utils1 */
 void	exit_with_str(const char *str, int exit_code);
 void	set_status(int stat);
+
+/* wild card */
+int		count_wild_cards(size_t *wc_flag);
+int		make_commands_wwildcards(t_tree *tree, char **result, size_t wc_flag);
 
 #endif
