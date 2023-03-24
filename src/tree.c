@@ -35,10 +35,10 @@ static void	do_pipe(t_data *data, t_tree *tree)
 	// 		return ;
 	// }
 	
-	if (data->no_cmd == TRUE)
-	{
-		printf("TEST\n");
-	}
+	// if (data->no_cmd == TRUE)
+	// {
+	// 	printf("TEST\n");
+	// }
 
 	data->redir_stat = 0;
 	data->redir_in = FALSE;
@@ -68,17 +68,8 @@ static void	execve_command_line(t_data *data, t_tree *tree)
 	// && (tree->type == PARENT_CMD))
 	else if (tree->type == PARENT_CMD)
 	{
-		// printf("-----------------\n");
-		// printf("%d\n", data->count_cmd);
-		// printf("addr: %p\n", tree->left);
-		// printf("cont: %s\n", tree->left->content);
-		// printf("-----------------\n");
 		if (tree->left == NULL)
-		{
 			data->no_cmd = TRUE;
-			// printf("apple\n");
-		}
-		//data->count_cmd++;
 		do_command(data, tree);
 		if (data->no_cmd == FALSE)
 			free_double_array(data->commands);

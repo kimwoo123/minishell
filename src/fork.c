@@ -26,22 +26,12 @@ static int	child_redir_exec(t_data *data)
 		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
 			return (FAILURE);
 	}
-	// dprintf(2, "flag: %d\n", data->no_cmd);
 	if (data->no_cmd == TRUE)
-	{
-		// dprintf(2, "a\n");
-		exit(0);
-	}
+		exit(EXIT_SUCCESS);
 	else if (is_builtin(data->commands[0]) == TRUE)
-	{
-		// dprintf(2, "b\n");
 		execve_builtin(data);
-	}
 	else
-	{
-		// dprintf(2, "c\n");
 		execve_command(data);
-	}
 	return (SUCCESS);
 }
 
@@ -49,7 +39,6 @@ static int	parent_redir_wait(t_data *data)
 {
 	if (data->last_cmd == FALSE)
 	{
-		// if (data->redir_in == FALSE)
 		if (dup2(data->pipe_fd[STDIN_FILENO], STDIN_FILENO) == FAILURE)
 			return (FAILURE);
 		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
@@ -86,12 +75,8 @@ void	do_fork(t_data *data)
 	}
 	else
 	{
-		// data->no_cmd = FALSE;
 		if (data->last_cmd == TRUE)
-		{
-			// printf("test\n");
 			data->pid = pid;
-		}
 		if (parent_redir_wait(data) == FAILURE)
 			exit_with_str("parent redir error in fork", EXIT_FAILURE);
 	}
