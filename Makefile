@@ -23,19 +23,19 @@ include inc/flag_mkfile
 ifeq ($(MAKECMDGOALS), debug)
 $(NAME): $(ALL_OBJS) $(LIB)
 	@$(CC) -g $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
-	@echo "minishell make done"
 else
 $(NAME): $(ALL_OBJS) $(LIB)
 	@$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
-	@echo "minishell make done"
 endif
 
 $(LIB):
 	@$(MAKE) -C $(LIB_DIR)
 
 all: $(OBJ_DIR) $(NAME)
+	@echo "minishell make done"
 
 bonus: $(OBJ_DIR) $(NAME)
+	@echo "minishell make bonus done"
 
 debug: $(OBJ_DIR) $(NAME)
 
