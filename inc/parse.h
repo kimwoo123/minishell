@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 18:00:57 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/24 08:43:39 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PARSE_BONUS_H
 
 # include <stdlib.h>
-# include "structure_bonus.h"
+# include "structure.h"
 
 /* lexer */
 void	seperate_meta(const char *line, size_t size, t_list **list, t_data *d);
