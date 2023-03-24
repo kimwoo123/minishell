@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 void	execve_builtin(t_data *data)
 {
@@ -43,7 +43,7 @@ int	is_builtin(char *str)
 	return (FALSE);
 }
 
-static size_t	get_cmd_size(t_tree *tree)
+static size_t	get_cmd_size(t_tree *tree, size_t *wc_flag)
 {
 	size_t	size;
 	t_tree	*temp;
@@ -53,37 +53,33 @@ static size_t	get_cmd_size(t_tree *tree)
 	while (temp != NULL)
 	{
 		if (temp->left != NULL)
-			++size;
+		{
+			if (is_equal_to(temp->left->content, "*") == TRUE)
+				count_wild_cards(wc_flag);
+			size++;
+		}
 		temp = temp->right;
 	}
 	return (size);
 }
 
+
 static char	**join_command(t_tree *tree)
 {
-	size_t	size;
-	size_t	index;
-	t_tree	*temp;
 	char	**result;
+	size_t	size;
+	size_t	new_size;
+	size_t	wc_flag;
 
-	size = get_cmd_size(tree);
-	result = (char **)malloc(sizeof(char *) * (size + 1));
+	wc_flag = 0;
+	size = get_cmd_size(tree, &wc_flag);
+	new_size = size + wc_flag;
+	result = (char **)malloc(sizeof(char *) * (new_size + 1));
 	if (result == NULL)
 		return (NULL);
 	result[size] = NULL;
-	index = 0;
-	temp = tree;
-	while (temp != NULL)
-	{
-		if (temp->left != NULL)
-		{
-			result[index] = ft_strdup(temp->left->content);
-			if (result[index] == NULL)
-				return (NULL);
-			index++;
-		}
-		temp = temp->right;
-	}
+	if (make_commands(tree, result, wc_flag) == FAILURE)
+		return (NULL);
 	return (result);
 }
 
