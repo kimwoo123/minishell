@@ -49,8 +49,12 @@ static void	waiting(t_data *data)
 		return ;
 	}
 	if (data->count_cmd > 0)
+	{
+		// printf("2\n");
 		if (waitpid(data->pid, &g_status, 0) == FAILURE)
 			exit_with_str("A wait error in waiting", EXIT_FAILURE);
+		// printf("3\n");
+	}
 	count = 1;
 	while (count < data->count_cmd)
 	{

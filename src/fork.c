@@ -14,8 +14,6 @@
 
 static int	child_redir_exec(t_data *data)
 {
-	// if (data->has_forked == FALSE && data->no_cmd == TRUE)
-	// 	exit(0);
 	if (data->last_cmd == FALSE)
 	{
 		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
@@ -28,12 +26,22 @@ static int	child_redir_exec(t_data *data)
 		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
 			return (FAILURE);
 	}
+	// dprintf(2, "flag: %d\n", data->no_cmd);
 	if (data->no_cmd == TRUE)
+	{
+		// dprintf(2, "a\n");
 		exit(0);
-	if (is_builtin(data->commands[0]) == TRUE)
+	}
+	else if (is_builtin(data->commands[0]) == TRUE)
+	{
+		// dprintf(2, "b\n");
 		execve_builtin(data);
+	}
 	else
+	{
+		// dprintf(2, "c\n");
 		execve_command(data);
+	}
 	return (SUCCESS);
 }
 
@@ -48,16 +56,16 @@ static int	parent_redir_wait(t_data *data)
 			return (FAILURE);
 		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
 			return (FAILURE);
-		// if (data->redir_out == TRUE)
-		// {
-		// 	if (dup2(data->dup_stdout, STDOUT_FILENO) == FAILURE)
-		// 		return (FAILURE);
-		// 	if (close(data->dup_stdout) == FAILURE)
-		// 		return (FAILURE);
-		// 	data->dup_stdout = dup(STDOUT_FILENO);
-		// 	if (data->dup_stdout == FAILURE)
-		// 		return (FAILURE);
-		// }
+		if (data->redir_out == TRUE)
+		{
+			if (dup2(data->dup_stdout, STDOUT_FILENO) == FAILURE)
+				return (FAILURE);
+			if (close(data->dup_stdout) == FAILURE)
+				return (FAILURE);
+			data->dup_stdout = dup(STDOUT_FILENO);
+			if (data->dup_stdout == FAILURE)
+				return (FAILURE);
+		}
 	}
 	return (SUCCESS);
 }
@@ -78,6 +86,7 @@ void	do_fork(t_data *data)
 	}
 	else
 	{
+		// data->no_cmd = FALSE;
 		if (data->last_cmd == TRUE)
 		{
 			// printf("test\n");
