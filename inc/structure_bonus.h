@@ -40,7 +40,7 @@ typedef struct s_data
 	char	**envp;
 	char	**copied_envp;
 	char	**commands;
-	int		redir_in;
+	pid_t	pid;
 	int		redir_out;
 	int		count_pipe;
 	int		redir_stat;

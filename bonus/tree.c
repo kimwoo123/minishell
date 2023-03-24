@@ -10,12 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "minishell.h"
 
 static void	do_pipe(t_data *data, t_tree *tree)
 {
-	data->redir_in = 0;
-	data->redir_out = 0;
+	data->redir_out = FALSE;
 	data->count_pipe++;
 	if (tree->right == NULL)
 		data->last_cmd = TRUE;

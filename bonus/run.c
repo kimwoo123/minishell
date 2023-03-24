@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "minishell.h"
 
 static int	backup_stdio(t_data *data)
 {
@@ -41,13 +41,17 @@ static void	waiting(t_data *data)
 	extern int	g_status;
 	int			count;
 
+	if (data->pid == -1)
+		return ;
+	if (waitpid(data->pid, &g_status, 0) == FAILURE)
+		exit_with_str("wait error in waiting", EXIT_FAILURE);
 	count = 1;
 	while (count < data->count_pipe)
 	{
-		wait(0);
+		if (wait(NULL) == FAILURE)
+			exit_with_str("wait error in waiting", EXIT_FAILURE);
 		count++;
 	}
-	waitpid(-1, &g_status, 0);
 }
 
 void	run_minishell(t_data *data, char *command_line)
@@ -57,8 +61,7 @@ void	run_minishell(t_data *data, char *command_line)
 
 	data->redir_stat = 0;
 	data->count_pipe = 0;
-	data->redir_in = 0;
-	data->redir_out = 0;
+	data->pid = 0;
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	if (backup_stdio(data) == FAILURE)
@@ -76,5 +79,5 @@ void	run_minishell(t_data *data, char *command_line)
 		free_tree(tree);
 	}
 	if (restore_stdio(data) == FAILURE)
-		exit_with_str("backup error in run minishell", EXIT_FAILURE);
+		exit_with_str("restore error in run minishell", EXIT_FAILURE);
 }

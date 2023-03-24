@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
+#include "minishell.h"
 
 static int	input_redir(t_data *data)
 {
@@ -30,7 +30,7 @@ static int	input_redir(t_data *data)
 	if (dup2(fd, STDIN_FILENO) == FAILURE)
 		return (FAILURE);
 	if (close(fd) == FAILURE)
-		return (FAILURE);;
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -49,7 +49,7 @@ static int	input_redir_hd(t_tree *tree)
 	if (unlink("heredoc_temp") == FAILURE)
 		return (FAILURE);
 	if (close(fd) == FAILURE)
-		return (FAILURE);;
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -65,7 +65,7 @@ static int	output_redir(char **argv)
 	if (dup2(fd, STDOUT_FILENO) == FAILURE)
 		return (FAILURE);
 	if (close(fd) == FAILURE)
-		return (FAILURE);;
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -81,7 +81,7 @@ static int	output_append_redir(char **argv)
 	if (dup2(fd, STDOUT_FILENO) == FAILURE)
 		return (FAILURE);
 	if (close(fd) == FAILURE)
-		return (FAILURE);;
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -93,15 +93,9 @@ void	do_redirection(t_data *data, t_tree *tree)
 	if (split_redirection(data, tree) == FAILURE)
 		exit_with_str("malloc error in do redirection", EXIT_FAILURE);
 	if (is_equal_to(data->commands[0], "<") == TRUE)
-	{
 		result = input_redir(data);
-		data->redir_in = TRUE;
-	}
 	else if (is_equal_to(data->commands[0], "<<") == TRUE)
-	{
 		result = input_redir_hd(tree);
-		data->redir_in = TRUE;
-	}
 	else if (is_equal_to(data->commands[0], ">") == TRUE)
 	{
 		result = output_redir(data->commands);
