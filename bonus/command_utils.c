@@ -63,7 +63,6 @@ static size_t	get_cmd_size(t_tree *tree, size_t *wc_flag)
 	return (size);
 }
 
-
 static char	**join_command(t_tree *tree)
 {
 	char	**result;
@@ -78,7 +77,7 @@ static char	**join_command(t_tree *tree)
 	if (result == NULL)
 		return (NULL);
 	result[size] = NULL;
-	if (make_commands(tree, result, wc_flag) == FAILURE)
+	if (make_commands_wc(tree, result, wc_flag) == FAILURE)
 		return (NULL);
 	return (result);
 }

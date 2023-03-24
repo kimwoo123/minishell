@@ -130,6 +130,6 @@ void	set_status(int stat);
 
 /* wild card */
 int		count_wild_cards(size_t *wc_flag);
-int		make_commands_wwildcards(t_tree *tree, char **result, size_t wc_flag);
+int		make_commands_wc(t_tree *tree, char **result, size_t wc_flag);
 
 #endif
