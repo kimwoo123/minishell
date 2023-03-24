@@ -14,8 +14,30 @@
 
 static void	do_pipe(t_data *data, t_tree *tree)
 {
+	// if (data->has_forked == TRUE)
+	// {
+	// 	if (dup2(data->dup_stdin, STDIN_FILENO) == FAILURE)
+	// 		return ;
+	// 	if (close(data->dup_stdin) == FAILURE)
+	// 		return ;
+	// 	data->dup_stdin = dup(STDIN_FILENO);
+	// 	if (data->dup_stdin == FAILURE)
+	// 		return ;
+	// }
+	// if (data->redir_out == TRUE)
+	// {
+	// 	if (dup2(data->dup_stdout, STDOUT_FILENO) == FAILURE)
+	// 		return ;
+	// 	if (close(data->dup_stdout) == FAILURE)
+	// 		return ;
+	// 	data->dup_stdout = dup(STDOUT_FILENO);
+	// 	if (data->dup_stdout == FAILURE)
+	// 		return ;
+	// }
+	
+	data->redir_stat = 0;
+	data->redir_in = FALSE;
 	data->redir_out = FALSE;
-	data->count_pipe++;
 	if (tree->right == NULL)
 		data->last_cmd = TRUE;
 	else if (tree->right != NULL)
@@ -38,6 +60,7 @@ static void	execve_command_line(t_data *data, t_tree *tree)
 	else if (data->redir_stat == 0 \
 	&& (tree->type == PARENT_CMD && tree->left != NULL))
 	{
+		data->count_cmd++;
 		do_command(data, tree);
 		free_double_array(data->commands);
 	}
@@ -52,10 +75,8 @@ void	search_tree_for_hd(t_data *data, t_tree *head)
 		if (split_redirection(data, head) == FAILURE)
 			return ;
 		if (is_equal_to(data->commands[0], "<<") == TRUE)
-		{
 			if (preprocess_heredoc(data, head) == FAILURE)
 				exit_with_str("error in preprocess heredoc", EXIT_FAILURE);
-		}
 		free_double_array(data->commands);
 	}
 	if (head->left != NULL)

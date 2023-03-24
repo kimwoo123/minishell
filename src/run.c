@@ -41,15 +41,16 @@ static void	waiting(t_data *data)
 	extern int	g_status;
 	int			count;
 
-	if (data->pid == -1)
+	if (data->count_cmd == 0 || data->pid == -1)
 		return ;
-	if (waitpid(data->pid, &g_status, 0) == FAILURE)
-		exit_with_str("asdfasdf wait error in waiting", EXIT_FAILURE);
+	if (data->count_cmd > 0)
+		if (waitpid(data->pid, &g_status, 0) == FAILURE)
+			exit_with_str("A wait error in waiting", EXIT_FAILURE);
 	count = 1;
-	while (count < data->count_pipe)
+	while (count < data->count_cmd)
 	{
 		if (wait(NULL) == FAILURE)
-			exit_with_str("wait error in waiting", EXIT_FAILURE);
+			exit_with_str("B wait error in waiting", EXIT_FAILURE);
 		count++;
 	}
 }
@@ -59,24 +60,15 @@ void	run_minishell(t_data *data, char *command_line)
 	t_list	*list;
 	t_tree	*tree;
 
-	data->redir_stat = 0;
-	data->count_pipe = 0;
+	data->count_cmd = 0;
 	data->pid = 0;
+	data->redir_in = FALSE;
+	data->redir_out = FALSE;
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	if (backup_stdio(data) == FAILURE)
 		exit_with_str("backup error in run minishell", EXIT_FAILURE);
 	list = scan_command(command_line, data);
-
-	// t_list	*temp;
-	// temp = list;
-	// while (temp != NULL)
-	// {
-	// 	printf("%s\n", temp->content);
-	// 	temp = temp->next;
-	// }
-	// return ;
-
 	if (list == NULL)
 		rl_on_new_line();
 	else

@@ -41,8 +41,9 @@ typedef struct s_data
 	char	**copied_envp;
 	char	**commands;
 	pid_t	pid;
+	int		redir_in;
 	int		redir_out;
-	int		count_pipe;
+	int		count_cmd;
 	int		redir_stat;
 	int		hd_flag;
 	int		has_forked;
