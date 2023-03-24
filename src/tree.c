@@ -14,32 +14,6 @@
 
 static void	do_pipe(t_data *data, t_tree *tree)
 {
-	// if (data->has_forked == TRUE)
-	// {
-	// 	if (dup2(data->dup_stdin, STDIN_FILENO) == FAILURE)
-	// 		return ;
-	// 	if (close(data->dup_stdin) == FAILURE)
-	// 		return ;
-	// 	data->dup_stdin = dup(STDIN_FILENO);
-	// 	if (data->dup_stdin == FAILURE)
-	// 		return ;
-	// }
-	// if (data->redir_out == TRUE)
-	// {
-	// 	if (dup2(data->dup_stdout, STDOUT_FILENO) == FAILURE)
-	// 		return ;
-	// 	if (close(data->dup_stdout) == FAILURE)
-	// 		return ;
-	// 	data->dup_stdout = dup(STDOUT_FILENO);
-	// 	if (data->dup_stdout == FAILURE)
-	// 		return ;
-	// }
-	
-	// if (data->no_cmd == TRUE)
-	// {
-	// 	printf("TEST\n");
-	// }
-
 	data->redir_stat = 0;
 	data->redir_in = FALSE;
 	data->redir_out = FALSE;
@@ -64,8 +38,6 @@ static void	execve_command_line(t_data *data, t_tree *tree)
 		do_redirection(data, tree);
 		free_double_array(data->commands);
 	}
-	// else if (data->redir_stat == 0 \
-	// && (tree->type == PARENT_CMD))
 	else if (tree->type == PARENT_CMD)
 	{
 		if (tree->left == NULL)
