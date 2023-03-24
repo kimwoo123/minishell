@@ -137,30 +137,15 @@ static char	**join_command(t_tree *tree)
 	if (result == NULL)
 		return (NULL);
 	result[size] = NULL;
-
 	index = 0;
 	temp = tree;
 	while (temp != NULL)
 	{
 		if (temp->left != NULL)
 		{
-			if (is_equal_to(temp->left->content, "*") == TRUE)
-			{
-				if (wc_flag != 0)
-					copy_tester(result, &index);
-				else
-				{
-					result[index] = ft_strdup(temp->left->content);
-					if (result[index] == NULL)
-						return (NULL);
-				}
-			}
-			else
-			{
-				result[index] = ft_strdup(temp->left->content);
-				if (result[index] == NULL)
-					return (NULL);
-			}
+			result[index] = ft_strdup(temp->left->content);
+			if (result[index] == NULL)
+				return (NULL);
 			index++;
 		}
 		temp = temp->right;
@@ -168,49 +153,11 @@ static char	**join_command(t_tree *tree)
 	return (result);
 }
 
-// static size_t	get_cmd_size(t_tree *tree)
-// {
-// 	size_t	size;
-// 	t_tree	*temp;
-
-// 	size = 1;
-// 	temp = tree->right;
-// 	while (temp != NULL)
-// 	{
-// 		if (temp->left != NULL)
-// 			++size;
-// 		temp = temp->right;
-// 	}
-// 	return (size);
-// }
-
-// static char	**join_command(t_tree *tree)
-// {
-// 	size_t	size;
-// 	size_t	index;
-// 	t_tree	*temp;
-// 	char	**result;
-
-// 	size = get_cmd_size(tree);
-// 	result = (char **)malloc(sizeof(char *) * (size + 1));
-// 	if (result == NULL)
-// 		return (NULL);
-// 	result[size] = NULL;
-// 	index = 0;
-// 	result[index++] = ft_strdup(tree->left->content);
-// 	temp = tree->right;
-// 	while (temp != NULL)
-// 	{
-// 		if (temp->left != NULL)
-// 			result[index++] = ft_strdup(temp->left->content);
-// 		temp = temp->right;
-// 	}
-// 	return (result);
-// }
-
 int	do_command(t_data *data, t_tree *tree)
 {
 	data->commands = join_command(tree);
+	if (data->commands == NULL)
+		exit_with_str("malloc error in do command", EXIT_FAILURE);
 	if (data->has_forked == FALSE \
 	&& is_builtin(data->commands[0]) == TRUE)
 	{
