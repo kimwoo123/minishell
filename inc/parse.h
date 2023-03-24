@@ -14,7 +14,7 @@
 # define PARSE_BONUS_H
 
 # include <stdlib.h>
-# include "structure_bonus.h"
+# include "structure.h"
 
 /* lexer */
 void	seperate_meta(const char *line, size_t size, t_list **list, t_data *d);

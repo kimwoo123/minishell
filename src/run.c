@@ -41,8 +41,10 @@ static void	waiting(t_data *data)
 	extern int	g_status;
 	int			count;
 
+	if (data->pid == -1)
+		return ;
 	if (waitpid(data->pid, &g_status, 0) == FAILURE)
-		exit_with_str("wait error in waiting", EXIT_FAILURE);
+		exit_with_str("asdfasdf wait error in waiting", EXIT_FAILURE);
 	count = 1;
 	while (count < data->count_pipe)
 	{
@@ -59,12 +61,22 @@ void	run_minishell(t_data *data, char *command_line)
 
 	data->redir_stat = 0;
 	data->count_pipe = 0;
-	data->pid = -1;
+	data->pid = 0;
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	if (backup_stdio(data) == FAILURE)
 		exit_with_str("backup error in run minishell", EXIT_FAILURE);
 	list = scan_command(command_line, data);
+
+	// t_list	*temp;
+	// temp = list;
+	// while (temp != NULL)
+	// {
+	// 	printf("%s\n", temp->content);
+	// 	temp = temp->next;
+	// }
+	// return ;
+
 	if (list == NULL)
 		rl_on_new_line();
 	else

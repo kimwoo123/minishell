@@ -69,7 +69,8 @@ typedef struct s_tree
 
 enum	e_type
 {
-	WORD = 1,
+	ZERO,
+	WORD,
 	REDIR_TOKEN,
 	REDIRECTION,
 	CMD_TOKEN,
@@ -77,7 +78,8 @@ enum	e_type
 	PIPE_CMD,
 	PARENT_REDIR,
 	PARENT_CMD,
-	PIPE
+	PIPE,
+	GROUP_CMD
 };
 
 enum e_bool
