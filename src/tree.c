@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 15:40:59 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/22 10:31:50 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/24 14:18:57 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	do_pipe(t_data *data, t_tree *tree)
 	data->redir_stat = 0;
 	data->redir_in = FALSE;
 	data->redir_out = FALSE;
+	data->no_cmd = FALSE;
+	data->count_cmd++;
 	if (tree->right == NULL)
 		data->last_cmd = TRUE;
 	else if (tree->right != NULL)
@@ -58,11 +60,14 @@ static void	execve_command_line(t_data *data, t_tree *tree)
 		free_double_array(data->commands);
 	}
 	else if (data->redir_stat == 0 \
-	&& (tree->type == PARENT_CMD && tree->left != NULL))
+	&& (tree->type == PARENT_CMD))
 	{
-		data->count_cmd++;
+		if (tree->left == NULL)
+			data->no_cmd = TRUE;
+		//data->count_cmd++;
 		do_command(data, tree);
-		free_double_array(data->commands);
+		if (data->no_cmd == FALSE)
+			free_double_array(data->commands);
 	}
 }
 

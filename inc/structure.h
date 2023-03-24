@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:38:00 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/24 08:44:43 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/24 14:16:32 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_data
 	char	**copied_envp;
 	char	**commands;
 	pid_t	pid;
+	int		no_cmd;
 	int		redir_in;
 	int		redir_out;
 	int		count_cmd;

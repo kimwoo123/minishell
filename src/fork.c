@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:30:35 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/20 16:30:36 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/24 14:21:14 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	child_redir_exec(t_data *data)
 {
+	// if (data->has_forked == FALSE && data->no_cmd == TRUE)
+	// 	exit(0);
 	if (data->last_cmd == FALSE)
 	{
 		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
@@ -26,6 +28,8 @@ static int	child_redir_exec(t_data *data)
 		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
 			return (FAILURE);
 	}
+	if (data->no_cmd == TRUE)
+		exit(0);
 	if (is_builtin(data->commands[0]) == TRUE)
 		execve_builtin(data);
 	else
@@ -75,7 +79,10 @@ void	do_fork(t_data *data)
 	else
 	{
 		if (data->last_cmd == TRUE)
+		{
+			// printf("test\n");
 			data->pid = pid;
+		}
 		if (parent_redir_wait(data) == FAILURE)
 			exit_with_str("parent redir error in fork", EXIT_FAILURE);
 	}

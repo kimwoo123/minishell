@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:21:20 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/23 09:58:29 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/24 14:20:39 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,16 +89,20 @@ static char	**join_command(t_tree *tree)
 
 int	do_command(t_data *data, t_tree *tree)
 {
-	data->commands = join_command(tree);
-	if (data->commands == NULL)
-		exit_with_str("malloc error in do command", EXIT_FAILURE);
-	if (data->has_forked == FALSE \
-	&& is_builtin(data->commands[0]) == TRUE)
+	if (data->no_cmd == FALSE)
 	{
-		data->pid = -1;
-		execve_builtin(data);
+		data->commands = join_command(tree);
+		if (data->commands[0] == NULL)
+			printf("here\n");
+		if (data->commands == NULL)
+			exit_with_str("malloc error in do command", EXIT_FAILURE);
+		if (data->has_forked == FALSE \
+		&& is_builtin(data->commands[0]) == TRUE)
+		{
+			data->pid = -1;
+			execve_builtin(data);
+		}
 	}
-	else
-		do_fork(data);
+	do_fork(data);
 	return (SUCCESS);
 }

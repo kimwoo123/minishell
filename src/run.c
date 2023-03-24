@@ -41,14 +41,20 @@ static void	waiting(t_data *data)
 	extern int	g_status;
 	int			count;
 
+	// printf("cmd: %d\n", data->count_cmd);
+	
 	if (data->count_cmd == 0 || data->pid == -1)
+	{
+		// printf("1\n");
 		return ;
+	}
 	if (data->count_cmd > 0)
 		if (waitpid(data->pid, &g_status, 0) == FAILURE)
 			exit_with_str("A wait error in waiting", EXIT_FAILURE);
 	count = 1;
 	while (count < data->count_cmd)
 	{
+		// printf("4\n");
 		if (wait(NULL) == FAILURE)
 			exit_with_str("B wait error in waiting", EXIT_FAILURE);
 		count++;
