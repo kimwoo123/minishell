@@ -14,8 +14,10 @@
 
 static void	do_pipe(t_data *data, t_tree *tree)
 {
-	data->redir_stat = 0;
+	data->redir_stat = FALSE;
 	data->redir_out = FALSE;
+	data->no_cmd = FALSE;
+	data->count_cmd++;
 	if (tree->right == NULL)
 		data->last_cmd = TRUE;
 	else if (tree->right != NULL)
@@ -35,12 +37,13 @@ static void	execve_command_line(t_data *data, t_tree *tree)
 		do_redirection(data, tree);
 		free_double_array(data->commands);
 	}
-	else if (data->redir_stat == 0 \
-	&& (tree->type == PARENT_CMD && tree->left != NULL))
+	else if (tree->type == PARENT_CMD)
 	{
-		data->count_cmd++;
+		if (tree->left == NULL)
+			data->no_cmd = TRUE;
 		do_command(data, tree);
-		free_double_array(data->commands);
+		if (data->no_cmd == FALSE)
+			free_double_array(data->commands);
 	}
 }
 

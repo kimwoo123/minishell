@@ -41,6 +41,7 @@ typedef struct s_data
 	char	**copied_envp;
 	char	**commands;
 	pid_t	pid;
+	int		no_cmd;
 	int		redir_out;
 	int		count_cmd;
 	int		redir_stat;

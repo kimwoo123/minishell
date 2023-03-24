@@ -91,7 +91,6 @@ int	do_command(t_data *data, t_tree *tree)
 {
 	if (data->no_cmd == FALSE)
 	{
-		// printf("apple\n");
 		data->commands = join_command(tree);
 		if (data->commands == NULL)
 			exit_with_str("malloc error in do command", EXIT_FAILURE);
@@ -105,9 +104,6 @@ int	do_command(t_data *data, t_tree *tree)
 			do_fork(data);
 	}
 	else
-	{
-		// printf("banana\n");
 		do_fork(data);
-	}
 	return (SUCCESS);
 }
