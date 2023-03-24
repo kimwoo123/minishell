@@ -14,8 +14,7 @@
 
 static void	do_pipe(t_data *data, t_tree *tree)
 {
-	data->redir_stat = 0;
-	data->redir_in = FALSE;
+	data->redir_stat = FALSE;
 	data->redir_out = FALSE;
 	data->no_cmd = FALSE;
 	data->count_cmd++;

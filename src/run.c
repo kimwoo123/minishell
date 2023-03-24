@@ -40,14 +40,12 @@ static void	waiting(t_data *data)
 {
 	extern int	g_status;
 	int			count;
-	
+
 	if (data->count_cmd == 0 || data->pid == -1)
 		return ;
 	if (data->count_cmd > 0)
-	{
 		if (waitpid(data->pid, &g_status, 0) == FAILURE)
 			exit_with_str("A wait error in waiting", EXIT_FAILURE);
-	}
 	count = 1;
 	while (count < data->count_cmd)
 	{
@@ -64,8 +62,6 @@ void	run_minishell(t_data *data, char *command_line)
 
 	data->count_cmd = 0;
 	data->pid = 0;
-	data->redir_in = FALSE;
-	data->redir_out = FALSE;
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	if (backup_stdio(data) == FAILURE)

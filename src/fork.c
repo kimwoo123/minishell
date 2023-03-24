@@ -19,10 +19,8 @@ static int	child_redir_exec(t_data *data)
 		if (close(data->pipe_fd[STDIN_FILENO]) == FAILURE)
 			return (FAILURE);
 		if (data->redir_out == FALSE)
-		{
 			if (dup2(data->pipe_fd[STDOUT_FILENO], STDOUT_FILENO) == FAILURE)
 				return (FAILURE);
-		}
 		if (close(data->pipe_fd[STDOUT_FILENO]) == FAILURE)
 			return (FAILURE);
 	}
