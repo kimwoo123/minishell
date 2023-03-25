@@ -89,8 +89,8 @@ int	do_command(t_data *data, t_tree *tree)
 		data->commands = join_command(tree);
 		if (data->commands == NULL)
 			exit_with_str("malloc error in do command", EXIT_FAILURE);
-		if (data->has_forked == FALSE \
-		&& is_builtin(data->commands[0]) == TRUE)
+		if (data->sub_flag == FALSE && (data->has_forked == FALSE \
+		&& is_builtin(data->commands[0]) == TRUE))
 		{
 			data->pid = -1;
 			execve_builtin(data);

@@ -54,6 +54,7 @@ void	ft_chdir(const char *path, const char *cmd);
 char	*find_home_path(char **envp);
 
 /* export utils0 */
+void	print_not_vaild_identifier(char *str);
 void	sort_double_array(char **array);
 int		check_equal_sign(char *str);
 void	print_with_double_quotation(char *str);

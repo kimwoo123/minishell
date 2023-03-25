@@ -12,12 +12,11 @@
 
 #include "minishell.h"
 
-static void	print_not_vaild_identifier(char *str)
+static int	check_identifier(char c)
 {
-	set_status(EXIT_FAILURE);
-	ft_putstr_fd("export: '", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+	if (c == ' ' || c == '=' || ft_isdigit(c))
+		return (FALSE);
+	return (TRUE);
 }
 
 static int	change_environment_variable(char **array, char *str)
@@ -51,8 +50,7 @@ int	copy_additional_args(t_data *data, char **array, size_t *array_index)
 	argument_index = 0;
 	while (data->commands[++argument_index])
 	{
-		if (data->commands[argument_index][0] == '=' \
-		|| ft_isdigit(data->commands[argument_index][0]))
+		if (check_identifier(data->commands[argument_index][0]) == FALSE)
 			print_not_vaild_identifier(data->commands[argument_index]);
 		else if (is_there_envp(array, data->commands[argument_index]) == FALSE)
 		{

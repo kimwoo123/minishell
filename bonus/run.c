@@ -16,6 +16,7 @@ static int	init_backup(t_data *data)
 {
 	data->count_cmd = 0;
 	data->pid = 0;
+	data->sub_flag = FALSE;
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	data->dup_stdin = dup(STDIN_FILENO);
@@ -59,7 +60,7 @@ static void	waiting(t_data *data)
 	}
 }
 
-static void	make_tree_tester(t_data *data, t_list **addr)
+static void	make_tree_bonus(t_data *data, t_list **addr)
 {
 	extern int	g_status;
 	t_tree		*tree;
@@ -75,7 +76,7 @@ static void	make_tree_tester(t_data *data, t_list **addr)
 			flag = FALSE;
 		(*addr) = (*addr)->next;
 	}
-	tree = make_tree(addr);
+	tree = make_tree(data, addr);
 	if (flag == TRUE)
 	{
 		search_tree_for_hd(data, tree);
@@ -99,7 +100,7 @@ void	run_minishell(t_data *data, char *command_line)
 	{
 		addr = list;
 		while (addr != NULL)
-			make_tree_tester(data, &addr);
+			make_tree_bonus(data, &addr);
 		free_list(&list);
 	}
 }
