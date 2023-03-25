@@ -58,11 +58,13 @@ t_tree	*create_root(void)
 	return (root);
 }
 
-static void	recursive_make_tree(t_tree **head, t_list *node)
+void	recursive_make_tree(t_tree **head, t_list *node)
 {
 	if (node == NULL)
 		return ;
-	else if (node->type == PIPE)
+	if (node->type == OPERATOR)
+		return ;
+	if (node->type == PIPE)
 	{
 		add_pipe(head);
 		recursive_make_tree(head, node->next);
@@ -77,6 +79,11 @@ static void	recursive_make_tree(t_tree **head, t_list *node)
 		add_commands(head, node);
 		recursive_make_tree(head, node->next);
 	}
+	// else if (node->type == OPERATOR)
+	// {
+	// 	// add_commands(head, node);
+	// 	recursive_make_tree(head, node->next);
+	// }
 }
 
 t_tree	*make_tree(t_list **node)

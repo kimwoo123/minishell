@@ -13,6 +13,8 @@
 #ifndef STRUCTURE_BONUS_H
 # define STRUCTURE_BONUS_H
 
+# define AND				"&&"
+# define OR					"||"
 # define DELIMITER			"<>|"
 # define DOLLAR				'$'
 # define SIGINT				2
