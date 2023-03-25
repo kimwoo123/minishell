@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 18:22:31 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 10:40:11 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ int	check_type(const char *str)
 {
 	if (!ft_strncmp(str, "||", 2) || !ft_strncmp(str, "&&", 2))
 		return (OPERATOR);
+	else if (*str == '(')
+		return (SUBS_OPEN);
+	else if (*str == ')')
+		return (SUBS_CLOSE);
 	else if (*str == '|')
 		return (PIPE);
 	else if (*str == '<' || *str == '>')
@@ -85,9 +89,8 @@ void	get_token(const char *line, size_t size, t_list **list, t_data *data)
 	char	*content;
 	int		type;
 
-	printf("%s\n", ft_strndup(line, size));
+	type = check_type(line);
 	expansion = expand_str(line, size, data);
-	type = check_type(expansion);
 	content = remove_quote(expansion);
 	if (content == NULL)
 		exit_with_str("malloc error in get_token", EXIT_FAILURE);

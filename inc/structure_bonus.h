@@ -6,16 +6,14 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:38:00 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 18:21:36 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 10:33:58 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_BONUS_H
 # define STRUCTURE_BONUS_H
 
-# define AND				"&&"
-# define OR					"||"
-# define DELIMITER			"<>|"
+# define DELIMITER			"<>|()"
 # define DOLLAR				'$'
 # define SIGINT				2
 # define SIGQUIT			3
@@ -82,6 +80,9 @@ enum	e_type
 	PARENT_CMD,
 	OPERATOR,
 	OPERATOR_CMD,
+	SUBS_OPEN,
+	SUBS_CLOSE,
+	SUBS_CMD,
 	PIPE,
 	GROUP_CMD
 };
