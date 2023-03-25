@@ -59,7 +59,7 @@ static void	waiting(t_data *data)
 	}
 }
 
-static void	make_tree_tester(t_data *data, t_list **addr)
+static void	make_tree_bonus(t_data *data, t_list **addr)
 {
 	extern int	g_status;
 	t_tree		*tree;
@@ -99,7 +99,7 @@ void	run_minishell(t_data *data, char *command_line)
 	{
 		addr = list;
 		while (addr != NULL)
-			make_tree_tester(data, &addr);
+			make_tree_bonus(data, &addr);
 		free_list(&list);
 	}
 }
