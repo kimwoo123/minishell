@@ -13,7 +13,9 @@
 #ifndef STRUCTURE_BONUS_H
 # define STRUCTURE_BONUS_H
 
-# define DELIMITER			"<>|()"
+# define AND				"&&"
+# define OR					"||"
+# define DELIMITER			"<>|()&"
 # define DOLLAR				'$'
 # define SIGINT				2
 # define SIGQUIT			3
