@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:42:50 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 18:13:40 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 10:50:52 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ size_t	trim_line(const char *line)
 	while (line[index] && is_space(line[index]))
 		index++;
 	return (index);
+}
+
+int	is_subshell(char c)
+{
+	return (c == '(' || c == ')');
 }
 
 int	is_delimiter(char c)
