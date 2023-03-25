@@ -16,6 +16,7 @@ static int	init_backup(t_data *data)
 {
 	data->count_cmd = 0;
 	data->pid = 0;
+	data->sub_flag = FALSE;
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	data->dup_stdin = dup(STDIN_FILENO);
@@ -75,7 +76,7 @@ static void	make_tree_bonus(t_data *data, t_list **addr)
 			flag = FALSE;
 		(*addr) = (*addr)->next;
 	}
-	tree = make_tree(addr);
+	tree = make_tree(data, addr);
 	if (flag == TRUE)
 	{
 		search_tree_for_hd(data, tree);
