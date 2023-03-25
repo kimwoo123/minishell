@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 10:51:21 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 16:38:22 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int		reduce_group_command(t_stack **stack_node);
 /* reduce_rule2 */
 int		reduce_oper_command(t_stack **stack_node);
 int		reduce_subshell_command(t_stack **stack_node);
+int		reduce_subshell(t_stack **stack_node);
 
 /* shift_rule */
 int		shift_command(t_stack **stack_node);

@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 18:29:01 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 10:33:04 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 16:37:52 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,16 @@ int	reduce_subshell_command(t_stack **stack_node)
 	(*stack_node)->next = next_node->next;
 	pop_stack(&next_node);
 	(*stack_node)->type = SUBS_CMD;
+	return (SUCCESS);
+}
+
+int	reduce_subshell(t_stack **stack_node)
+{
+	t_stack	*next_node;
+
+	next_node = (*stack_node)->next;
+	(*stack_node)->next = next_node->next;
+	pop_stack(&next_node);
+	(*stack_node)->type = SUBSHELL;
 	return (SUCCESS);
 }

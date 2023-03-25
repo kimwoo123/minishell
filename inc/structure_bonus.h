@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:38:00 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 10:33:58 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 16:37:51 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ enum	e_type
 	SUBS_OPEN,
 	SUBS_CLOSE,
 	SUBS_CMD,
+	SUBSHELL,
 	PIPE,
 	GROUP_CMD
 };

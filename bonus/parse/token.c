@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 10:40:11 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 14:10:38 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	get_token(const char *line, size_t size, t_list **list, t_data *data)
 	int		type;
 
 	type = check_type(line);
+	printf("%s\n", ft_strndup(line, size));
 	expansion = expand_str(line, size, data);
 	content = remove_quote(expansion);
 	if (content == NULL)
