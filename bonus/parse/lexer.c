@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 10:28:26 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 10:50:57 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,6 @@ void	split_space(const char *line, size_t size, t_list **list, t_data *data)
 		seperate_meta(&line[start_index], index - start_index, list, data);
 }
 
-int	is_subshell(char c)
-{
-	return (c == '(' || c == ')');
-}
-
 int	repeat_meta(const char *line, size_t index, size_t *flag)
 {
 	if (*flag == 0)
@@ -70,11 +65,13 @@ int	repeat_meta(const char *line, size_t index, size_t *flag)
 		if (is_subshell(line[index]))
 			return (FALSE);
 		if (index > 0)
+		{
 			if (line[index - 1] == line[index])
 			{
 				*flag = 1;
 				return (TRUE);
 			}
+		}
 	}
 	else
 		*flag = 0;

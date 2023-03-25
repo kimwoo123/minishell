@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 10:34:15 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 10:51:21 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_list	*scan_command(const char *line, t_data *data);
 /* parse_utils */
 char	check_quote(char c, char flag);
 int		is_delimiter(char c);
+int		is_subshell(char c);
 size_t	trim_line(const char *line);
 int		close_quote(const char *line);
 
