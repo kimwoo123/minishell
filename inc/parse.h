@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/24 08:43:39 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 11:36:25 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 /* lexer */
 void	seperate_meta(const char *line, size_t size, t_list **list, t_data *d);
 void	split_space(const char *line, size_t size, t_list **list, t_data *data);
-int		repeat_meta(const char *line, size_t index, size_t *flag);
+int		repeat_meta(const char *line, size_t index);
 void	split_delimiter(const char *line, t_list **list, t_data *data);
 t_list	*scan_command(const char *line, t_data *data);
 
