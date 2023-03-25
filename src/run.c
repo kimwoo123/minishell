@@ -12,8 +12,12 @@
 
 #include "minishell.h"
 
-static int	backup_stdio(t_data *data)
+static int	init_backup(t_data *data)
 {
+	data->count_cmd = 0;
+	data->pid = 0;
+	data->last_cmd = FALSE;
+	data->has_forked = FALSE;
 	data->dup_stdin = dup(STDIN_FILENO);
 	if (data->dup_stdin == FAILURE)
 		return (FAILURE);
@@ -23,7 +27,7 @@ static int	backup_stdio(t_data *data)
 	return (SUCCESS);
 }
 
-static int	restore_stdio(t_data *data)
+static int	restore(t_data *data)
 {
 	if (dup2(data->dup_stdin, STDIN_FILENO) == FAILURE)
 		return (FAILURE);
@@ -60,11 +64,7 @@ void	run_minishell(t_data *data, char *command_line)
 	t_list	*list;
 	t_tree	*tree;
 
-	data->count_cmd = 0;
-	data->pid = 0;
-	data->last_cmd = FALSE;
-	data->has_forked = FALSE;
-	if (backup_stdio(data) == FAILURE)
+	if (init_backup(data) == FAILURE)
 		exit_with_str("backup error in run minishell", EXIT_FAILURE);
 	list = scan_command(command_line, data);
 	if (list == NULL)
@@ -78,6 +78,6 @@ void	run_minishell(t_data *data, char *command_line)
 		free_list(&list);
 		free_tree(tree);
 	}
-	if (restore_stdio(data) == FAILURE)
+	if (restore(data) == FAILURE)
 		exit_with_str("restore error in run minishell", EXIT_FAILURE);
 }

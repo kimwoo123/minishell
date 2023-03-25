@@ -40,7 +40,7 @@ static int	restore(t_data *data)
 	return (SUCCESS);
 }
 
-void	waiting(t_data *data)
+static void	waiting(t_data *data)
 {
 	extern int	g_status;
 	int			count;
@@ -49,54 +49,17 @@ void	waiting(t_data *data)
 		return ;
 	if (data->count_cmd > 0)
 		if (waitpid(data->pid, &g_status, 0) == FAILURE)
-			exit_with_str("A wait error in waiting", EXIT_FAILURE);
+			exit_with_str("waitpid error in waiting", EXIT_FAILURE);
 	count = 1;
 	while (count < data->count_cmd)
 	{
 		if (wait(NULL) == FAILURE)
-			exit_with_str("B wait error in waiting", EXIT_FAILURE);
+			exit_with_str("wait error in waiting", EXIT_FAILURE);
 		count++;
 	}
 }
 
-void	recursive_make_tree_tester(t_tree **head, t_list *node, t_list **temp)
-{
-	if (node == NULL || node->type == OPERATOR)
-	{
-		*temp = node;
-		return ;
-	}
-	if (node->type == PIPE)
-	{
-		add_pipe(head);
-		recursive_make_tree_tester(head, node->next, temp);
-	}
-	else if (node->type == REDIR_TOKEN)
-	{
-		add_redirections(head, node, node->next);
-		recursive_make_tree_tester(head, node->next->next, temp);
-	}
-	else if (node->type == WORD)
-	{
-		add_commands(head, node);
-		recursive_make_tree_tester(head, node->next, temp);
-	}
-}
-
-t_tree	*make_tree_before_operator(t_list **addr)
-{
-	t_tree	*head;
-	t_list	*temp;
-
-	head = create_root();
-	if (head == NULL)
-		exit_with_str("malloc error in make tree", EXIT_FAILURE);
-	recursive_make_tree_tester(&head, *addr, &temp);
-	*addr = temp;
-	return (head);
-}
-
-void	make_tree_tester(t_data *data, t_list **addr)
+static void	make_tree_tester(t_data *data, t_list **addr)
 {
 	extern int	g_status;
 	t_tree		*tree;
@@ -112,7 +75,7 @@ void	make_tree_tester(t_data *data, t_list **addr)
 			flag = FALSE;
 		(*addr) = (*addr)->next;
 	}
-	tree = make_tree_before_operator(addr);
+	tree = make_tree(addr);
 	if (flag == TRUE)
 	{
 		search_tree_for_hd(data, tree);

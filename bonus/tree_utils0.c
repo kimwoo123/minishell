@@ -58,41 +58,39 @@ t_tree	*create_root(void)
 	return (root);
 }
 
-void	recursive_make_tree(t_tree **head, t_list *node)
+void	recursive_make_tree(t_tree **head, t_list *node, t_list **temp)
 {
-	if (node == NULL)
+	if (node == NULL || node->type == OPERATOR)
+	{
+		*temp = node;
 		return ;
-	if (node->type == OPERATOR)
-		return ;
+	}
 	if (node->type == PIPE)
 	{
 		add_pipe(head);
-		recursive_make_tree(head, node->next);
+		recursive_make_tree(head, node->next, temp);
 	}
 	else if (node->type == REDIR_TOKEN)
 	{
 		add_redirections(head, node, node->next);
-		recursive_make_tree(head, node->next->next);
+		recursive_make_tree(head, node->next->next, temp);
 	}
 	else if (node->type == WORD)
 	{
 		add_commands(head, node);
-		recursive_make_tree(head, node->next);
+		recursive_make_tree(head, node->next, temp);
 	}
-	// else if (node->type == OPERATOR)
-	// {
-	// 	// add_commands(head, node);
-	// 	recursive_make_tree(head, node->next);
-	// }
 }
 
 t_tree	*make_tree(t_list **node)
 {
 	t_tree	*head;
+	t_list	*temp;
 
 	head = create_root();
 	if (head == NULL)
 		exit_with_str("malloc error in make tree", EXIT_FAILURE);
-	recursive_make_tree(&head, *node);
+	recursive_make_tree(&head, *node, &temp);
+	*node = temp;
 	return (head);
 }
