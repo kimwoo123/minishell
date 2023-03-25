@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:27:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/23 18:35:35 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 10:33:46 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	set_reduce_function(t_fptr **parse_table)
 	parse_table[OPERATOR_CMD][COMMAND] = &reduce_command;
 	parse_table[CMD_TOKEN][WORD] = &reduce_cmd_token;
 	parse_table[COMMAND][COMMAND] = &reduce_command;
+	parse_table[SUBS_OPEN][COMMAND] = &reduce_subshell_command;
+	parse_table[SUBS_CMD][SUBS_CLOSE] = &reduce_command;
 	parse_table[REDIR_TOKEN][WORD] = &reduce_redirection;
 	parse_table[PIPE_CMD][COMMAND] = &reduce_command;
 	parse_table[PIPE_CMD][PIPE_CMD] = &reduce_pipe_command;

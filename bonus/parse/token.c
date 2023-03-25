@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 09:12:13 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 10:40:11 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ int	check_type(const char *str)
 {
 	if (!ft_strncmp(str, "||", 2) || !ft_strncmp(str, "&&", 2))
 		return (OPERATOR);
+	else if (*str == '(')
+		return (SUBS_OPEN);
+	else if (*str == ')')
+		return (SUBS_CLOSE);
 	else if (*str == '|')
 		return (PIPE);
 	else if (*str == '<' || *str == '>')
