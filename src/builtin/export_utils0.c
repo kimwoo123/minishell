@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+void	print_not_vaild_identifier(char *str)
+{
+	set_status(EXIT_FAILURE);
+	ft_putstr_fd("export: '", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+}
+
 static int	ft_strcmp(char *s1, char *s2)
 {
 	size_t	index;

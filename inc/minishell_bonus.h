@@ -55,6 +55,7 @@ void	ft_chdir(const char *path, const char *cmd);
 char	*find_home_path(char **envp);
 
 /* export utils0 */
+void	print_not_vaild_identifier(char *str);
 void	sort_double_array(char **array);
 int		check_equal_sign(char *str);
 void	print_with_double_quotation(char *str);
@@ -78,10 +79,7 @@ void	search_tree(t_data *data, t_tree *head);
 void	search_tree_for_hd(t_data *data, t_tree *head);
 
 /* tree utils0 */
-// void	recursive_make_tree(t_data *data, t_tree **head, t_list *node, t_list **temp);
 t_tree	*make_tree(t_data *data, t_list **node);
-// void	recursive_make_tree(t_tree **head, t_list *node, t_list **temp);
-// t_tree	*make_tree(t_list **node);
 t_tree	*create_root(void);
 t_tree	*create_tree(int type, char *content, t_tree *left, t_tree *right);
 
