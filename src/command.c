@@ -62,10 +62,7 @@ static char	*find_command_path(t_data *data)
 		return (data->commands[0]);
 	index = check_envp_index(data);
 	if (index == (size_t)FAILURE)
-	{
-		ft_putendl_fd("No such file or directory", STDIN_FILENO);
 		return (NULL);
-	}
 	split = ft_split(&(data->copied_envp)[index][5], ':');
 	if (split == NULL)
 		return (NULL);
@@ -81,16 +78,25 @@ void	execve_command(t_data *data)
 	extern int	g_status;
 	char		*command_path;
 
-	command_path = find_command_path(data);
-	if (command_path == NULL)
+	if (check_envp_index(data) == FAILURE)
 	{
 		ft_putstr_fd(data->commands[0], STDERR_FILENO);
-		ft_putendl_fd(": command not found", STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		g_status = COMMAND_NOT_FOUND;
 	}
 	else
 	{
-		if (execve(command_path, data->commands, data->copied_envp) == FAILURE)
-			exit_with_str("execve error in execve command", EXIT_FAILURE);
+		command_path = find_command_path(data);
+		if (command_path == NULL)
+		{
+			ft_putstr_fd(data->commands[0], STDERR_FILENO);
+			ft_putendl_fd(": command not found", STDERR_FILENO);
+			g_status = COMMAND_NOT_FOUND;
+		}
+		else
+		{
+			if (execve(command_path, data->commands, data->copied_envp) == FAILURE)
+				exit_with_str("execve error in execve command", EXIT_FAILURE);
+		}
 	}
 }
