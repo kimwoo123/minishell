@@ -42,7 +42,6 @@ typedef struct s_data
 	char	**commands;
 	pid_t	pid;
 	int		no_cmd;
-	int		redir_in;
 	int		redir_out;
 	int		count_cmd;
 	int		redir_stat;
