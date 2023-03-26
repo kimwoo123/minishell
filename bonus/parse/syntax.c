@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/25 20:28:18 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/26 12:07:18 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,18 @@ int	reduce_shift(t_fptr **parse_table, t_stack **stack)
 	while (s_node)
 	{		
 		ret += reduce_token(parse_table, &s_node);
-		if (ret)
-			return (1);
 		s_node = s_node->next;
 	}
+	if (ret)
+		return (1);
 	s_node = *stack;
 	while (s_node)
 	{				
 		ret += shift_token(parse_table, &s_node);
-		if (ret)
-			return (1);
 		s_node = s_node->next;
 	}
+	if (ret)
+		return (1);
 	return (0);
 }
 
@@ -83,6 +83,7 @@ char	*map[] = {
 	"OPERATOR_CMD",
 	"SUBSHELL",
 	"GROUP_CMD",
+	"SUBS_CMD",
 	"PIPE"
 };
 
