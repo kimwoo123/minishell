@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 10:51:21 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 20:12:31 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdlib.h>
 # include "structure_bonus.h"
+
+void	p_s(t_stack *stack);
 
 /* lexer */
 void	seperate_meta(const char *line, size_t size, t_list **list, t_data *d);
@@ -67,7 +69,13 @@ int		check_syntax(t_list **token_list);
 int		repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack);
 int		reduce_token(t_fptr **reduce_table, t_stack **stack_node);
 int		shift_token(t_fptr **reduce_table, t_stack **stack_node);
+int		reduce_shift(t_fptr **parse_table, t_stack **stack);
+
+/* parse */
+int		check_accept(t_fptr **parse_table, t_stack *stack);
 int		parse_token(t_list **token_list);
+t_list	*parse_subshell(t_list *node, t_fptr **parse_table);
+void	free_stack(t_stack *stack);
 
 /* stack */
 t_stack	*create_elem(int type);
@@ -83,9 +91,11 @@ int		reduce_group_command(t_stack **stack_node);
 
 /* reduce_rule2 */
 int		reduce_oper_command(t_stack **stack_node);
-int		reduce_subshell_command(t_stack **stack_node);
+int		reduce_subshell(t_stack **stack_node);
+int		reduce_group_cmd(t_stack **stack_node);
 
 /* shift_rule */
+int		shift_group_cmd(t_stack **stack_node);
 int		shift_command(t_stack **stack_node);
 int		shift_r_command(t_stack **stack_node);
 int		shift_ct_command(t_stack **stack_node);

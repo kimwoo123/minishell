@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/23 17:42:30 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 20:28:18 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,60 +46,78 @@ int	reduce_token(t_fptr **parse_table, t_stack **stack_node)
 	return (FALSE);
 }
 
-int	repeat_reduce_shift(t_fptr **parse_table, t_stack **stack)
+int	reduce_shift(t_fptr **parse_table, t_stack **stack)
 {
 	t_stack	*s_node;
 	size_t	ret;
 
-	while (1)
+	ret = 0;
+	s_node = *stack;
+	while (s_node)
+	{		
+		ret += reduce_token(parse_table, &s_node);
+		if (ret)
+			return (1);
+		s_node = s_node->next;
+	}
+	s_node = *stack;
+	while (s_node)
+	{				
+		ret += shift_token(parse_table, &s_node);
+		if (ret)
+			return (1);
+		s_node = s_node->next;
+	}
+	return (0);
+}
+
+char	*map[] = {
+	"ZERO",
+	"WORD",
+	"REDIR_TOKEN",
+	"REDIRECTION",
+	"CMD_TOKEN",
+	"COMMAND",
+	"PIPE_CMD",
+	"OPERATOR",
+	"OPERATOR_CMD",
+	"SUBSHELL",
+	"GROUP_CMD",
+	"PIPE"
+};
+
+void p_s(t_stack *stack)
+{
+	printf("==============\n");
+	while (stack)
 	{
-		ret = 0;
-		s_node = *stack;
-		while (s_node)
-		{
-			ret += reduce_token(parse_table, &s_node);
-			if (ret)
-				break ;
-			ret += shift_token(parse_table, &s_node);
-			if (ret)
-				break ;
-			s_node = s_node->next;
-		}
+		printf("%s\n", map[stack->type]);
+		stack = stack->next;
+	}	
+}
+
+int	repeat_reduce_shift(t_fptr **parse_table, t_stack **stack)
+{
+	size_t	ret;
+
+	ret = 1;
+	while (ret != 0)
+	{
+		ret = reduce_shift(parse_table, stack);
 		if (ret == 0)
 			break ;
 	}
-	if ((*stack && (*stack)->next == NULL) && (*stack)->type == COMMAND)
+
+	if ((*stack && (*stack)->next == NULL) && \
+		((*stack)->type == COMMAND || ((*stack)->type == GROUP_CMD) || (*stack)->type == SUBSHELL))
 		return (TRUE);
 	return (FALSE);
-}
-
-int	parse_token(t_list **token_list)
-{
-	t_fptr	**parse_table;
-	t_stack	*stack;
-	t_list	*node;
-	int		accept;
-
-	parse_table = init_parse_table();
-	stack = NULL;
-	node = *token_list;
-	while (node)
-	{
-		push_stack(&stack, node->type);
-		reduce_token(parse_table, &stack);
-		node = node->next;
-	}
-	accept = repeat_reduce_shift(parse_table, &stack);
-	free_stack_table(stack, parse_table);
-	if (accept == FALSE)
-		return (FALSE);
-	return (TRUE);
 }
 
 int	check_syntax(t_list **token_list)
 {
 	extern int	g_status;
-	int		accept;
+	int			accept;
 
 	if (*token_list == NULL)
 		return (TRUE);

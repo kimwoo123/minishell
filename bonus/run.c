@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:54:03 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/22 10:54:04 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/25 20:39:33 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,11 @@ void	run_minishell(t_data *data, char *command_line)
 
 	list = scan_command(command_line, data);
 	if (list == NULL)
+	{
+		// but not work
+		set_status(258);
 		rl_on_new_line();
+	}
 	else
 	{
 		addr = list;
