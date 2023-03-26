@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 19:39:21 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/26 15:55:19 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/26 16:25:22 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_list	*parse_subshell(t_list *node, t_fptr **parse_table)
 
 	stack = NULL;
 	node = node->next;
-	while (node->type != SUBS_CLOSE)
+	while (node && node->type != SUBS_CLOSE)
 	{
 		push_stack(&stack, node->type);
 		reduce_token(parse_table, &stack);
@@ -74,6 +74,7 @@ int	parse_token(t_list **token_list)
 
 	parse_table = init_parse_table();
 	stack = NULL;
+	node = *token_list;
 	node = *token_list;
 	while (node)
 	{
