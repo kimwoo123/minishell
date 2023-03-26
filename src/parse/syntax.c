@@ -103,7 +103,8 @@ int	parse_token(t_list **token_list)
 
 int	check_syntax(t_list **token_list)
 {
-	int		accept;
+	extern int	g_status;
+	int			accept;
 
 	if (*token_list == NULL)
 		return (TRUE);
@@ -111,6 +112,7 @@ int	check_syntax(t_list **token_list)
 	if (accept == FALSE)
 	{
 		ft_putendl_fd("syntax error", STDERR_FILENO);
+		g_status = -1;
 		return (FALSE);
 	}
 	return (TRUE);

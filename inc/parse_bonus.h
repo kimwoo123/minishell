@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 20:12:31 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/26 15:24:01 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void	free_double_array(char **array);
 
 /* syntax */
 int		check_syntax(t_list **token_list);
-int		repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack);
+int		repeat_reduce_shift(t_fptr **reduce_table, t_stack **stack, int flag);
 int		reduce_token(t_fptr **reduce_table, t_stack **stack_node);
 int		shift_token(t_fptr **reduce_table, t_stack **stack_node);
-int		reduce_shift(t_fptr **parse_table, t_stack **stack);
+int		reduce_shift(t_fptr **parse_table, t_stack **stack, int flag);
 
 /* parse */
 int		check_accept(t_fptr **parse_table, t_stack *stack);
@@ -95,13 +95,17 @@ int		reduce_subshell(t_stack **stack_node);
 int		reduce_group_cmd(t_stack **stack_node);
 
 /* shift_rule */
-int		shift_group_cmd(t_stack **stack_node);
+int		shift_s_cmd(t_stack **stack_node);
 int		shift_command(t_stack **stack_node);
 int		shift_r_command(t_stack **stack_node);
 int		shift_ct_command(t_stack **stack_node);
 int		shift_w_ct(t_stack **stack_node);
 
+/* shift_rule2 */
+int		shift_group_cmd(t_stack **stack_node);
+
 /* set_table */
+void	set_subshell_function(t_fptr **parse_table);
 void	set_reduce_function(t_fptr **reduce_table);
 t_fptr	**init_parse_table(void);
 

@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 19:39:21 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 20:25:11 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/26 15:55:19 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_list	*parse_subshell(t_list *node, t_fptr **parse_table)
 			return (NULL);
 		}
 	}
-	accept = repeat_reduce_shift(parse_table, &stack);
+	accept = repeat_reduce_shift(parse_table, &stack, 1);
 	free_stack(stack);
 	if (accept == FALSE)
 		return (NULL);
@@ -56,7 +56,12 @@ int	check_accept(t_fptr **parse_table, t_stack *stack)
 {
 	int	accept;
 
-	accept = repeat_reduce_shift(parse_table, &stack);
+	accept = repeat_reduce_shift(parse_table, &stack, 0);
+	if (accept == FALSE)
+	{
+		set_subshell_function(parse_table);
+		accept = repeat_reduce_shift(parse_table, &stack, 1);
+	}
 	free_stack_table(stack, parse_table);
 	return (accept);
 }

@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:38:00 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 19:56:50 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 20:59:32 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ enum	e_type
 	OPERATOR_CMD,
 	SUBSHELL,
 	GROUP_CMD,
+	SUBS_CMD,
 	PIPE,
 	PARENT_REDIR,
 	PARENT_CMD,

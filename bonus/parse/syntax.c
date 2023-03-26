@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/26 12:07:18 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/26 15:54:24 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	reduce_token(t_fptr **parse_table, t_stack **stack_node)
 	return (FALSE);
 }
 
-int	reduce_shift(t_fptr **parse_table, t_stack **stack)
+int	reduce_shift(t_fptr **parse_table, t_stack **stack, int flag)
 {
 	t_stack	*s_node;
 	size_t	ret;
@@ -60,6 +60,8 @@ int	reduce_shift(t_fptr **parse_table, t_stack **stack)
 	}
 	if (ret)
 		return (1);
+	if (flag == 0)
+		return (0);
 	s_node = *stack;
 	while (s_node)
 	{				
@@ -71,52 +73,26 @@ int	reduce_shift(t_fptr **parse_table, t_stack **stack)
 	return (0);
 }
 
-char	*map[] = {
-	"ZERO",
-	"WORD",
-	"REDIR_TOKEN",
-	"REDIRECTION",
-	"CMD_TOKEN",
-	"COMMAND",
-	"PIPE_CMD",
-	"OPERATOR",
-	"OPERATOR_CMD",
-	"SUBSHELL",
-	"GROUP_CMD",
-	"SUBS_CMD",
-	"PIPE"
-};
-
-void p_s(t_stack *stack)
-{
-	printf("==============\n");
-	while (stack)
-	{
-		printf("%s\n", map[stack->type]);
-		stack = stack->next;
-	}	
-}
-
-int	repeat_reduce_shift(t_fptr **parse_table, t_stack **stack)
+int	repeat_reduce_shift(t_fptr **parse_table, t_stack **stack, int flag)
 {
 	size_t	ret;
 
 	ret = 1;
 	while (ret != 0)
 	{
-		ret = reduce_shift(parse_table, stack);
+		ret = reduce_shift(parse_table, stack, flag);
 		if (ret == 0)
 			break ;
 	}
-
 	if ((*stack && (*stack)->next == NULL) && \
-		((*stack)->type == COMMAND || ((*stack)->type == GROUP_CMD) || (*stack)->type == SUBSHELL))
+		((*stack)->type == COMMAND || ((*stack)->type == GROUP_CMD)))
 		return (TRUE);
 	return (FALSE);
 }
 
 int	check_syntax(t_list **token_list)
 {
+	extern int	g_status;
 	int			accept;
 
 	if (*token_list == NULL)
@@ -125,6 +101,7 @@ int	check_syntax(t_list **token_list)
 	if (accept == FALSE)
 	{
 		ft_putendl_fd("syntax error", STDERR_FILENO);
+		g_status = -1;
 		return (FALSE);
 	}
 	return (TRUE);

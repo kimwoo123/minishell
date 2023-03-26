@@ -13,6 +13,7 @@
 NAME		= minishell
 
 CC			= cc
+GFLAG		= g
 CFLAGS		= -Wall -Wextra -Werror
 RLFLAGS		= -lreadline
 RMFLAGS		= -r
@@ -27,7 +28,5 @@ ALL_SRCS	= $(COM_SRCS) $(BTI_SRCS) $(PAR_SRCS)
 ALL_OBJS	= $(COM_OBJS) $(BTI_OBJS) $(PAR_OBJS)
 
 OBJ_DIR		= obj obj/builtin obj/parse
+OBJ_B_DIR	= obj_b obj_b/builtin obj_b/parse
 SRC_DIR		= src src/builtin src/parse
-
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
