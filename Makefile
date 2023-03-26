@@ -6,7 +6,7 @@
 #    By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/01 17:15:30 by chajung           #+#    #+#              #
-#    Updated: 2023/03/26 14:03:21 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/03/26 16:16:39 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ include inc/var_mkfile
 endif
 
 ifeq ($(MAKECMDGOALS), bonus)
-$(NAME): $(ALL_OBJS) $(LIB)
-	@$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
+$(NAME): $(ALL_SRCS) $(LIB)
+	@$(CC) -g $(CFLAGS) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
 
 $(OBJ_B_DIR):
 	@mkdir -p $(OBJ_B_DIR)
