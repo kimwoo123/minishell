@@ -12,24 +12,39 @@
 
 #include "minishell.h"
 
+static char	*ft_get_status(void)
+{
+	extern int	g_status;
+	char		*result;
+	char		*temp;
+
+	if (g_status == -1)
+		result = ft_strdup("258");
+	else
+	{
+		temp = ft_itoa((g_status >> 8) & 0x000000ff);
+		if (temp == NULL)
+			return (NULL);
+		result = ft_strdup(temp);
+		free(temp);
+	}
+	if (result == NULL)
+		return (NULL);
+	return (result);
+}
+
 char	*convert_variable(char *str, t_data *data)
 {
 	size_t		index;
 	char		*env;
 	char		*result;
-	char		*temp;
-	extern int	g_status;
 
 	index = 1;
 	env = ft_getenv(data->copied_envp, &str[index]);
 	if (!ft_strncmp(str, "$", ft_strlen(str)))
 		result = ft_strdup("$");
 	else if (str[index] == '?')
-	{
-		temp = ft_itoa(WEXITSTATUS(g_status));
-		result = ft_strdup(temp);
-		free(temp);
-	}
+		result = ft_get_status();
 	else if (!env)
 		result = ft_strdup("");
 	else
