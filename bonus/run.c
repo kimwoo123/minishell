@@ -72,7 +72,7 @@ static void	make_tree_bonus(t_data *data, t_list **addr)
 
 	flag = TRUE;
 	if (init_backup(data) == FAILURE)
-		exit_with_str("backup error in run minishell", EXIT_FAILURE);
+		exit_with_str("init backup error in run minishell", EXIT_FAILURE);
 	if ((*addr)->type == OPERATOR)
 	{
 		if ((is_equal_to((*addr)->content, AND) && g_status == EXIT_FAILURE) \
