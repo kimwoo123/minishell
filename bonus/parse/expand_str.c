@@ -22,7 +22,7 @@ static char	*ft_get_status(void)
 		result = ft_strdup("258");
 	else
 	{
-		temp = ft_itoa((g_status >> 8) & 0x000000ff);
+		temp = ft_itoa(WEXITSTATUS(g_status));
 		if (temp == NULL)
 			return (NULL);
 		result = ft_strdup(temp);

@@ -55,7 +55,9 @@ static void	waiting(t_data *data)
 		pid = waitpid(-1, &status, 0);
 		if (pid == FAILURE)
 			exit_with_str("waitpid error in waiting", EXIT_FAILURE);
-		if (pid == data->pid)
+		if (WIFSIGNALED(status))
+			set_status(128 + WTERMSIG(status));
+		else if (pid == data->pid)
 			g_status = status;
 		count++;
 	}
@@ -67,7 +69,7 @@ void	run_minishell(t_data *data, char *command_line)
 	t_tree	*tree;
 
 	if (init_backup(data) == FAILURE)
-		exit_with_str("backup error in run minishell", EXIT_FAILURE);
+		exit_with_str("init backup error in run minishell", EXIT_FAILURE);
 	list = scan_command(command_line, data);
 	if (list == NULL)
 		rl_on_new_line();
