@@ -10,13 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 
-PAR_SRC		= \
-		set_table.c shift_rule.c reduce_rule.c syntax.c \
-		stack.c free.c expand_str.c split_dollar.c \
-		token.c utils.c parse_utils.c lexer.c reduce_rule2.c \
-		parse.c
 PAR_DIR		= bonus/parse
-PAR_OBJ_DIR	= obj/parse
+PAR_SRC		= \
+			set_table.c shift_rule.c reduce_rule.c syntax.c \
+			stack.c free.c expand_str.c split_dollar.c \
+			token.c utils.c parse_utils.c lexer.c reduce_rule2.c \
+			parse.c
+PAR_OBJ_DIR	= obj_b/parse
 PAR_OBJ		= $(PAR_SRC:.c=.o)
 PAR_OBJS	= $(addprefix $(PAR_OBJ_DIR)/, $(PAR_OBJ))
 PAR_SRCS	= $(addprefix $(PAR_DIR)/, $(PAR_SRC))
@@ -27,7 +27,7 @@ BTI_SRC		= \
 			echo.c  pwd.c exit.c env.c  export_utils1.c unset.c \
 			export.c export_utils0.c \
 			cd.c cd_utils0.c cd_utils1.c cd_utils2.c
-BTI_OBJ_DIR = obj/builtin
+BTI_OBJ_DIR = obj_b/builtin
 BTI_OBJS	= $(addprefix $(BTI_OBJ_DIR)/, $(BTI_OBJ))
 BTI_OBJ		= $(BTI_SRC:.c=.o)
 BTI_SRCS	= $(addprefix $(BTI_DIR)/, $(BTI_SRC))
@@ -38,7 +38,7 @@ COM_SRC		= \
 			main.c run.c utils0.c utils1.c signals.c heredoc.c heredoc_utils.c \
 			init.c envp_utils.c tree.c tree_utils0.c tree_utils1.c redir.c redir_utils.c \
 			fork.c command.c command_utils.c wildcard.c
-COM_OBJ_DIR = obj
+COM_OBJ_DIR = obj_b
 COM_OBJS	= $(addprefix $(COM_OBJ_DIR)/, $(COM_OBJ))
 COM_OBJ		= $(COM_SRC:.c=.o)
 COM_SRCS	= $(addprefix $(COM_DIR)/, $(COM_SRC))
