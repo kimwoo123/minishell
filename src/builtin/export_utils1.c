@@ -16,6 +16,8 @@ static int	check_identifier(char c)
 {
 	if (c == ' ' || c == '=' || ft_isdigit(c))
 		return (FALSE);
+	if (ft_isalpha(c) == FALSE)
+		return (FALSE);
 	return (TRUE);
 }
 
