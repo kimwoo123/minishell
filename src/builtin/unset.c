@@ -12,23 +12,36 @@
 
 #include "minishell.h"
 
-static int	check_numbers(t_data *data)
+static int	check_identifier(char c)
+{
+	if (c == ' ' || c == '=' || ft_isdigit(c))
+		return (FALSE);
+	if (ft_isalpha(c) == FALSE)
+		return (FALSE);
+	return (TRUE);
+}
+
+static int	check_identifiers(t_data *data)
 {
 	size_t	i;
+	int		false_flag;
 
 	i = 1;
+	false_flag = FALSE;
 	while (data->commands[i])
 	{
-		if (ft_isdigit(data->commands[i][0]) != 0)
+		if (check_identifier(data->commands[i][0]) == FALSE)
 		{
 			ft_putstr_fd("unset: '", STDERR_FILENO);
 			ft_putstr_fd(data->commands[i], STDERR_FILENO);
 			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 			set_status(EXIT_FAILURE);
-			return (TRUE);
+			false_flag = TRUE;
 		}
 		i++;
 	}
+	if (false_flag == TRUE)
+		return (TRUE);
 	return (FALSE);
 }
 
@@ -38,7 +51,7 @@ void	unset_command(t_data *data)
 	char		**array;
 
 	index = 1;
-	if (check_numbers(data))
+	if (check_identifiers(data))
 		return ;
 	while (data->commands[index])
 	{
