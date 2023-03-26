@@ -21,8 +21,8 @@ include inc/var_mkfile
 endif
 
 ifeq ($(MAKECMDGOALS), bonus)
-$(NAME): $(ALL_OBJS) $(LIB)
-	@$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
+$(NAME): $(ALL_SRCS) $(LIB)
+	@$(CC) -g $(CFLAGS) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
 
 $(OBJ_B_DIR):
 	@mkdir -p $(OBJ_B_DIR)

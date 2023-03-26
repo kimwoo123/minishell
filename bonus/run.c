@@ -68,20 +68,20 @@ static void	make_tree_bonus(t_data *data, t_list **addr)
 {
 	extern int	g_status;
 	t_tree		*tree;
-	int			flag;
+	int			cmd_flag;
 
-	flag = TRUE;
+	cmd_flag = TRUE;
 	if (init_backup(data) == FAILURE)
 		exit_with_str("init backup error in run minishell", EXIT_FAILURE);
 	if ((*addr)->type == OPERATOR)
 	{
 		if ((is_equal_to((*addr)->content, AND) && g_status == EXIT_FAILURE) \
 		|| (is_equal_to((*addr)->content, OR) && g_status == EXIT_SUCCESS))
-			flag = FALSE;
+			cmd_flag = FALSE;
 		(*addr) = (*addr)->next;
 	}
 	tree = make_tree(data, addr);
-	if (flag == TRUE)
+	if (cmd_flag == TRUE)
 	{
 		search_tree_for_hd(data, tree);
 		search_tree(data, tree);

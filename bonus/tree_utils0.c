@@ -66,7 +66,7 @@ static void	recursive_make_tree(t_data *data, \
 		*temp = node;
 		return ;
 	}
-	if (node->type == SUBS_OPEN || node->type == SUBS_CLOSE)
+	if (node->type == SUBS_OPEN || node->type == SUBSHELL)
 	{
 		data->sub_flag = TRUE;
 		recursive_make_tree(data, head, node->next, temp);
@@ -96,6 +96,7 @@ t_tree	*make_tree(t_data *data, t_list **node)
 	head = create_root();
 	if (head == NULL)
 		exit_with_str("malloc error in make tree", EXIT_FAILURE);
+	temp = NULL;
 	recursive_make_tree(data, &head, *node, &temp);
 	*node = temp;
 	return (head);
