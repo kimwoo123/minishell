@@ -97,11 +97,7 @@ void	run_minishell(t_data *data, char *command_line)
 
 	list = scan_command(command_line, data);
 	if (list == NULL)
-	{
-		// but not work
-		set_status(258);
 		rl_on_new_line();
-	}
 	else
 	{
 		addr = list;
