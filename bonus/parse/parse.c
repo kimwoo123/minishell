@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 19:39:21 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/26 16:25:22 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:14:05 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	check_accept(t_fptr **parse_table, t_stack *stack)
 {
 	int	accept;
 
-	accept = repeat_reduce_shift(parse_table, &stack, 0);
+	accept = repeat_reduce_shift(parse_table, &stack, 1);
 	if (accept == FALSE)
 	{
 		set_subshell_function(parse_table);
