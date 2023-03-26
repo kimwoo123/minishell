@@ -43,18 +43,20 @@ static int	restore(t_data *data)
 static void	waiting(t_data *data)
 {
 	extern int	g_status;
+	pid_t		pid;
+	int			status;
 	int			count;
 
 	if (data->count_cmd == 0 || data->pid == -1)
 		return ;
-	if (data->count_cmd > 0)
-		if (waitpid(data->pid, &g_status, 0) == FAILURE)
-			exit_with_str("waitpid error in waiting", EXIT_FAILURE);
-	count = 1;
+	count = 0;
 	while (count < data->count_cmd)
 	{
-		if (wait(NULL) == FAILURE)
-			exit_with_str("wait error in waiting", EXIT_FAILURE);
+		pid = waitpid(-1, &status, 0);
+		if (pid == FAILURE)
+			exit_with_str("waitpid error in waiting", EXIT_FAILURE);
+		if (pid == data->pid)
+			g_status = status;
 		count++;
 	}
 }
