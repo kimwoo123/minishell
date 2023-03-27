@@ -12,72 +12,6 @@
 
 #include "minishell_bonus.h"
 
-// static char	*expand_str_hd(t_data *data, const char *line)
-// {
-// 	char	**temp;
-// 	char	*result;
-
-// 	temp = split_dollar_hd(line);
-// 	result = convert_dollar(temp, data);
-// 	free_double(temp);
-// 	return (result);
-// }
-
-// static int	strjoin_cmp(t_data *data, char **temp, char **str_nl, char **delim)
-// {
-// 	*str_nl = ft_strjoin(*temp, "\n");
-// 	if (*str_nl == NULL)
-// 		return (FAILURE);
-// 	free(*temp);
-// 	*delim = ft_strjoin(data->commands[1], "\n");
-// 	if (*delim == NULL)
-// 		return (FAILURE);
-// 	if (is_equal_to(*str_nl, *delim) == TRUE)
-// 	{
-// 		free(*str_nl);
-// 		free(*delim);
-// 		return (FAILURE);
-// 	}
-// 	return (SUCCESS);
-// }
-
-// static void	free_each(char *str1, char *str2, char *str3, char *str4)
-// {
-// 	free(str1);
-// 	free(str2);
-// 	free(str3);
-// 	free(str4);
-// }
-
-// int	preprocess_heredoc(t_data *data, t_tree *tree)
-// {	
-// 	char	*str_nl;
-// 	char	*delim;
-// 	char	*expand;
-// 	char	*save;
-// 	char	*temp;
-
-// 	save = ft_strdup("");
-// 	if (save == NULL)
-// 		return (FAILURE);
-// 	while (1)
-// 	{
-// 		temp = readline("> ");
-// 		if (temp == NULL \
-// 		|| strjoin_cmp(data, &temp, &str_nl, &delim) == FAILURE)
-// 			break ;
-// 		expand = expand_str_hd(data, str_nl);
-// 		temp = save;
-// 		save = ft_strjoin(temp, expand);
-// 		if (save == NULL)
-// 			return (FAILURE);
-// 		free_each(expand, temp, str_nl, delim);
-// 	}
-// 	free(tree->right->content);
-// 	tree->right->content = save;
-// 	return (SUCCESS);
-// }
-
 char	*expand_str_hd(t_data *data, const char *line)
 {
 	char	**temp;
@@ -89,45 +23,12 @@ char	*expand_str_hd(t_data *data, const char *line)
 	return (result);
 }
 
-int	strjoin_cmp(t_data *data, char **temp, char **str_nl, char **delim)
-{
-	*str_nl = ft_strjoin(*temp, "\n");
-	if (*str_nl == NULL)
-		return (FAILURE);
-	free(*temp);
-	*delim = ft_strjoin(data->commands[1], "\n");
-	if (*delim == NULL)
-		return (FAILURE);
-	if (is_equal_to(*str_nl, *delim) == TRUE)
-	{
-		free(*str_nl);
-		free(*delim);
-		return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
-void	free_each(char *str1, char *str2, char *str3, char *str4)
-{
-	free(str1);
-	free(str2);
-	free(str3);
-	free(str4);
-}
-
 int	test_heredoc(t_data *data, t_list **list)
 {	
 	char	*str_nl;
-	char	*delim;
 	char	*expand;
 	char	*save;
 	char	*temp;
-
-	(void)str_nl;
-	(void)delim;
-	(void)expand;
-	(void)save;
-	(void)temp;
 
 	save = ft_strdup("");
 	if (save == NULL)
@@ -135,7 +36,7 @@ int	test_heredoc(t_data *data, t_list **list)
 	while (1)
 	{
 		temp = readline("> ");
-		if (temp == NULL) // Ctrl + Da
+		if (temp == NULL)
 			break ;
 		if (is_equal_to(temp, (*list)->content) == TRUE)
 			break ;
@@ -151,38 +52,24 @@ int	test_heredoc(t_data *data, t_list **list)
 		free(temp);
 		free(expand);
 		free(str_nl);
-		// free_each(expand, temp, str_nl, delim);
 	}
 	free((*list)->content);
 	(*list)->content = save;
 	return (SUCCESS);
 }
 
-int	preprocess_heredoc(t_data *data, t_tree *tree)
-{	
-	char	*str_nl;
-	char	*delim;
-	char	*expand;
-	char	*save;
-	char	*temp;
+void	preprocess_heredoc(t_data *data, t_list *list)
+{
+	t_list	*temp;
 
-	save = ft_strdup("");
-	if (save == NULL)
-		return (FAILURE);
-	while (1)
+	temp = list;
+	while (temp != NULL)
 	{
-		temp = readline("> ");
-		if (temp == NULL \
-		|| strjoin_cmp(data, &temp, &str_nl, &delim) == FAILURE)
-			break ;
-		expand = expand_str_hd(data, str_nl);
-		temp = save;
-		save = ft_strjoin(temp, expand);
-		if (save == NULL)
-			return (FAILURE);
-		free_each(expand, temp, str_nl, delim);
+		if (temp->type == REDIR_TOKEN && is_equal_to(temp->content, "<<"))
+		{
+			temp = temp->next;
+			test_heredoc(data, &(temp));
+		}
+		temp = temp->next;
 	}
-	free(tree->right->content);
-	tree->right->content = save;
-	return (SUCCESS);
 }

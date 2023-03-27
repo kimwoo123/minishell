@@ -47,25 +47,6 @@ static void	execve_command_line(t_data *data, t_tree *tree)
 	}
 }
 
-void	search_tree_for_hd(t_data *data, t_tree *head)
-{
-	if (head == NULL)
-		return ;
-	if (head->type == REDIRECTION)
-	{
-		if (split_redirection(data, head) == FAILURE)
-			return ;
-		if (is_equal_to(data->commands[0], "<<") == TRUE)
-			if (preprocess_heredoc(data, head) == FAILURE)
-				exit_with_str("error in preprocess heredoc", EXIT_FAILURE);
-		free_double_array(data->commands);
-	}
-	if (head->left != NULL)
-		search_tree_for_hd(data, head->left);
-	if (head->right != NULL)
-		search_tree_for_hd(data, head->right);
-}
-
 void	search_tree(t_data *data, t_tree *head)
 {
 	if (head == NULL)

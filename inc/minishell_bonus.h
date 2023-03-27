@@ -31,8 +31,6 @@
 # include "structure_bonus.h"
 # include "../libft/inc/libft.h"
 
-int	test_heredoc(t_data *data, t_list **list);
-
 /* built-in */
 void	cd_command(t_data *data);
 void	pwd_command(void);
@@ -98,7 +96,7 @@ int		split_redirection(t_data *data, t_tree *tree);
 char	*join_redirection(t_tree *tree);
 
 /* heredoc */
-int		preprocess_heredoc(t_data *data, t_tree *tree);
+void	preprocess_heredoc(t_data *data, t_list *list);
 
 /* heredoc utils */
 char	**split_dollar_hd(const char *line);
