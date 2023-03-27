@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 19:39:21 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/26 17:14:05 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/27 13:18:52 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_list	*parse_subshell(t_list *node, t_fptr **parse_table)
 
 	stack = NULL;
 	node = node->next;
+	parse_table[REDIRECTION][0] = &shift_r_command;
 	while (node && node->type != SUBS_CLOSE)
 	{
 		push_stack(&stack, node->type);
@@ -40,11 +41,13 @@ t_list	*parse_subshell(t_list *node, t_fptr **parse_table)
 		node = node->next;
 		if (node == NULL)
 		{
+			parse_table[REDIRECTION][0] = NULL;
 			free_stack(stack);
 			return (NULL);
 		}
 	}
 	accept = repeat_reduce_shift(parse_table, &stack, 1);
+	parse_table[REDIRECTION][0] = NULL;
 	free_stack(stack);
 	if (accept == FALSE)
 		return (NULL);
@@ -64,6 +67,35 @@ int	check_accept(t_fptr **parse_table, t_stack *stack)
 	}
 	free_stack_table(stack, parse_table);
 	return (accept);
+}
+
+char	*map[] = {
+	"ZERO",
+	"WORD",
+	"REDIR_TOKEN",
+	"REDIRECTION",
+	"CMD_TOKEN",
+	"COMMAND",
+	"PIPE_CMD",
+	"OPERATOR",
+	"OPERATOR_CMD",
+	"SUBSHELL",
+	"GROUP_CMD",
+	"SUBS_OPEN",
+	"SUBS_CLOSE",
+	"SUBS_CMD",
+	"PIPE"
+};
+
+void p_s(t_stack *stack)
+{
+	printf("==============\n");
+	while (stack)
+	{
+		printf("%s\n", map[stack->type]);
+		stack = stack->next;
+	}
+	printf("==============\n");
 }
 
 int	parse_token(t_list **token_list)
