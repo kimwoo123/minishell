@@ -54,8 +54,6 @@ static void	waiting(t_data *data)
 	while (count < data->count_cmd)
 	{
 		pid = waitpid(-1, &status, 0);
-		if (pid == FAILURE)
-			exit_with_str("waitpid error in waiting", EXIT_FAILURE);
 		if (WIFSIGNALED(status))
 			set_status(128 + WTERMSIG(status));
 		else if (pid == data->pid)
@@ -96,7 +94,6 @@ void	run_minishell(t_data *data, char *command_line)
 	t_list	*list;
 	t_list	*addr;
 
-	// reset_signals();
 	list = scan_command(command_line, data);
 	if (list == NULL)
 		rl_on_new_line();
@@ -108,5 +105,4 @@ void	run_minishell(t_data *data, char *command_line)
 			make_tree_bonus(data, &addr);
 		free_list(&list);
 	}
-	// set_signals();
 }

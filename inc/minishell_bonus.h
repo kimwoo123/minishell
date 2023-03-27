@@ -31,8 +31,6 @@
 # include "structure_bonus.h"
 # include "../libft/inc/libft.h"
 
-// void	initialize_sig(struct sigaction new_signal, struct sigaction old_signal);
-
 /* built-in */
 void	cd_command(t_data *data);
 void	pwd_command(void);
@@ -71,8 +69,8 @@ char	**alloc_double_array(t_data *data);
 void	init_data(int argc, char **argv, char **envp, t_data *data);
 
 /* signal */
-void	reset_signals(void);
-void	set_signals(void);
+// void	reset_signals(void);
+void	set_signals(int flag);
 
 /* run */
 void	run_minishell(t_data *data, char *command_line);
