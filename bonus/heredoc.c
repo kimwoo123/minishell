@@ -12,7 +12,7 @@
 
 #include "minishell_bonus.h"
 
-char	*expand_str_hd(t_data *data, const char *line)
+static char	*expand_str_hd(t_data *data, const char *line)
 {
 	char	**temp;
 	char	*result;
@@ -25,7 +25,7 @@ char	*expand_str_hd(t_data *data, const char *line)
 
 int	test_heredoc(t_data *data, t_list **list)
 {	
-	char	*str_nl;
+	char	*delim;
 	char	*expand;
 	char	*save;
 	char	*temp;
@@ -33,25 +33,25 @@ int	test_heredoc(t_data *data, t_list **list)
 	save = ft_strdup("");
 	if (save == NULL)
 		return (FAILURE);
+	delim = ft_strjoin((*list)->content, "\n");
+	if (delim == NULL)
+		return (FAILURE);
 	while (1)
 	{
-		temp = readline("> ");
+		ft_putstr_fd("> ", STDIN_FILENO);
+		temp = get_next_line(STDIN_FILENO);
 		if (temp == NULL)
 			break ;
-		if (is_equal_to(temp, (*list)->content) == TRUE)
+		if (is_equal_to(temp, delim) == TRUE)
 			break ;
-		str_nl = ft_strjoin(temp, "\n");
-		if (str_nl == NULL)
-			return (FAILURE);
+		expand = expand_str_hd(data, temp);
 		free(temp);
-		expand = expand_str_hd(data, str_nl);
 		temp = save;
 		save = ft_strjoin(temp, expand);
 		if (save == NULL)
 			return (FAILURE);
 		free(temp);
 		free(expand);
-		free(str_nl);
 	}
 	free((*list)->content);
 	(*list)->content = save;

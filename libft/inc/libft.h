@@ -16,6 +16,23 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
+
+typedef struct s_node
+{
+	int				fd;
+	char			*backup;
+	struct s_node	*next;
+}	t_node;
+
+void	clear_node(t_node **head, t_node *node);
+t_node	*find_node(t_node **head, int fd);
+char	*clean_up(char *line);
+char	*read_line(char *backup, int fd);
+char	*get_next_line(int fd);
+
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);

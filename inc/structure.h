@@ -17,6 +17,7 @@
 # define DOLLAR				'$'
 # define SIGINT				2
 # define SIGQUIT			3
+# define SIGTERM			15
 # define EXIT_SUCCESS		0
 # define EXIT_FAILURE		1
 # define COMMAND_NOT_FOUND	127
