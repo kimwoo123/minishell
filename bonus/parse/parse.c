@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 19:39:21 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/26 17:14:05 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/27 13:10:57 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_list	*parse_subshell(t_list *node, t_fptr **parse_table)
 
 	stack = NULL;
 	node = node->next;
+	parse_table[REDIRECTION][0] = &shift_r_command;
 	while (node && node->type != SUBS_CLOSE)
 	{
 		push_stack(&stack, node->type);
@@ -40,10 +41,12 @@ t_list	*parse_subshell(t_list *node, t_fptr **parse_table)
 		node = node->next;
 		if (node == NULL)
 		{
+			parse_table[REDIRECTION][0] = NULL;
 			free_stack(stack);
 			return (NULL);
 		}
 	}
+	parse_table[REDIRECTION][0] = NULL;
 	accept = repeat_reduce_shift(parse_table, &stack, 1);
 	free_stack(stack);
 	if (accept == FALSE)
