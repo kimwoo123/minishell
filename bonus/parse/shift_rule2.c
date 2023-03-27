@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 14:01:55 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/26 14:02:30 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:08:07 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 int	shift_group_cmd(t_stack **stack_node)
 {
- 	(*stack_node)->type = GROUP_CMD;
+	(*stack_node)->type = GROUP_CMD;
 	return (SUCCESS);
 }

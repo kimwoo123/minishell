@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/26 12:14:57 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:07:37 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*convert_variable(char *str, t_data *data)
 	size_t		index;
 	char		*env;
 	char		*result;
-	// char		*temp;
 	extern int	g_status;
 
 	index = 1;

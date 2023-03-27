@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:54:03 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/26 17:02:34 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:08:36 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void	run_minishell(t_data *data, char *command_line)
 	t_list	*list;
 	t_list	*addr;
 
-	// reset_signals();
 	list = scan_command(command_line, data);
 	if (list == NULL)
 		rl_on_new_line();
@@ -108,5 +107,4 @@ void	run_minishell(t_data *data, char *command_line)
 			make_tree_bonus(data, &addr);
 		free_list(&list);
 	}
-	// set_signals();
 }

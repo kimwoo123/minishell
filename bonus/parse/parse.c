@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 19:39:21 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/27 13:18:52 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:08:00 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,35 +67,6 @@ int	check_accept(t_fptr **parse_table, t_stack *stack)
 	}
 	free_stack_table(stack, parse_table);
 	return (accept);
-}
-
-char	*map[] = {
-	"ZERO",
-	"WORD",
-	"REDIR_TOKEN",
-	"REDIRECTION",
-	"CMD_TOKEN",
-	"COMMAND",
-	"PIPE_CMD",
-	"OPERATOR",
-	"OPERATOR_CMD",
-	"SUBSHELL",
-	"GROUP_CMD",
-	"SUBS_OPEN",
-	"SUBS_CLOSE",
-	"SUBS_CMD",
-	"PIPE"
-};
-
-void p_s(t_stack *stack)
-{
-	printf("==============\n");
-	while (stack)
-	{
-		printf("%s\n", map[stack->type]);
-		stack = stack->next;
-	}
-	printf("==============\n");
 }
 
 int	parse_token(t_list **token_list)

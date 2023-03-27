@@ -6,7 +6,7 @@
 #    By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/13 10:26:28 by wooseoki          #+#    #+#              #
-#    Updated: 2023/03/26 11:17:20 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/03/27 14:25:34 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ CC			= cc
 GFLAG		= g
 CFLAGS		= -Wall -Wextra -Werror
 RLFLAGS		= -lreadline
-RMFLAGS		= -r
+RM			= rm
+RMFLAGS		= -rf
 
 LDFLAGS		= -L ~/.brew/opt/readline/lib
 CPPFLAGS	= -I ~/.brew/opt/readline/include -I inc
