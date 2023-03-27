@@ -31,6 +31,8 @@
 # include "structure_bonus.h"
 # include "../libft/inc/libft.h"
 
+int	test_heredoc(t_data *data, t_list **list);
+
 /* built-in */
 void	cd_command(t_data *data);
 void	pwd_command(void);

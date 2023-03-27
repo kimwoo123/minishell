@@ -83,13 +83,34 @@ static void	make_tree_bonus(t_data *data, t_list **addr)
 	tree = make_tree(data, addr);
 	if (cmd_flag == TRUE)
 	{
-		search_tree_for_hd(data, tree);
+		// search_tree_for_hd(data, tree);
 		search_tree(data, tree);
 		waiting(data);
 	}
 	free_tree(tree);
 	if (restore(data) == FAILURE)
 		exit_with_str("restore error in run minishell", EXIT_FAILURE);
+}
+
+void	pirnt_list(t_data *data, t_list *list)
+{
+	t_list	*temp;
+
+	temp = list;
+	while (temp != NULL)
+	{
+		if (temp->type == REDIR_TOKEN && is_equal_to(temp->content, "<<"))
+		{
+			// dprintf(2, ">>> %d: %s\n", temp->next->type, temp->next->content);
+			temp = temp->next;
+			test_heredoc(data, &(temp));
+			
+			// dprintf(2, "%d: %s\n", temp->type, temp->content);
+
+		}
+		// dprintf(2, "%d: %s\n", temp->type, temp->content);
+		temp = temp->next;
+	}
 }
 
 void	run_minishell(t_data *data, char *command_line)
@@ -102,6 +123,9 @@ void	run_minishell(t_data *data, char *command_line)
 		rl_on_new_line();
 	else
 	{
+		pirnt_list(data, list);
+		// return ;
+		
 		addr = list;
 		while (addr != NULL)
 			make_tree_bonus(data, &addr);
