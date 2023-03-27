@@ -12,16 +12,16 @@
 
 #include "minishell.h"
 
-static void	set_input_mode(void)
-{
-	struct termios	termios_p;
+// static void	set_input_mode(void)
+// {
+// 	struct termios	termios_p;
 
-	if (tcgetattr(STDIN_FILENO, &termios_p) == FAILURE)
-		exit_with_str("tcgetattr error in set input mode", EXIT_FAILURE);
-	termios_p.c_lflag &= ~ECHOCTL;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == FAILURE)
-		exit_with_str("tcsetattr error in set input mode", EXIT_FAILURE);
-}
+// 	if (tcgetattr(STDIN_FILENO, &termios_p) == FAILURE)
+// 		exit_with_str("tcgetattr error in set input mode", EXIT_FAILURE);
+// 	termios_p.c_lflag &= ~ECHOCTL;
+// 	if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == FAILURE)
+// 		exit_with_str("tcsetattr error in set input mode", EXIT_FAILURE);
+// }
 
 static void	handle_signal(pid_t pid, int signal_code)
 {
@@ -54,15 +54,15 @@ static void	handle_signals(int signal_code)
 {
 	pid_t			pid;
 	int				status;
-	struct termios	org_term;
+	// struct termios	org_term;
 	// struct termios	new_term;
 
-	if (tcgetattr(STDIN_FILENO, &org_term) == FAILURE)
-		exit_with_str("tcgetattr error in set input mode", EXIT_FAILURE);
+	// if (tcgetattr(STDIN_FILENO, &org_term) == FAILURE)
+	// 	exit_with_str("tcgetattr error in set input mode", EXIT_FAILURE);
 	pid = waitpid(-1, &status, WNOHANG);
 	handle_signal(pid, signal_code);
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &org_term) == FAILURE)
-		exit_with_str("tcsetattr error in set input mode", EXIT_FAILURE);
+	// if (tcsetattr(STDIN_FILENO, TCSANOW, &org_term) == FAILURE)
+	// 	exit_with_str("tcsetattr error in set input mode", EXIT_FAILURE);
 }
 
 void	set_signals(void)
@@ -70,7 +70,7 @@ void	set_signals(void)
 	struct sigaction	new_signal;
 	struct sigaction	old_signal;
 
-	set_input_mode();
+	// set_input_mode();
 	new_signal.sa_handler = &handle_signals;
 	new_signal.sa_flags = SA_RESTART;
 	if (sigemptyset(&new_signal.sa_mask) == FAILURE)
