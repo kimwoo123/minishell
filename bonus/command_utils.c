@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:21:20 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/23 09:58:29 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/27 16:45:43 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static char	**join_command(t_tree *tree)
 	wc_flag = 0;
 	size = get_cmd_size(tree, &wc_flag);
 	new_size = size + wc_flag;
-	result = (char **)malloc(sizeof(char *) * (new_size + 1));
+	result = (char **)ft_calloc(sizeof(char *), (new_size + 1));
 	if (result == NULL)
 		return (NULL);
 	result[size] = NULL;
