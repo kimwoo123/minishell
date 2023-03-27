@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:31:44 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/23 10:01:31 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:06:42 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ void	execve_command(t_data *data)
 		}
 		else
 		{
-			if (execve(command_path, data->commands, data->copied_envp) == FAILURE)
+			if (execve(command_path, data->commands, data->copied_envp) \
+			== FAILURE)
 				exit_with_str("execve error in execve command", EXIT_FAILURE);
 		}
 	}

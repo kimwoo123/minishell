@@ -6,7 +6,7 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 10:42:49 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/23 10:42:51 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/27 17:01:12 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ft_chdir(const char *path, const char *cmd)
 		ft_putstr_fd((char *)cmd, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		perror(error_str);
+		set_status(EXIT_FAILURE);
 	}
 }
 
