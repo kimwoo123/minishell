@@ -44,11 +44,9 @@ static void	handle_signals(int signal_code)
 	pid_t			pid;
 	struct termios	termios_p;
 
-	if (tcgetattr(STDIN_FILENO, &termios_p) == FAILURE)
-		exit_with_str("tcgetattr error in set input mode", EXIT_FAILURE);
+	tcgetattr(STDIN_FILENO, &termios_p);
 	termios_p.c_lflag &= ~ECHOCTL;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &termios_p) == FAILURE)
-		exit_with_str("tcsetattr error in set input mode", EXIT_FAILURE);
+	tcsetattr(STDIN_FILENO, TCSANOW, &termios_p);
 	pid = waitpid(-1, NULL, WNOHANG);
 	handle_signal(pid, signal_code);
 }
