@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:45:52 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/25 10:50:57 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/28 10:00:26 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	seperate_meta(const char *line, size_t size, t_list **list, t_data *d)
 	{
 		while (index < size && is_delimiter(line[index]))
 			index++;
-		get_token(&line[start_index], index - start_index, list, d);
+		tokenize(&line[start_index], index - start_index, list, d);
 		if (size != index)
-			get_token(&line[index], size - index, list, d);
+			tokenize(&line[index], size - index, list, d);
 	}
 	else
-		get_token(&line[index], size - index, list, d);
+		tokenize(&line[index], size - index, list, d);
 }
 
 void	split_space(const char *line, size_t size, t_list **list, t_data *data)
