@@ -6,39 +6,11 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:42:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/28 10:33:05 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/28 10:46:40 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
-
-t_list	*create_element(int type, char *content)
-{
-	t_list	*elem;
-
-	elem = (t_list *)malloc(sizeof(t_list));
-	if (elem == NULL)
-		return (NULL);
-	elem->type = type;
-	elem->content = content;
-	elem->next = NULL;
-	return (elem);
-}
-
-void	lst_addback(t_list **list, t_list *node)
-{
-	t_list	*temp;
-
-	if (!(*list))
-	{
-		*list = node;
-		return ;
-	}
-	temp = *list;
-	while (temp->next)
-		temp = temp->next;
-	temp->next = node;
-}
 
 int	check_type(const char *str)
 {

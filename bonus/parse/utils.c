@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:44:33 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/22 11:44:27 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/28 10:46:33 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,32 @@ char	*ft_strndup(const char *begin, size_t size)
 	}
 	result[index] = '\0';
 	return (result);
+}
+
+t_list	*create_element(int type, char *content)
+{
+	t_list	*elem;
+
+	elem = (t_list *)malloc(sizeof(t_list));
+	if (elem == NULL)
+		return (NULL);
+	elem->type = type;
+	elem->content = content;
+	elem->next = NULL;
+	return (elem);
+}
+
+void	lst_addback(t_list **list, t_list *node)
+{
+	t_list	*temp;
+
+	if (!(*list))
+	{
+		*list = node;
+		return ;
+	}
+	temp = *list;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = node;
 }
