@@ -23,18 +23,21 @@ static char	*expand_str_hd(t_data *data, const char *line)
 	return (result);
 }
 
-int	set_str_delim(t_list **list, char **save, char **delim)
+static int	join_free(char **str, char **str_nl, char **expand)
 {
-	*save = ft_strdup("");
-	if (*save == NULL)
+	char	*temp;
+
+	temp = *str;
+	*str = ft_strjoin(temp, *expand);
+	if (*str == NULL)
 		return (FAILURE);
-	*delim = ft_strjoin((*list)->content, "\n");
-	if (*delim == NULL)
-		return (FAILURE);
+	free(temp);
+	free(*expand);
+	free(*str_nl);
 	return (SUCCESS);
 }
 
-static int	get_heredoc_wgnl(t_data *data, t_list **list)
+static int	rl_heredoc(t_data *data, t_list **list)
 {	
 	char	*str;
 	char	*str_nl;
@@ -47,22 +50,15 @@ static int	get_heredoc_wgnl(t_data *data, t_list **list)
 	while (1)
 	{
 		temp = readline("> ");
-		if (temp == NULL)
-			break ;
-		if (is_equal_to(temp, (*list)->content) == TRUE)
+		if (temp == NULL || is_equal_to(temp, (*list)->content) == TRUE)
 			break ;
 		str_nl = ft_strjoin(temp, "\n");
 		if (str_nl == NULL)
 			return (FAILURE);
 		free(temp);
 		expand = expand_str_hd(data, str_nl);
-		temp = str;
-		str = ft_strjoin(temp, expand);
-		if (str == NULL)
+		if (join_free(str, str_nl, expand) == FAILURE)
 			return (FAILURE);
-		free(temp);
-		free(expand);
-		free(str_nl);
 	}
 	free((*list)->content);
 	(*list)->content = str;
@@ -79,7 +75,7 @@ void	preprocess_heredoc(t_data *data, t_list *list)
 		if (temp->type == REDIR_TOKEN && is_equal_to(temp->content, "<<"))
 		{
 			temp = temp->next;
-			if (get_heredoc_wgnl(data, &(temp)) == FAILURE)
+			if (rl_heredoc(data, &(temp)) == FAILURE)
 				exit_with_str("malloc error in preprocess", EXIT_FAILURE);
 		}
 		temp = temp->next;
