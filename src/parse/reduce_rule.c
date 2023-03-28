@@ -6,10 +6,10 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 15:26:09 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/18 16:04:11 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/25 17:02:38 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 int	reduce_redirection(t_stack **stack_node)
 {

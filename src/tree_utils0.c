@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 t_tree	*create_tree(int type, char *content, t_tree *left, t_tree *right)
 {
@@ -58,34 +58,46 @@ t_tree	*create_root(void)
 	return (root);
 }
 
-static void	recursive_make_tree(t_tree **head, t_list *node)
+static void	recursive_make_tree(t_data *data, \
+	t_tree **head, t_list *node, t_list **temp)
 {
-	if (node == NULL)
+	if (node == NULL || node->type == OPERATOR)
+	{
+		*temp = node;
 		return ;
-	else if (node->type == PIPE)
+	}
+	if (node->type == SUBS_OPEN || node->type == SUBSHELL)
+	{
+		data->sub_flag = TRUE;
+		recursive_make_tree(data, head, node->next, temp);
+	}
+	if (node->type == PIPE)
 	{
 		add_pipe(head);
-		recursive_make_tree(head, node->next);
+		recursive_make_tree(data, head, node->next, temp);
 	}
 	else if (node->type == REDIR_TOKEN)
 	{
 		add_redirections(head, node, node->next);
-		recursive_make_tree(head, node->next->next);
+		recursive_make_tree(data, head, node->next->next, temp);
 	}
 	else if (node->type == WORD)
 	{
 		add_commands(head, node);
-		recursive_make_tree(head, node->next);
+		recursive_make_tree(data, head, node->next, temp);
 	}
 }
 
-t_tree	*make_tree(t_list **node)
+t_tree	*make_tree(t_data *data, t_list **node)
 {
 	t_tree	*head;
+	t_list	*temp;
 
 	head = create_root();
 	if (head == NULL)
 		exit_with_str("malloc error in make tree", EXIT_FAILURE);
-	recursive_make_tree(&head, *node);
+	temp = NULL;
+	recursive_make_tree(data, &head, *node, &temp);
+	*node = temp;
 	return (head);
 }

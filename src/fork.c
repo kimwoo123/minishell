@@ -6,11 +6,11 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:30:35 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/24 14:21:14 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/20 16:30:36 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 static int	child_redir_exec(t_data *data)
 {

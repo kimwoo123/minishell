@@ -26,8 +26,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# include "parse.h"
-# include "structure.h"
+# include "parse_bonus.h"
+# include "structure_bonus.h"
 # include "../libft/inc/libft.h"
 
 /* built-in */

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 static char	*expand_str_hd(t_data *data, const char *line)
 {
@@ -23,57 +23,69 @@ static char	*expand_str_hd(t_data *data, const char *line)
 	return (result);
 }
 
-static int	strjoin_cmp(t_data *data, char **temp, char **str_nl, char **delim)
+static void	join_free1(char **str_nl, char **temp)
 {
 	*str_nl = ft_strjoin(*temp, "\n");
 	if (*str_nl == NULL)
-		return (FAILURE);
+		exit_with_str("malloc error in preprocess", EXIT_FAILURE);
 	free(*temp);
-	*delim = ft_strjoin(data->commands[1], "\n");
-	if (*delim == NULL)
-		return (FAILURE);
-	if (is_equal_to(*str_nl, *delim) == TRUE)
-	{
-		free(*str_nl);
-		free(*delim);
-		return (FAILURE);
-	}
-	return (SUCCESS);
 }
 
-static void	free_each(char *str1, char *str2, char *str3, char *str4)
+static void	join_free2(char **str, char **str_nl, char **expand)
 {
-	free(str1);
-	free(str2);
-	free(str3);
-	free(str4);
-}
-
-int	preprocess_heredoc(t_data *data, t_tree *tree)
-{	
-	char	*str_nl;
-	char	*delim;
-	char	*expand;
-	char	*save;
 	char	*temp;
 
-	save = ft_strdup("");
-	if (save == NULL)
+	temp = *str;
+	*str = ft_strjoin(temp, *expand);
+	if (*str == NULL)
+		exit_with_str("malloc error in preprocess", EXIT_FAILURE);
+	free(temp);
+	free(*expand);
+	free(*str_nl);
+}
+
+static int	rl_heredoc(t_data *data, t_list **list)
+{	
+	char	*str;
+	char	*str_nl;
+	char	*expand;
+	char	*temp;
+
+	str = ft_strdup("");
+	if (str == NULL)
 		return (FAILURE);
 	while (1)
 	{
 		temp = readline("> ");
-		if (temp == NULL \
-		|| strjoin_cmp(data, &temp, &str_nl, &delim) == FAILURE)
+		if (temp == NULL)
 			break ;
+		if (is_equal_to(temp, (*list)->content) == TRUE)
+		{
+			free(temp);
+			break ;
+		}
+		join_free1(&str_nl, &temp);
 		expand = expand_str_hd(data, str_nl);
-		temp = save;
-		save = ft_strjoin(temp, expand);
-		if (save == NULL)
-			return (FAILURE);
-		free_each(expand, temp, str_nl, delim);
+		join_free2(&str, &str_nl, &expand);
 	}
-	free(tree->right->content);
-	tree->right->content = save;
+	free((*list)->content);
+	(*list)->content = str;
 	return (SUCCESS);
+}
+
+void	preprocess_heredoc(t_data *data, t_list *list)
+{
+	t_list	*temp;
+
+	temp = list;
+	while (temp != NULL)
+	{
+		if (temp->type == REDIR_TOKEN && is_equal_to(temp->content, "<<"))
+		{
+			temp = temp->next;
+			if (rl_heredoc(data, &(temp)) == FAILURE)
+				exit_with_str("malloc error in preprocess", EXIT_FAILURE);
+		}
+		temp = temp->next;
+	}
 }

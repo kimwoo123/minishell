@@ -6,11 +6,11 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 09:45:26 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/22 12:44:15 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:07:37 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 static char	*ft_get_status(void)
 {
@@ -38,6 +38,7 @@ char	*convert_variable(char *str, t_data *data)
 	size_t		index;
 	char		*env;
 	char		*result;
+	extern int	g_status;
 
 	index = 1;
 	env = ft_getenv(data->copied_envp, &str[index]);

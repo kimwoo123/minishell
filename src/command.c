@@ -6,11 +6,11 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:31:44 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/23 10:01:31 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/27 17:37:25 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 static int	check_envp_index(t_data *data)
 {

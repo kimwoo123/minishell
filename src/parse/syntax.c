@@ -6,11 +6,11 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:42:51 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/23 10:37:13 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/26 15:54:24 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 int	shift_token(t_fptr **parse_table, t_stack **stack_node)
 {
@@ -46,59 +46,48 @@ int	reduce_token(t_fptr **parse_table, t_stack **stack_node)
 	return (FALSE);
 }
 
-int	repeat_reduce_shift(t_fptr **parse_table, t_stack **stack)
+int	reduce_shift(t_fptr **parse_table, t_stack **stack, int flag)
 {
 	t_stack	*s_node;
 	size_t	ret;
 
-	while (1)
+	ret = 0;
+	s_node = *stack;
+	while (s_node)
+	{		
+		ret += reduce_token(parse_table, &s_node);
+		s_node = s_node->next;
+	}
+	if (ret)
+		return (1);
+	if (flag == 0)
+		return (0);
+	s_node = *stack;
+	while (s_node)
+	{				
+		ret += shift_token(parse_table, &s_node);
+		s_node = s_node->next;
+	}
+	if (ret)
+		return (1);
+	return (0);
+}
+
+int	repeat_reduce_shift(t_fptr **parse_table, t_stack **stack, int flag)
+{
+	size_t	ret;
+
+	ret = 1;
+	while (ret != 0)
 	{
-		ret = 0;
-		s_node = *stack;
-		while (s_node)
-		{
-			ret += reduce_token(parse_table, &s_node);
-			if (ret)
-				break ;
-			ret += shift_token(parse_table, &s_node);
-			if (ret)
-				break ;
-			s_node = s_node->next;
-		}
+		ret = reduce_shift(parse_table, stack, flag);
 		if (ret == 0)
 			break ;
 	}
-	if ((*stack && (*stack)->next == NULL) && (*stack)->type == COMMAND)
+	if ((*stack && (*stack)->next == NULL) && \
+		((*stack)->type == COMMAND || ((*stack)->type == GROUP_CMD)))
 		return (TRUE);
 	return (FALSE);
-}
-
-int	parse_token(t_list **token_list)
-{
-	t_fptr	**parse_table;
-	t_stack	*stack;
-	t_list	*node;
-	int		accept;
-
-	parse_table = init_parse_table();
-	stack = NULL;
-	node = *token_list;
-	while (node)
-	{
-		push_stack(&stack, node->type);
-		if (node->type == ZERO)
-		{
-			free_stack_table(stack, parse_table);
-			return (FALSE);
-		}
-		reduce_token(parse_table, &stack);
-		node = node->next;
-	}
-	accept = repeat_reduce_shift(parse_table, &stack);
-	free_stack_table(stack, parse_table);
-	if (accept == FALSE)
-		return (FALSE);
-	return (TRUE);
 }
 
 int	check_syntax(t_list **token_list)

@@ -6,16 +6,17 @@
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 10:54:03 by chajung           #+#    #+#             */
-/*   Updated: 2023/03/22 10:54:04 by chajung          ###   ########.fr       */
+/*   Updated: 2023/03/27 14:08:36 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 static int	init_backup(t_data *data)
 {
 	data->count_cmd = 0;
 	data->pid = 0;
+	data->sub_flag = FALSE;
 	data->last_cmd = FALSE;
 	data->has_forked = FALSE;
 	data->dup_stdin = dup(STDIN_FILENO);
@@ -61,25 +62,47 @@ static void	waiting(t_data *data)
 	}
 }
 
+static void	make_tree_bonus(t_data *data, t_list **addr)
+{
+	extern int	g_status;
+	t_tree		*tree;
+	int			cmd_flag;
+
+	cmd_flag = TRUE;
+	if (init_backup(data) == FAILURE)
+		exit_with_str("init backup error in run minishell", EXIT_FAILURE);
+	if ((*addr)->type == OPERATOR)
+	{
+		if ((is_equal_to((*addr)->content, AND) && g_status == EXIT_FAILURE) \
+		|| (is_equal_to((*addr)->content, OR) && g_status == EXIT_SUCCESS))
+			cmd_flag = FALSE;
+		(*addr) = (*addr)->next;
+	}
+	tree = make_tree(data, addr);
+	if (cmd_flag == TRUE)
+	{
+		search_tree(data, tree);
+		waiting(data);
+	}
+	free_tree(tree);
+	if (restore(data) == FAILURE)
+		exit_with_str("restore error in run minishell", EXIT_FAILURE);
+}
+
 void	run_minishell(t_data *data, char *command_line)
 {
 	t_list	*list;
-	t_tree	*tree;
+	t_list	*addr;
 
-	if (init_backup(data) == FAILURE)
-		exit_with_str("init backup error in run minishell", EXIT_FAILURE);
 	list = scan_command(command_line, data);
 	if (list == NULL)
 		rl_on_new_line();
 	else
 	{
-		tree = make_tree(&list);
-		search_tree_for_hd(data, tree);
-		search_tree(data, tree);
-		waiting(data);
+		preprocess_heredoc(data, list);
+		addr = list;
+		while (addr != NULL)
+			make_tree_bonus(data, &addr);
 		free_list(&list);
-		free_tree(tree);
 	}
-	if (restore(data) == FAILURE)
-		exit_with_str("restore error in run minishell", EXIT_FAILURE);
 }
