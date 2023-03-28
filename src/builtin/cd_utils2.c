@@ -22,6 +22,7 @@ void	ft_chdir(const char *path, const char *cmd)
 		ft_putstr_fd((char *)cmd, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		perror(error_str);
+		set_status(EXIT_FAILURE);
 	}
 }
 

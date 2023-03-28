@@ -32,8 +32,14 @@ static char	*check_access(t_data *data, char **split)
 	char		*cmd;
 	struct stat	finfo;
 
-	index = 0;
-	while (split[index])
+	stat(data->commands[0], &finfo);
+	if (!S_ISDIR(finfo.st_mode))
+	{
+		if (!access(data->commands[0], X_OK))
+			return (data->commands[0]);
+	}
+	index = -1;
+	while (split[++index])
 	{
 		cmd = ft_strjoin_wslash(split[index], data->commands[0]);
 		if (cmd == NULL)
@@ -45,7 +51,6 @@ static char	*check_access(t_data *data, char **split)
 				return (cmd);
 		}
 		free(cmd);
-		index++;
 	}
 	return (NULL);
 }
@@ -58,8 +63,6 @@ static char	*find_command_path(t_data *data)
 
 	if (!data->commands[0] || !data->copied_envp)
 		return (NULL);
-	if (!access(data->commands[0], X_OK))
-		return (data->commands[0]);
 	index = check_envp_index(data);
 	if (index == (size_t)FAILURE)
 		return (NULL);
@@ -95,8 +98,8 @@ void	execve_command(t_data *data)
 		}
 		else
 		{
-			if (execve(command_path, \
-				data->commands, data->copied_envp) == FAILURE)
+			if (execve(command_path, data->commands, data->copied_envp) \
+			== FAILURE)
 				exit_with_str("execve error in execve command", EXIT_FAILURE);
 		}
 	}
