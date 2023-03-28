@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 16:29:40 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/03/26 15:24:01 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/03/28 09:35:04 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,14 @@ int		is_quote(char c);
 
 /* token */
 t_list	*create_element(int type, char *content);
-void	get_token(const char *line, size_t size, t_list **t_list, t_data *d);
+void	tokenize(const char *line, size_t size, t_list **t_list, t_data *d);
 int		check_type(const char *str);
 void	lst_addback(t_list **list, t_list *node);
 char	*remove_quote(const char *line);
+
+// need fix
+void	expand_space_split(const char *line, t_list **list, int type);
+void	get_token(const char *line, size_t size, t_list **list, int type);
 
 /* split_dollar */
 size_t	get_dollar_len(const char *line);
