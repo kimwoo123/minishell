@@ -57,7 +57,7 @@ static int	rl_heredoc(t_data *data, t_list **list)
 			return (FAILURE);
 		free(temp);
 		expand = expand_str_hd(data, str_nl);
-		if (join_free(str, str_nl, expand) == FAILURE)
+		if (join_free(&str, &str_nl, &expand) == FAILURE)
 			return (FAILURE);
 	}
 	free((*list)->content);
