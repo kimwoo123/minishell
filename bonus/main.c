@@ -20,17 +20,16 @@ int	main(int argc, char **argv, char **envp)
 	char	*command_line;
 
 	init_data(argc, argv, envp, &data);
-	set_signals(0);
+	set_signals();
 	while (1)
 	{
 		command_line = readline("minishell> ");
 		if (command_line == NULL)
 			break ;
 		add_history(command_line);
-		// set_signals(1);
 		run_minishell(&data, command_line);
-		// set_signals(0);
 		free (command_line);
 	}
 	ft_putendl_fd("bye", STDOUT_FILENO);
-	return (0);}
+	return (0);
+}

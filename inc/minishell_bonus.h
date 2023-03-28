@@ -69,8 +69,7 @@ char	**alloc_double_array(t_data *data);
 void	init_data(int argc, char **argv, char **envp, t_data *data);
 
 /* signal */
-// void	reset_signals(void);
-void	set_signals(int flag);
+void	set_signals(void);
 
 /* run */
 void	run_minishell(t_data *data, char *command_line);

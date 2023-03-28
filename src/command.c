@@ -95,7 +95,8 @@ void	execve_command(t_data *data)
 		}
 		else
 		{
-			if (execve(command_path, data->commands, data->copied_envp) == FAILURE)
+			if (execve(command_path, \
+				data->commands, data->copied_envp) == FAILURE)
 				exit_with_str("execve error in execve command", EXIT_FAILURE);
 		}
 	}
