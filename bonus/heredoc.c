@@ -23,18 +23,25 @@ static char	*expand_str_hd(t_data *data, const char *line)
 	return (result);
 }
 
-static int	join_free(char **str, char **str_nl, char **expand)
+static void	join_free1(char **str_nl, char **temp)
+{
+	*str_nl = ft_strjoin(*temp, "\n");
+	if (*str_nl == NULL)
+		exit_with_str("malloc error in preprocess", EXIT_FAILURE);
+	free(*temp);
+}
+
+static void	join_free2(char **str, char **str_nl, char **expand)
 {
 	char	*temp;
 
 	temp = *str;
 	*str = ft_strjoin(temp, *expand);
 	if (*str == NULL)
-		return (FAILURE);
+		exit_with_str("malloc error in preprocess", EXIT_FAILURE);
 	free(temp);
 	free(*expand);
 	free(*str_nl);
-	return (SUCCESS);
 }
 
 static int	rl_heredoc(t_data *data, t_list **list)
@@ -50,15 +57,16 @@ static int	rl_heredoc(t_data *data, t_list **list)
 	while (1)
 	{
 		temp = readline("> ");
-		if (temp == NULL || is_equal_to(temp, (*list)->content) == TRUE)
+		if (temp == NULL)
 			break ;
-		str_nl = ft_strjoin(temp, "\n");
-		if (str_nl == NULL)
-			return (FAILURE);
-		free(temp);
+		if (is_equal_to(temp, (*list)->content) == TRUE)
+		{
+			free(temp);
+			break ;
+		}
+		join_free1(&str, &str_nl);
 		expand = expand_str_hd(data, str_nl);
-		if (join_free(&str, &str_nl, &expand) == FAILURE)
-			return (FAILURE);
+		join_free2(&str, &str_nl, &expand);
 	}
 	free((*list)->content);
 	(*list)->content = str;
