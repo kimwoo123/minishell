@@ -54,7 +54,8 @@ static size_t	get_cmd_size(t_tree *tree, size_t *wc_flag)
 	{
 		if (temp->left != NULL)
 		{
-			if (is_equal_to(temp->left->content, "*") == TRUE)
+			if (is_equal_to(temp->left->content, "*") == TRUE \
+			|| is_equal_to(temp->left->content, "./*") == TRUE)
 				count_wild_cards(wc_flag);
 			size++;
 		}

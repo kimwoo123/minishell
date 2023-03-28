@@ -72,7 +72,8 @@ int	make_commands_wc(t_tree *tree, char **result, size_t wc_flag)
 	{
 		if (temp->left != NULL)
 		{
-			if (wc_flag != 0 && is_equal_to(temp->left->content, "*") == TRUE)
+			if (wc_flag != 0 && (is_equal_to(temp->left->content, "*") == TRUE \
+			|| is_equal_to(temp->left->content, "./*") == TRUE))
 			{
 				if (copy_wild_cards(result, &index) == FAILURE)
 					return (FAILURE);

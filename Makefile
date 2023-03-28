@@ -17,7 +17,7 @@ include inc/flag_mkfile
 ifeq ($(MAKECMDGOALS), bonus)
 include inc/bns_mkfile
 $(NAME): $(ALL_OBJS) $(LIB)
-	@$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
+	@$(CC) -g -fsanitize=address $(CFLAGS) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
 
 $(OBJ_B_DIR):
 	$(RM) $(RMFLAGS) $(OBJ_DIR) $(NAME)
@@ -25,7 +25,7 @@ $(OBJ_B_DIR):
 else
 include inc/var_mkfile
 $(NAME): $(ALL_OBJS) $(LIB)
-	@$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
+	@$(CC) -g -fsanitize=address $(CFLAGS) $(LIB) $^ -o $@ $(RLFLAGS) $(LDFLAGS) $(CPPFLAGS)
 
 $(OBJ_DIR):
 	$(RM) $(RMFLAGS) $(OBJ_B_DIR) $(NAME)
