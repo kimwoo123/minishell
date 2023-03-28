@@ -23,7 +23,7 @@ static char	*expand_str_hd(t_data *data, const char *line)
 	return (result);
 }
 
-static int	set_str_delim(t_list **list, char **save, char **delim)
+int	set_str_delim(t_list **list, char **save, char **delim)
 {
 	*save = ft_strdup("");
 	if (*save == NULL)
@@ -37,26 +37,32 @@ static int	set_str_delim(t_list **list, char **save, char **delim)
 static int	get_heredoc_wgnl(t_data *data, t_list **list)
 {	
 	char	*str;
-	char	*delim;
+	char	*str_nl;
 	char	*expand;
 	char	*temp;
 
-	if (set_str_delim(list, &str, &delim) == FAILURE)
+	str = ft_strdup("");
+	if (str == NULL)
 		return (FAILURE);
 	while (1)
 	{
-		ft_putstr_fd("> ", STDIN_FILENO);
-		temp = get_next_line(STDIN_FILENO);
-		if (temp == NULL || is_equal_to(temp, delim) == TRUE)
+		temp = readline("> ");
+		if (temp == NULL)
 			break ;
-		expand = expand_str_hd(data, temp);
+		if (is_equal_to(temp, (*list)->content) == TRUE)
+			break ;
+		str_nl = ft_strjoin(temp, "\n");
+		if (str_nl == NULL)
+			return (FAILURE);
 		free(temp);
+		expand = expand_str_hd(data, str_nl);
 		temp = str;
 		str = ft_strjoin(temp, expand);
 		if (str == NULL)
 			return (FAILURE);
 		free(temp);
 		free(expand);
+		free(str_nl);
 	}
 	free((*list)->content);
 	(*list)->content = str;
