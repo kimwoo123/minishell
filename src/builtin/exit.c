@@ -12,11 +12,27 @@
 
 #include "minishell_bonus.h"
 
+static int	is_int(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (data->commands[1][i] == '+' || data->commands[1][i] == '-')
+		i++;
+	while (data->commands[1][i])
+	{
+		if (!ft_isdigit(data->commands[1][i]))
+			return (FAILURE);
+		i++;
+	}
+	return (EXIT_SUCCESS);
+}
+
 static int	check_argument(t_data *data)
 {
 	extern int	g_status;
 
-	if (ft_isalpha(data->commands[1][0]))
+	if (is_int(data) == FAILURE)
 	{
 		ft_putstr_fd("exit: ", STDERR_FILENO);
 		ft_putstr_fd(data->commands[1], STDERR_FILENO);
@@ -24,7 +40,7 @@ static int	check_argument(t_data *data)
 		g_status = 255;
 		return (TRUE);
 	}
-	else if (ft_isdigit(data->commands[1][0]))
+	else
 	{
 		if (data->commands[2] != NULL)
 		{
